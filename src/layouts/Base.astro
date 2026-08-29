@@ -1,0 +1,368 @@
+---
+interface Props { titulo: string; descricao?: string; }
+const { titulo, descricao } = Astro.props;
+const rota = Astro.url.pathname;
+const atual = (p: string) => (rota === p || rota.startsWith(p + '/') ? 'page' : undefined);
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo} — Radar RT</title>
+    {descricao && <meta name="description" content={descricao} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="alternate" type="application/rss+xml" title="Radar RT" href="/rss.xml" />
+    <!-- Previne flash de tema errado -->
+    <script is:inline>
+      (function(){
+        var t = localStorage.getItem('tema');
+        if (!t) t = 'escuro';
+        document.documentElement.dataset.tema = t;
+      })();
+    </script>
+  </head>
+  <body>
+
+    <!-- ── Cabeçalho fixo ── -->
+    <header class="cabecalho" role="banner">
+      <div id="progresso-barra" aria-hidden="true"></div>
+      <div class="cabecalho-inner">
+
+        <a class="marca" href="/" aria-label="Radar RT — início">
+          <svg class="marca-icone" viewBox="0 0 40 40" width="42" height="42" aria-hidden="true" fill="none">
+            <defs>
+              <radialGradient id="rg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="20" cy="20" r="19" fill="rgba(6,9,26,.85)" stroke="rgba(96,165,250,.28)" stroke-width="1"/>
+            <circle cx="20" cy="20" r="13.5" stroke="rgba(96,165,250,.18)" stroke-width="0.75"/>
+            <circle cx="20" cy="20" r="8"    stroke="rgba(96,165,250,.18)" stroke-width="0.75"/>
+            <path d="M20,20 L33.5,12 A13.5,13.5 0 0,0 20,6.5 Z" fill="rgba(96,165,250,.12)"/>
+            <line x1="20" y1="20" x2="33.5" y2="12" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="29.5" cy="13.5" r="2.2" fill="#60a5fa"/>
+            <circle cx="29.5" cy="13.5" r="4.5" fill="rgba(96,165,250,.18)"/>
+            <circle cx="20" cy="20" r="1.8" fill="#93c5fd"/>
+          </svg>
+          <span class="marca-texto">
+            <span class="marca-sup">RADAR</span>
+            <span class="marca-nome">RT</span>
+          </span>
+        </a>
+
+        <nav class="nav-wrapper" id="nav-wrapper" role="navigation" aria-label="Navegação principal">
+          <ul class="nav">
+            <li><a href="/sap"             aria-current={atual('/sap')} class="nav-destaque">Guia SAP</a></li>
+            <li><a href="/linha-do-tempo"  aria-current={atual('/linha-do-tempo')}>Linha do tempo</a></li>
+            <li><a href="/situacoes"       aria-current={atual('/situacoes')}>O que muda no SAP</a></li>
+            <li><a href="/conceitos"       aria-current={atual('/conceitos')}>Conceitos</a></li>
+            <li><a href="/normas"          aria-current={atual('/normas')}>Normas</a></li>
+            <li><a href="/glossario"       aria-current={atual('/glossario')}>Glossário</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-acoes">
+          <button class="btn-busca" id="btn-abrir-busca" aria-label="Buscar (Ctrl+K)" title="Buscar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            Buscar <kbd>Ctrl K</kbd>
+          </button>
+
+          <button class="btn-icone" id="btn-tema" aria-label="Alternar tema" title="Tema claro/escuro">
+            <svg id="icone-lua" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg id="icone-sol" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none">
+              <circle cx="12" cy="12" r="4"/>
+              <line x1="12" y1="2"  x2="12" y2="4"/>
+              <line x1="12" y1="20" x2="12" y2="22"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="2"  y1="12" x2="4"  y2="12"/>
+              <line x1="20" y1="12" x2="22" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </button>
+
+          <button class="btn-icone btn-busca-mobile" id="btn-abrir-busca-mobile" aria-label="Buscar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+          </button>
+
+          <button class="btn-icone btn-menu" id="btn-menu"
+                  aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-wrapper">
+            <svg id="icone-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+            <svg id="icone-fechar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6"  y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ── Modal de busca ── -->
+    <div class="modal-overlay" id="modal-busca" role="dialog" aria-modal="true" aria-label="Busca rápida">
+      <div class="modal">
+        <div class="modal-cabecalho">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input id="campo-busca" type="search"
+                 placeholder="Buscar normas, conceitos, marcos…"
+                 autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="modal-resultados" id="modal-resultados">
+          <p class="modal-vazio">Digite para buscar…</p>
+        </div>
+        <div class="modal-rodape">
+          <span><kbd>↵</kbd> selecionar</span>
+          <span><kbd>Esc</kbd> fechar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Conteúdo ── -->
+    <div class="area-conteudo">
+      <main id="conteudo-principal"><slot /></main>
+
+      <footer class="rodape">
+        <p>
+          Informação pública com fonte oficial citada. Não é consultoria tributária.
+          <a href="/como-este-site-funciona">Como este site funciona</a>.
+        </p>
+        <a class="rodape-rss" href="/rss.xml" aria-label="Feed RSS">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/>
+            <circle cx="5" cy="19" r="1"/>
+          </svg>
+          RSS
+        </a>
+      </footer>
+    </div>
+
+    <!-- ── Navegação inferior (mobile) ── -->
+    <nav class="nav-inferior" aria-label="Navegação principal mobile">
+      <ul class="nav-inferior-lista">
+        <li>
+          <a class="nav-inf-item" href="/" aria-current={rota === '/' ? 'page' : undefined}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Início</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-inf-item nav-inf-destaque" href="/sap" aria-current={atual('/sap')}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+            <span>Guia SAP</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-inf-item" href="/linha-do-tempo" aria-current={atual('/linha-do-tempo')}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span>Timeline</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-inf-item" href="/normas" aria-current={atual('/normas')}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <span>Normas</span>
+          </a>
+        </li>
+        <li>
+          <button class="nav-inf-item" id="btn-busca-nav-inf" aria-label="Abrir busca">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <span>Buscar</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ── Botão voltar ao topo ── -->
+    <button id="topo" aria-label="Voltar ao topo" title="Voltar ao topo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path d="m18 15-6-6-6 6"/>
+      </svg>
+    </button>
+
+    <script>
+      // ── Tema ──
+      const html = document.documentElement;
+      function aplicarTema(t: string) {
+        html.dataset.tema = t;
+        const lua = document.getElementById('icone-lua') as HTMLElement;
+        const sol = document.getElementById('icone-sol') as HTMLElement;
+        if (t === 'escuro') { lua.style.display = 'none'; sol.style.display = ''; }
+        else                { lua.style.display = '';     sol.style.display = 'none'; }
+        localStorage.setItem('tema', t);
+      }
+      // Sincroniza ícone com tema já aplicado (script inline no head)
+      aplicarTema(html.dataset.tema ?? 'escuro');
+      document.getElementById('btn-tema')!.addEventListener('click', () => {
+        aplicarTema(html.dataset.tema === 'escuro' ? 'claro' : 'escuro');
+      });
+
+      // ── Menu mobile ──
+      const btnMenu    = document.getElementById('btn-menu')!;
+      const navWrapper = document.getElementById('nav-wrapper')!;
+      const iMenu      = document.getElementById('icone-menu')!;
+      const iFechar    = document.getElementById('icone-fechar')!;
+
+      btnMenu.addEventListener('click', () => {
+        const aberto = navWrapper.classList.toggle('aberto');
+        btnMenu.setAttribute('aria-expanded', String(aberto));
+        iMenu.style.display   = aberto ? 'none' : '';
+        iFechar.style.display = aberto ? ''     : 'none';
+      });
+
+      // Fecha menu ao clicar em um link
+      navWrapper.querySelectorAll('a').forEach((a) => {
+        a.addEventListener('click', () => {
+          navWrapper.classList.remove('aberto');
+          btnMenu.setAttribute('aria-expanded', 'false');
+          iMenu.style.display   = '';
+          iFechar.style.display = 'none';
+        });
+      });
+
+      // ── Barra de progresso de leitura ──
+      const barraLeitura = document.getElementById('progresso-barra')!;
+      function atualizarProgresso() {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        if (total <= 0) return;
+        barraLeitura.style.width = (window.scrollY / total * 100) + '%';
+      }
+      window.addEventListener('scroll', atualizarProgresso, { passive: true });
+
+      // ── Botão voltar ao topo ──
+      const btnTopo = document.getElementById('topo')!;
+      window.addEventListener('scroll', () => {
+        btnTopo.classList.toggle('visivel', window.scrollY > 500);
+      }, { passive: true });
+      btnTopo.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      // ── Modal de busca ──
+      const modal        = document.getElementById('modal-busca')!;
+      const campoBusca   = document.getElementById('campo-busca') as HTMLInputElement;
+      const areaResult   = document.getElementById('modal-resultados')!;
+
+      const PAGINAS = [
+        { titulo: 'Guia SAP',                          url: '/sap',                              desc: 'Impacto no SAP — extração de NF-e e apuração tributária' },
+        { titulo: 'Início',                            url: '/',                                 desc: 'Página inicial — onde estamos' },
+        { titulo: 'Linha do tempo',                    url: '/linha-do-tempo',                   desc: 'Todas as datas de 2026 a 2033' },
+        { titulo: 'Glossário',                         url: '/glossario',                        desc: 'Siglas e termos da Reforma' },
+        { titulo: 'Normas',                            url: '/normas',                           desc: 'EC 132, LC 214, LC 227 e outras' },
+        { titulo: 'Conceitos',                         url: '/conceitos',                        desc: 'IBS, CBS, IVA Dual, Destino…' },
+        { titulo: 'O que muda no SAP',                  url: '/situacoes',                        desc: 'Por perfil de empresa ou contribuinte' },
+        { titulo: 'Sistemas de extração de NF-e SAP',  url: '/situacoes/sistemas-extracao-nfe',  desc: 'O que muda nos XMLs, ondas documentais e apuração' },
+        { titulo: 'Apuração de IBS e CBS',             url: '/conceitos/apuracao-ibs-cbs',       desc: 'Como apurar CBS e IBS — diferenças do PIS/Cofins e ICMS' },
+        { titulo: 'Como este site funciona',           url: '/como-este-site-funciona',          desc: 'Metodologia e fontes' },
+        { titulo: 'EC 132/2023',                       url: '/normas/ec-132-2023',               desc: 'Emenda Constitucional — fundação da Reforma' },
+        { titulo: 'LC 214/2025',                       url: '/normas/lc-214-2025',               desc: 'Lei Complementar — regulamentação' },
+        { titulo: 'LC 227/2026',                       url: '/normas/lc-227-2026',               desc: 'Lei Complementar — segunda etapa' },
+        { titulo: 'IBS',                               url: '/conceitos/ibs',                    desc: 'Imposto sobre Bens e Serviços — substitui ICMS e ISS' },
+        { titulo: 'CBS',                               url: '/conceitos/cbs',                    desc: 'Contribuição sobre Bens e Serviços — substitui PIS e Cofins' },
+        { titulo: 'IVA Dual',                          url: '/conceitos/iva-dual',               desc: 'Modelo adotado no Brasil' },
+        { titulo: 'Split payment',                     url: '/conceitos/split-payment',          desc: 'Separação automática de IBS/CBS no pagamento' },
+        { titulo: 'DeRE',                              url: '/conceitos/dere',                   desc: 'Declaração de Regimes Específicos' },
+        { titulo: 'Simples Nacional',                  url: '/situacoes/simples-nacional',       desc: 'O que muda para ME e EPP' },
+        { titulo: '1ª onda NF-e (03/08/2026)',         url: '/marcos/2026-08-03-obrigatoriedade-dfe', desc: 'Campos IBS/CBS obrigatórios — regime regular' },
+        { titulo: 'CBS em vigor (01/01/2027)',         url: '/marcos/2027-01-01-cbs-em-vigor',   desc: 'CBS cobrada — PIS/Cofins extintos' },
+      ];
+
+      function renderResultados(q: string) {
+        const query = q.trim().toLowerCase();
+        if (!query) {
+          areaResult.innerHTML = '<p class="modal-vazio">Digite para buscar…</p>';
+          return;
+        }
+        const filtrados = PAGINAS.filter(
+          (p) => p.titulo.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query)
+        );
+        if (!filtrados.length) {
+          areaResult.innerHTML = '<p class="modal-vazio">Nenhum resultado para "' + q + '"</p>';
+          return;
+        }
+        areaResult.innerHTML = filtrados.map((p) =>
+          `<a class="resultado-item" href="${p.url}"><strong>${p.titulo}</strong><small>${p.desc}</small></a>`
+        ).join('');
+      }
+
+      function abrirBusca() {
+        modal.classList.add('ativo');
+        campoBusca.focus();
+        campoBusca.value = '';
+        renderResultados('');
+      }
+      function fecharBusca() { modal.classList.remove('ativo'); }
+
+      document.getElementById('btn-abrir-busca')!.addEventListener('click', abrirBusca);
+      document.getElementById('btn-abrir-busca-mobile')?.addEventListener('click', abrirBusca);
+      document.getElementById('btn-busca-nav-inf')?.addEventListener('click', abrirBusca);
+      modal.addEventListener('click', (e) => { if (e.target === modal) fecharBusca(); });
+      campoBusca.addEventListener('input', () => renderResultados(campoBusca.value));
+
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); abrirBusca(); }
+        if (e.key === 'Escape' && modal.classList.contains('ativo')) fecharBusca();
+      });
+
+      // Navegação por teclado nos resultados
+      areaResult.addEventListener('keydown', (e) => {
+        const itens = Array.from(areaResult.querySelectorAll('.resultado-item')) as HTMLElement[];
+        const idx   = itens.indexOf(document.activeElement as HTMLElement);
+        if (e.key === 'ArrowDown') { e.preventDefault(); itens[Math.min(idx + 1, itens.length - 1)]?.focus(); }
+        if (e.key === 'ArrowUp')   { e.preventDefault(); if (idx <= 0) campoBusca.focus(); else itens[idx - 1]?.focus(); }
+      });
+      campoBusca.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          const primeiro = areaResult.querySelector('.resultado-item') as HTMLElement | null;
+          if (primeiro) { e.preventDefault(); primeiro.focus(); }
+        }
+      });
+    </script>
+  </body>
+</html>

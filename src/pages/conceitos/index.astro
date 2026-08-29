@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const conceitos = (await getCollection('conceitos')).sort((a, b) =>
+  a.data.titulo.localeCompare(b.data.titulo, 'pt-BR')
+);
+---
+<Base
+  titulo="Conceitos"
+  descricao="Os conceitos da Reforma Tributária do Consumo explicados com base normativa."
+>
+  <div class="pagina-header">
+    <div class="pagina-badge">Wiki SAP · Reforma Tributária</div>
+    <h1 class="pagina-h1"><span class="hero-destaque">Conceitos</span></h1>
+    <p class="pagina-subtitulo">
+      O que cada coisa significa, com a norma que a define.
+      {conceitos.length} conceitos indexados.
+    </p>
+  </div>
+
+  <div class="filtro-wrap" style="margin-bottom: var(--e-8)">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input class="filtro-input" id="filtro-conceitos" type="search"
+           placeholder="Filtrar conceitos…" autocomplete="off"
+           aria-label="Filtrar conceitos" />
+  </div>
+
+  <div class="grade" id="grade-conceitos">
+    {conceitos.map((c) => (
+      <a class="cartao" href={`/conceitos/${c.slug}`}
+         data-texto={`${c.data.titulo} ${c.data.resumo}`.toLowerCase()}>
+        <div class="cartao-tipo">Conceito</div>
+        <div class="cartao-titulo">{c.data.titulo}</div>
+        <div class="cartao-desc">{c.data.resumo}</div>
+        {c.data.normas_relacionadas.length > 0 && (
+          <div class="cartao-meta">
+            {c.data.normas_relacionadas.length} norma{c.data.normas_relacionadas.length > 1 ? 's' : ''} relacionada{c.data.normas_relacionadas.length > 1 ? 's' : ''}
+          </div>
+        )}
+      </a>
+    ))}
+  </div>
+  <p class="filtro-nenhum" id="nenhum-conceito" role="status">Nenhum conceito encontrado.</p>
+</Base>
+
+<script>
+  const input  = document.getElementById('filtro-conceitos') as HTMLInputElement;
+  const itens  = document.querySelectorAll<HTMLElement>('#grade-conceitos .cartao');
+  const nenhum = document.getElementById('nenhum-conceito')!;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let visiveis = 0;
+    itens.forEach((el) => {
+      const ok = !q || (el.dataset.texto ?? '').includes(q);
+      el.style.display = ok ? '' : 'none';
+      if (ok) visiveis++;
+    });
+    nenhum.classList.toggle('visivel', visiveis === 0);
+  });
+</script>

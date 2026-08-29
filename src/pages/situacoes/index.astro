@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const situacoes = await getCollection('situacoes');
+---
+<Base
+  titulo="O que muda no SAP"
+  descricao="O que a Reforma Tributária muda por perfil de sistema SAP ou contribuinte."
+>
+  <div class="pagina-header">
+    <div class="pagina-badge">Por perfil · Radar RT</div>
+    <h1 class="pagina-h1"><span class="hero-destaque">O que muda</span> no SAP</h1>
+    <p class="pagina-subtitulo">
+      Páginas escritas para responder uma dúvida concreta, por perfil de sistema ou contribuinte.
+      Cada uma lista as datas relevantes e o que efetivamente muda na prática.
+    </p>
+  </div>
+
+  <div class="grade">
+    {situacoes.map((s) => (
+      <a class="cartao" href={`/situacoes/${s.slug}`}>
+        <div class="cartao-tipo">Situação</div>
+        <span class="publico-tag" style="align-self:flex-start">{s.data.publico}</span>
+        <div class="cartao-titulo">{s.data.titulo}</div>
+        <div class="cartao-desc">{s.data.resumo}</div>
+      </a>
+    ))}
+  </div>
+</Base>

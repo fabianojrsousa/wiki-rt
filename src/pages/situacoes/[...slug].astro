@@ -1,0 +1,40 @@
+---
+import Documento from '../../layouts/Documento.astro';
+import DataVerificacao from '../../components/DataVerificacao.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { rotuloData } from '../../lib/datas';
+
+export async function getStaticPaths() {
+  const situacoes = await getCollection('situacoes');
+  return situacoes.map((s) => ({ params: { slug: s.slug }, props: { situacao: s } }));
+}
+
+const { situacao } = Astro.props;
+const { Content } = await situacao.render();
+const d = situacao.data;
+
+const marcos = (await Promise.all(
+  d.marcos_relevantes.map((s) => getEntry('marcos', s).catch(() => undefined))
+)).filter(Boolean).sort((a, b) => a!.data.data_evento.valueOf() - b!.data.data_evento.valueOf());
+---
+<Documento titulo={d.titulo} descricao={d.resumo}
+  etiqueta="O que muda no SAP" secao="/situacoes" secaoNome="O que muda no SAP">
+  <Fragment slot="trilho">
+    <dl>
+      <dt>Público</dt><dd>{d.publico}</dd>
+    </dl>
+    {marcos.length > 0 && (
+      <dl>
+        <dt>Datas relevantes</dt>
+        {marcos.map((m) => (
+          <dd>
+            <a href={`/marcos/${m!.slug}`}>{rotuloData(m!.data.data_evento, m!.data.data_fim)}</a>
+          </dd>
+        ))}
+      </dl>
+    )}
+  </Fragment>
+
+  <Content />
+  <DataVerificacao data={d.verificado_em} />
+</Documento>

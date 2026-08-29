@@ -1,0 +1,37 @@
+name: Coletor diário
+
+on:
+  schedule:
+    - cron: '0 9,21 * * 1-5'   # 06h e 18h de Brasília, dias úteis
+  workflow_dispatch:
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - run: pip install -r scripts/requirements.txt
+
+      - name: Executar coletores
+        env:
+          TERMOS: 'IBS,CBS,Imposto Seletivo,LC 214,LC 227,Reforma Tributária'
+        run: python scripts/coletores/run_all.py
+
+      - name: Abrir pull request se houver novidade
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: coleta/${{ github.run_number }}
+          title: 'Coleta automática — atos publicados'
+          body-path: .coleta-resumo.md
+          labels: revisar, coleta-automatica
+          commit-message: 'coleta: rascunhos de atos publicados'
+          delete-branch: true

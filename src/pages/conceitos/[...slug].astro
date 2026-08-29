@@ -1,0 +1,42 @@
+---
+import Documento from '../../layouts/Documento.astro';
+import DataVerificacao from '../../components/DataVerificacao.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const conceitos = await getCollection('conceitos');
+  return conceitos.map((c) => ({ params: { slug: c.slug }, props: { conceito: c } }));
+}
+
+const { conceito } = Astro.props;
+const { Content } = await conceito.render();
+const d = conceito.data;
+
+const normas = (await Promise.all(
+  d.normas_relacionadas.map((s) => getEntry('normas', s).catch(() => undefined))
+)).filter(Boolean);
+
+const relacionados = (await Promise.all(
+  d.conceitos_relacionados.map((s) => getEntry('conceitos', s).catch(() => undefined))
+)).filter(Boolean);
+---
+<Documento titulo={d.titulo} descricao={d.resumo}
+  etiqueta="Conceito" secao="/conceitos" secaoNome="Conceitos">
+  <Fragment slot="trilho">
+    {normas.length > 0 && (
+      <dl>
+        <dt>Base normativa</dt>
+        {normas.map((n) => <dd><a href={`/normas/${n!.slug}`}>{n!.data.titulo}</a></dd>)}
+      </dl>
+    )}
+    {relacionados.length > 0 && (
+      <dl>
+        <dt>Ver também</dt>
+        {relacionados.map((c) => <dd><a href={`/conceitos/${c!.slug}`}>{c!.data.titulo}</a></dd>)}
+      </dl>
+    )}
+  </Fragment>
+
+  <Content />
+  <DataVerificacao data={d.verificado_em} />
+</Documento>

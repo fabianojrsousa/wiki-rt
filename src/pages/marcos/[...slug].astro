@@ -1,0 +1,80 @@
+---
+import Documento from '../../layouts/Documento.astro';
+import FonteOficial from '../../components/FonteOficial.astro';
+import DataVerificacao from '../../components/DataVerificacao.astro';
+import Aviso from '../../components/Aviso.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { rotuloData, dia } from '../../lib/datas';
+
+export async function getStaticPaths() {
+  const marcos = await getCollection('marcos');
+  return marcos.map((m) => ({ params: { slug: m.slug }, props: { marco: m } }));
+}
+
+const { marco } = Astro.props;
+const { Content } = await marco.render();
+const d = marco.data;
+
+const bases = await Promise.all(
+  d.base_normativa.map(async (slug) => {
+    try { return await getEntry('normas', slug); } catch { return undefined; }
+  })
+);
+---
+<Documento titulo={d.titulo} descricao={d.titulo}
+  etiqueta="Marco" secao="/linha-do-tempo" secaoNome="Linha do tempo">
+  <Fragment slot="trilho">
+    <dl>
+      <dt>Data</dt>
+      <dd>{rotuloData(d.data_evento, d.data_fim)}</dd>
+      <dt>Situação</dt>
+      <dd>{d.confirmado ? 'Confirmada em ato' : 'Prevista'}</dd>
+      <dt>Criticidade</dt>
+      <dd>{d.criticidade}</dd>
+      {d.afeta.length > 0 && (
+        <>
+          <dt>Afeta</dt>
+          <dd>{d.afeta.join(', ')}</dd>
+        </>
+      )}
+    </dl>
+  </Fragment>
+
+  {!d.confirmado && (
+    <Aviso>
+      Esta data ainda não foi confirmada em ato oficial publicado. É expectativa
+      divulgada por autoridades ou noticiada, sujeita a mudança.
+    </Aviso>
+  )}
+
+  <Content />
+
+  {d.historico_datas.length > 0 && (
+    <>
+      <h2>Histórico de alterações da data</h2>
+      <table>
+        <thead><tr><th>Data anterior</th><th>Alterada em</th><th>Motivo</th></tr></thead>
+        <tbody>
+          {d.historico_datas.map((h) => (
+            <tr><td>{dia(h.data_anterior)}</td><td>{dia(h.alterada_em)}</td><td>{h.motivo}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )}
+
+  {bases.filter(Boolean).length > 0 && (
+    <>
+      <h2>Base normativa</h2>
+      <ul>
+        {bases.filter(Boolean).map((n) => (
+          <li><a href={`/normas/${n!.slug}`}>{n!.data.titulo}</a></li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  <h2>Fontes</h2>
+  {d.fontes.map((f) => <FonteOficial {...f} />)}
+  <DataVerificacao data={d.verificado_em} />
+</Documento>

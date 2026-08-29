@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx astro *)",
+      "Bash(node_modules/.bin/astro dev *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/normas)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/conceitos)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/glossario)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/linha-do-tempo)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/sap)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/situacoes/sistemas-extracao-nfe)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/conceitos/apuracao-ibs-cbs)",
+      "Bash(node_modules/.bin/astro check *)",
+      "Bash(node_modules/.bin/astro build *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4322/)",
+      "Bash(curl -s -o /dev/null -w \" %{http_code}\" http://localhost:4322/sap)",
+      "Bash(curl -s -o /dev/null -w \" %{http_code}\" http://localhost:4322/normas)",
+      "Bash(curl -s -o /dev/null -w \" %{http_code}\" http://localhost:4322/conceitos)",
+      "Bash(start node_modules/.bin/astro dev --host)"
+    ]
+  }
+}

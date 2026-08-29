@@ -1,0 +1,6 @@
+{
+  "termo": "DPS",
+  "expansao": "Documento de Pagamento Simplificado",
+  "definicao": "Documento que centraliza o recolhimento de IBS e CBS. Substitui o DARF para esses tributos a partir de 01/01/2027. Em alguns regimes específicos é gerado automaticamente com base nos dados da DeRE.",
+  "ver": "/conceitos/apuracao-ibs-cbs"
+}

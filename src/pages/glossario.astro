@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const verbetes = (await getCollection('glossario')).sort((a, b) =>
+  a.data.termo.localeCompare(b.data.termo, 'pt-BR')
+);
+
+const letras = [...new Set(verbetes.map((v) => v.data.termo[0].toUpperCase()))].sort();
+---
+<Base titulo="Glossário" descricao="Siglas e termos da Reforma Tributária do Consumo.">
+
+  <div class="pagina-header">
+    <div class="pagina-badge">Dicionário · Wiki SAP</div>
+    <h1 class="pagina-h1"><span class="hero-destaque">Glossário</span></h1>
+    <p class="pagina-subtitulo">
+      {verbetes.length} siglas e termos da Reforma. Filtre por letra inicial ou use a busca.
+    </p>
+  </div>
+
+  <!-- Tabs alfabéticas -->
+  <div class="tabs-alfa" id="tabs-alfa" role="tablist" aria-label="Filtrar por letra">
+    <button class="tab-alfa ativo" data-letra="*" role="tab" aria-selected="true">Todos</button>
+    {letras.map((l) => (
+      <button class="tab-alfa" data-letra={l} role="tab" aria-selected="false">{l}</button>
+    ))}
+  </div>
+
+  <!-- Campo de busca -->
+  <div class="filtro-wrap" style="margin-bottom: var(--e-8)">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input class="filtro-input" id="filtro-glossario" type="search"
+           placeholder="Buscar sigla ou termo…" autocomplete="off" spellcheck="false"
+           aria-label="Filtrar verbetes" />
+  </div>
+
+  <!-- Lista -->
+  <dl class="verbetes" id="verbetes-lista">
+    {verbetes.map((v) => (
+      <div class="verbete-item" data-letra={v.data.termo[0].toUpperCase()}>
+        <dt>
+          {v.data.termo}
+          {v.data.expansao && <span class="expansao">{v.data.expansao}</span>}
+        </dt>
+        <dd>
+          {v.data.definicao}
+          {v.data.ver && <> <a href={v.data.ver}>Ver mais →</a></>}
+        </dd>
+      </div>
+    ))}
+  </dl>
+  <p class="filtro-nenhum" id="nenhum-resultado" role="status">Nenhum verbete encontrado.</p>
+</Base>
+
+<style>
+  .verbetes { max-width: 44rem; }
+
+  .verbete-item { border-bottom: 1px solid var(--borda); padding: var(--e-5) 0; }
+  .verbete-item:last-child { border-bottom: 0; }
+
+  dt {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--t-md);
+    color: var(--tinta);
+  }
+  .expansao {
+    display: block;
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tinta-fraca);
+    margin-top: 2px;
+  }
+  dd { margin: var(--e-2) 0 0; color: var(--tinta-media); }
+</style>
+
+<script>
+  const tabs      = document.querySelectorAll<HTMLButtonElement>('.tab-alfa');
+  const itens     = document.querySelectorAll<HTMLElement>('.verbete-item');
+  const input     = document.getElementById('filtro-glossario') as HTMLInputElement;
+  const nenhum    = document.getElementById('nenhum-resultado')!;
+
+  let letraAtiva = '*';
+
+  function atualizar() {
+    const q = input.value.trim().toLowerCase();
+    let visiveis = 0;
+
+    itens.forEach((el) => {
+      const letraOk  = letraAtiva === '*' || el.dataset.letra === letraAtiva;
+      const textoEl  = el.textContent?.toLowerCase() ?? '';
+      const buscaOk  = !q || textoEl.includes(q);
+      const visivel  = letraOk && buscaOk;
+      el.style.display = visivel ? '' : 'none';
+      if (visivel) visiveis++;
+    });
+
+    nenhum.classList.toggle('visivel', visiveis === 0);
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      letraAtiva = tab.dataset.letra ?? '*';
+      tabs.forEach((t) => {
+        t.classList.toggle('ativo', t === tab);
+        t.setAttribute('aria-selected', String(t === tab));
+      });
+      input.value = '';
+      atualizar();
+    });
+  });
+
+  input.addEventListener('input', () => {
+    if (input.value.trim()) {
+      letraAtiva = '*';
+      tabs.forEach((t) => {
+        const ativo = t.dataset.letra === '*';
+        t.classList.toggle('ativo', ativo);
+        t.setAttribute('aria-selected', String(ativo));
+      });
+    }
+    atualizar();
+  });
+</script>

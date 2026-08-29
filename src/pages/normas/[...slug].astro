@@ -1,0 +1,73 @@
+---
+import Documento from '../../layouts/Documento.astro';
+import FonteOficial from '../../components/FonteOficial.astro';
+import StatusNorma from '../../components/StatusNorma.astro';
+import DataVerificacao from '../../components/DataVerificacao.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { dia } from '../../lib/datas';
+
+export async function getStaticPaths() {
+  const normas = await getCollection('normas');
+  return normas.map((n) => ({ params: { slug: n.slug }, props: { norma: n } }));
+}
+
+const { norma } = Astro.props;
+const { Content } = await norma.render();
+const d = norma.data;
+
+const espelhada = d.espelha
+  ? await getEntry('normas', d.espelha).catch(() => undefined)
+  : undefined;
+
+const rotuloTipo: Record<string, string> = {
+  emenda_constitucional: 'Emenda constitucional',
+  lei_complementar: 'Lei complementar',
+  decreto: 'Decreto',
+  resolucao: 'Resolução',
+  ato_conjunto: 'Ato conjunto',
+  portaria: 'Portaria',
+  nota_tecnica: 'Nota técnica',
+  medida_provisoria: 'Medida provisória',
+  instrucao_normativa: 'Instrução normativa',
+  informe_tecnico: 'Informe técnico',
+  lei_ordinaria: 'Lei ordinária',
+};
+---
+<Documento titulo={d.titulo} descricao={d.ementa}
+  etiqueta={rotuloTipo[d.tipo] ?? d.tipo}
+  secao="/normas" secaoNome="Normas">
+  <Fragment slot="trilho">
+    <dl>
+      <dt>Órgão</dt><dd>{d.orgao}</dd>
+      <dt>Publicação</dt><dd>{dia(d.data_publicacao)}</dd>
+      {d.data_vigencia && (<><dt>Vigência</dt><dd>{dia(d.data_vigencia)}</dd></>)}
+    </dl>
+    <p style="margin-top: 1rem;"><StatusNorma status={d.status} /></p>
+  </Fragment>
+
+  <p class="ementa">{d.ementa}</p>
+
+  {espelhada && (
+    <div class="aviso" data-tipo="nota">
+      Esta norma forma um par espelhado com <a href={`/normas/${espelhada.slug}`}>{espelhada.data.titulo}</a>.
+      As disposições comuns aos dois tributos estão no Livro I de ambas.
+    </div>
+  )}
+
+  <Content />
+
+  <h2>Fontes</h2>
+  {d.fontes.map((f) => <FonteOficial {...f} />)}
+  <DataVerificacao data={d.verificado_em} />
+</Documento>
+
+<style>
+  .ementa {
+    font-size: var(--t-md);
+    line-height: 1.5;
+    color: var(--tinta-media);
+    border-left: 2px solid var(--regua-clara);
+    padding-left: var(--e-4);
+    margin-bottom: var(--e-8);
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base titulo="Como este site funciona" descricao="Metodologia, fontes, curadoria e limites deste site.">
+  <div class="documento">
+    <aside class="trilho"><p class="etiqueta">Metodologia</p></aside>
+    <div class="corpo">
+      <h1>Como este site funciona</h1>
+
+      <h2>O que este site é</h2>
+      <p>
+        Uma wiki pública que organiza a Reforma Tributária do Consumo de forma consultável
+        e rastreável até a fonte oficial. A pergunta que ele responde melhor que qualquer
+        outro lugar é: qual é a regra hoje, desde quando, e onde está escrito.
+      </p>
+
+      <h2>O que este site não é</h2>
+      <p>
+        Não é consultoria tributária, não emite parecer e não substitui contador ou
+        advogado. O site descreve o que a norma diz; não diz o que a sua empresa deve fazer.
+      </p>
+
+      <h2>Cinco regras de conteúdo</h2>
+      <ol>
+        <li>
+          <strong>Nenhuma afirmação sem fonte.</strong> Toda página traz a base normativa e o
+          link para o texto oficial. Essa regra é técnica, não apenas editorial: o schema de
+          validação exige ao menos uma fonte por norma e por marco, e o site não é publicado
+          se faltar.
+        </li>
+        <li>
+          <strong>Data de verificação visível.</strong> Cada página mostra quando foi conferida
+          pela última vez. Admitir que algo pode estar desatualizado vale mais que fingir
+          atualidade.
+        </li>
+        <li>
+          <strong>Confirmado e previsto são coisas diferentes.</strong> Datas que constam de ato
+          publicado aparecem com marca cheia na linha do tempo. Datas que são expectativa
+          aparecem com marca vazada e aviso explícito.
+        </li>
+        <li>
+          <strong>O histórico não é apagado.</strong> Quando uma regra muda, a redação anterior
+          continua acessível, com a data em que valia. O histórico de alterações fica
+          registrado no repositório público.
+        </li>
+        <li>
+          <strong>Conteúdo de terceiros é referenciado, nunca reproduzido.</strong> Texto de
+          norma oficial é público e pode ser citado. Análise de escritório, portal ou
+          consultoria entra por link.
+        </li>
+      </ol>
+
+      <h2>De onde vem a informação</h2>
+      <p>
+        Diário Oficial da União, portal do Comitê Gestor do IBS, Receita Federal, portal SPED,
+        portais dos documentos fiscais eletrônicos, Portal do Simples Nacional, dados abertos
+        da Câmara e do Senado, LexML e acompanhamento processual do STF.
+      </p>
+      <p>
+        A coleta é automatizada e roda duas vezes por dia. Quando um ato novo é encontrado, o
+        sistema arquiva o arquivo original, gera um rascunho de página e abre uma proposta de
+        alteração. <strong>Nenhum rascunho é publicado sem revisão humana.</strong>
+      </p>
+
+      <h2>Encontrou um erro</h2>
+      <p>
+        Cada página tem histórico público e aceita correção. Se algo está errado ou
+        desatualizado, a correção é bem-vinda.
+      </p>
+    </div>
+  </div>
+</Base>

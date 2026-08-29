@@ -1,0 +1,27 @@
+---
+interface Props {
+  titulo: string;
+  url: string;
+  orgao: string;
+  acessado_em: Date;
+  arquivo_local?: string;
+}
+const { titulo, url, orgao, acessado_em, arquivo_local } = Astro.props;
+const fmt = (d: Date) =>
+  d.toLocaleDateString('pt-BR', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
+---
+<div class="fonte">
+  <a class="fonte-titulo" href={url} rel="noopener noreferrer" target="_blank">
+    {titulo}
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"
+         style="display:inline-block;vertical-align:middle;margin-left:0.3em;opacity:.6">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+      <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+    </svg>
+  </a>
+  <span class="fonte-meta">
+    {orgao} · acessado em {fmt(acessado_em)}
+    {arquivo_local && <> · <a href={arquivo_local}>cópia arquivada</a></>}
+  </span>
+</div>

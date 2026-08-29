@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { rotuloData, ano } from '../lib/datas';
+
+const marcos = (await getCollection('marcos')).sort(
+  (a, b) => a.data.data_evento.valueOf() - b.data.data_evento.valueOf()
+);
+
+const anos = [...new Set(marcos.map((m) => ano(m.data.data_evento)))];
+
+const legendaAno: Record<number, string> = {
+  2026: 'ano de teste',
+  2027: 'a cobrança começa',
+  2029: 'início da transição do ICMS e do ISS',
+  2033: 'fim da transição',
+};
+
+const hoje = new Date('2026-08-29T00:00:00Z');
+
+// Encontra o marco mais próximo de hoje (o último passado ou o próximo futuro)
+let idxAtual = -1;
+for (let i = 0; i < marcos.length; i++) {
+  if ((marcos[i].data.data_fim ?? marcos[i].data.data_evento) >= hoje) {
+    idxAtual = i;
+    break;
+  }
+}
+const slugAtual = idxAtual >= 0 ? marcos[idxAtual].slug : null;
+---
+<Base
+  titulo="Linha do tempo"
+  descricao="Todas as datas da Reforma Tributária do Consumo, de 2026 a 2033, com a norma que criou cada uma."
+>
+  <div class="documento">
+    <aside class="trilho" aria-label="Legenda e navegação">
+      <div class="trilho-cartao">
+        <p class="etiqueta" style="margin-bottom: var(--e-4);">Como ler</p>
+        <ul class="legenda">
+          <li><span class="amostra"></span> Data confirmada em ato publicado</li>
+          <li><span class="amostra amostra-vazada"></span> Data prevista, sem ato</li>
+          <li><span class="amostra amostra-critica"></span> Marco crítico</li>
+          <li><span class="amostra amostra-agora"></span> Próxima data relevante</li>
+        </ul>
+      </div>
+
+      <div class="trilho-cartao" style="margin-top: var(--e-3)">
+        <p class="etiqueta" style="margin-bottom: var(--e-4);">Ir para</p>
+        <ul style="list-style:none;padding:0;margin:0;font-family:var(--dado);font-size:var(--t-xs)">
+          {anos.map((a) => (
+            <li style="margin-bottom: var(--e-2)">
+              <a href={`#ano-${a}`} style="text-decoration:none;color:var(--link)">{a} ›</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+
+    <div class="corpo">
+      <div class="pagina-header">
+        <div class="pagina-badge">Cronograma · Wiki SAP</div>
+        <h1 class="pagina-h1"><span class="hero-destaque">Linha do tempo</span></h1>
+        <p class="pagina-subtitulo">
+          Cada data aponta para a norma que a criou. Datas previstas mas não confirmadas
+          em ato oficial aparecem com marca vazada — o texto sempre deixa isso explícito.
+        </p>
+      </div>
+
+      {anos.map((a) => (
+        <>
+          <h2 class="regua-ano" id={`ano-${a}`}>
+            {a}
+            {legendaAno[a] && <small>{legendaAno[a]}</small>}
+          </h2>
+          <ul class="regua-temporal">
+            {marcos
+              .filter((m) => ano(m.data.data_evento) === a)
+              .map((m) => {
+                const ehAtual = m.slug === slugAtual;
+                return (
+                  <li
+                    data-confirmado={String(m.data.confirmado)}
+                    data-criticidade={m.data.criticidade}
+                    class={ehAtual ? 'agora' : undefined}
+                  >
+                    <span class={`regua-data${m.data.criticidade === 'critica' ? ' critica' : ''}`}>
+                      {ehAtual && <span class="regua-agora">você está aqui</span>}
+                      {rotuloData(m.data.data_evento, m.data.data_fim)}
+                      {!m.data.confirmado && <> · <em>previsto</em></>}
+                    </span>
+                    <p class="regua-titulo">
+                      <a href={`/marcos/${m.slug}`}>{m.data.titulo}</a>
+                    </p>
+                    {m.data.afeta.length > 0 && (
+                      <p class="regua-desc">Afeta: {m.data.afeta.join(', ')}.</p>
+                    )}
+                  </li>
+                );
+              })}
+          </ul>
+        </>
+      ))}
+
+      <h2 class="regua-ano" id="ano-2078">
+        Até 2078 <small>transição da distribuição da arrecadação</small>
+      </h2>
+      <p style="padding-left: 2.5rem; color: var(--tinta-media)">
+        A migração da distribuição da receita da origem para o destino
+        (local de consumo) começa em 2029 e se estende até 2078.
+      </p>
+    </div>
+  </div>
+</Base>

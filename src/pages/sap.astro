@@ -1,0 +1,534 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { dia } from '../lib/datas';
+
+// Marcos relevantes para SAP
+const slugsRelevantes = [
+  '2026-08-03-obrigatoriedade-dfe',
+  '2026-10-01-nfs-e-e-dere',
+  '2026-12-01-terceira-onda',
+  '2026-11-30-aliquota-de-referencia',
+  '2027-01-01-cbs-em-vigor',
+  '2029-01-01-inicio-transicao-icms-iss',
+  '2033-01-01-fim-da-transicao',
+];
+const todosMarcos = await getCollection('marcos');
+const marcos = slugsRelevantes
+  .map((slug) => todosMarcos.find((m) => m.slug === slug))
+  .filter(Boolean);
+---
+<Base
+  titulo="Guia SAP"
+  descricao="Impacto da Reforma Tributária para sistemas SAP de extração de documentos fiscais e apuração tributária."
+>
+  <!-- Hero -->
+  <div class="pagina-header">
+    <div class="pagina-badge">Referência técnica · SAP &amp; Extração de NFs</div>
+    <h1 class="pagina-h1">
+      Impacto da Reforma<br/>
+      <span class="hero-destaque">no seu sistema SAP</span>
+    </h1>
+    <p class="pagina-subtitulo">
+      Quatro ondas documentais, dois novos tributos e o fim do PIS/Cofins.
+      Tudo o que muda na extração de NF-e e na apuração tributária, com as datas e normas que sustentam cada afirmação.
+    </p>
+  </div>
+
+  <!-- Faixa de status atual -->
+  <div class="status-atual">
+    <div class="status-item status-ativo">
+      <span class="status-dot"></span>
+      <div>
+        <strong>Agora: campos IBS/CBS obrigatórios</strong>
+        <span>desde 03/08/2026 — regime regular</span>
+      </div>
+    </div>
+    <div class="status-item">
+      <span class="status-dot status-dot-futuro"></span>
+      <div>
+        <strong>Próximo: CBS efetiva</strong>
+        <span>01/01/2027 — substitui PIS/Cofins</span>
+      </div>
+    </div>
+    <div class="status-item">
+      <span class="status-dot status-dot-futuro"></span>
+      <div>
+        <strong>Futuro: alíquota definitiva</strong>
+        <span>previsão nov/2026 — ainda não fixada</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cronograma de ondas documentais -->
+  <section class="secao">
+    <h2>Ondas de obrigatoriedade — o que já vigora e o que vem</h2>
+    <p style="color:var(--tinta-media);margin-bottom:var(--e-6)">
+      A obrigatoriedade dos campos de IBS e CBS nos documentos fiscais eletrônicos
+      foi escalonada em quatro ondas. O extrator precisa tratar cada uma delas.
+    </p>
+
+    <div class="ondas">
+      <div class="onda onda-passada">
+        <div class="onda-data">03/08/2026</div>
+        <div class="onda-badge badge-vigente">Ativa</div>
+        <h3 class="onda-titulo">1ª onda — Regime regular</h3>
+        <p class="onda-desc">Campos IBS/CBS obrigatórios em todos os DF-e do regime regular.</p>
+        <ul class="onda-docs">
+          <li>NF-e <span class="modelo">mod. 55</span></li>
+          <li>NFC-e <span class="modelo">mod. 65</span></li>
+          <li>CT-e <span class="modelo">mod. 57</span></li>
+          <li>CT-e OS <span class="modelo">mod. 67</span></li>
+          <li>BP-e, MDF-e, GTV-e, NF3-e, DC-e, NFS-e Via</li>
+        </ul>
+        <a class="onda-link" href="/marcos/2026-08-03-obrigatoriedade-dfe">Ver marco →</a>
+      </div>
+
+      <div class="onda onda-passada">
+        <div class="onda-data">01/10/2026</div>
+        <div class="onda-badge badge-vigente">Ativa</div>
+        <h3 class="onda-titulo">2ª onda — NFS-e regra geral</h3>
+        <p class="onda-desc">NFS-e de prestadores de serviço do regime regular (casos gerais).</p>
+        <ul class="onda-docs">
+          <li>NFS-e <span class="modelo">regra geral ISS</span></li>
+        </ul>
+        <a class="onda-link" href="/marcos/2026-10-01-nfs-e-e-dere">Ver marco →</a>
+      </div>
+
+      <div class="onda onda-futura">
+        <div class="onda-data">01/12/2026</div>
+        <div class="onda-badge badge-previsto">Em breve</div>
+        <h3 class="onda-titulo">3ª onda — Casos especiais NFS-e</h3>
+        <p class="onda-desc">Serviços via plataformas digitais, locações, arrendamentos e taxas condominiais.</p>
+        <ul class="onda-docs">
+          <li>NFS-e <span class="modelo">plataformas digitais</span></li>
+          <li>NFS-e <span class="modelo">locações e arrendamentos</span></li>
+        </ul>
+        <a class="onda-link" href="/marcos/2026-12-01-terceira-onda">Ver marco →</a>
+      </div>
+
+      <div class="onda onda-futura">
+        <div class="onda-data">01/01/2027</div>
+        <div class="onda-badge badge-critico">Crítico</div>
+        <h3 class="onda-titulo">4ª onda + CBS efetiva</h3>
+        <p class="onda-desc">Simples Nacional entra. CBS começa a ser cobrada. PIS/Cofins extintos.</p>
+        <ul class="onda-docs">
+          <li>Todos os DF-e do Simples Nacional optante</li>
+          <li><strong>CBS cobrada efetivamente</strong></li>
+          <li>IPI reduzido a zero (exceto ZFM)</li>
+        </ul>
+        <a class="onda-link" href="/marcos/2027-01-01-cbs-em-vigor">Ver marco →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- O que mudar no extrator -->
+  <section class="secao">
+    <h2>O que adaptar no extrator de NF-e</h2>
+
+    <div class="grade" style="margin-top: var(--e-6)">
+      <div class="cartao-info">
+        <div class="cartao-info-icone">📥</div>
+        <h3>Novos campos a extrair</h3>
+        <p>O XML de todo DF-e do regime regular tem campos de IBS e CBS desde 03/08/2026.
+        Registre alíquota e valor de cada tributo separadamente.</p>
+        <table class="tabela-campos">
+          <thead><tr><th>Campo</th><th>2026 (teste)</th><th>2027+</th></tr></thead>
+          <tbody>
+            <tr><td>Alíquota CBS</td><td>0,9%</td><td>A definir (nov/26)</td></tr>
+            <tr><td>Valor CBS</td><td>informativo</td><td>recolhido</td></tr>
+            <tr><td>Alíquota IBS</td><td>0,1%</td><td>A definir</td></tr>
+            <tr><td>Valor IBS</td><td>informativo</td><td>recolhido (a partir de 2027)</td></tr>
+            <tr><td>Imposto Seletivo</td><td>quando aplicável</td><td>quando aplicável</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cartao-info">
+        <div class="cartao-info-icone">🔀</div>
+        <h3>Simples Nacional: dois mundos</h3>
+        <p>Até 31/12/2026 documentos do Simples <strong>não têm</strong> os campos de IBS/CBS.
+        A partir de 01/01/2027 passam a ter (para quem optou pelo regime de IBS/CBS).</p>
+        <p style="margin-top: var(--e-3)">O extrator precisa identificar o CRT (Código de Regime Tributário)
+        no XML e tratar os dois casos, especialmente no período de transição.</p>
+      </div>
+
+      <div class="cartao-info">
+        <div class="cartao-info-icone">⚠️</div>
+        <h3>Alíquota ainda não fixada</h3>
+        <p>A alíquota definitiva de CBS e IBS está prevista para novembro de 2026.
+        A alíquota-teste (1%) <strong>não é a alíquota final</strong>.</p>
+        <p style="margin-top: var(--e-3)">Configure o sistema para receber atualização
+        de alíquota sem rebuild. Não codifique 1% como constante permanente.</p>
+        <a href="/marcos/2026-11-30-aliquota-de-referencia" style="font-size: var(--t-sm)">Ver marco da alíquota →</a>
+      </div>
+
+      <div class="cartao-info">
+        <div class="cartao-info-icone">📋</div>
+        <h3>Novos documentos</h3>
+        <p>Dois tipos de DF-e novos entram no escopo da Reforma e precisam ser
+        suportados pelo extrator:</p>
+        <ul style="font-size: var(--t-sm);color: var(--tinta-media)">
+          <li><strong>NFS-e Via</strong> — NFS-e federal (convive com a NFS-e municipal)</li>
+          <li><strong>DC-e</strong> — Documento de Contratação de Serviço Exterior</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cronograma de apuração -->
+  <section class="secao">
+    <h2>Cronograma de impacto na apuração</h2>
+    <p style="color:var(--tinta-media);margin-bottom:var(--e-6)">
+      Como o fluxo de apuração tributária muda ao longo do tempo. As linhas mostram
+      como cada tributo evolui no sistema.
+    </p>
+
+    <div style="overflow-x: auto">
+      <table class="tabela-apuracao">
+        <thead>
+          <tr>
+            <th>Período</th>
+            <th>PIS/Cofins</th>
+            <th>CBS</th>
+            <th>ICMS</th>
+            <th>IBS</th>
+            <th>Obrigação acessória</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Ago–Dez 2026</strong></td>
+            <td class="apura-normal">Normal — EFD-Contribuições</td>
+            <td class="apura-teste">Teste 0,9% — sem recolhimento</td>
+            <td class="apura-normal">Normal — EFD-ICMS/IPI</td>
+            <td class="apura-teste">Teste 0,1% — sem recolhimento</td>
+            <td>EFD-Contribuições + EFD-ICMS/IPI</td>
+          </tr>
+          <tr>
+            <td><strong>Jan 2027</strong></td>
+            <td class="apura-extinto">Extinto</td>
+            <td class="apura-ativo">Cobrada — substitui PIS/Cofins</td>
+            <td class="apura-normal">Normal (redução gradual)</td>
+            <td class="apura-ativo">0,1% cobrado (estados + municípios)</td>
+            <td>DIBS + EFD-ICMS/IPI</td>
+          </tr>
+          <tr>
+            <td><strong>2029–2032</strong></td>
+            <td class="apura-extinto">Extinto</td>
+            <td class="apura-ativo">Vigente</td>
+            <td class="apura-transicao">Transição — redução gradual</td>
+            <td class="apura-ativo">Crescendo gradualmente</td>
+            <td>DIBS + EFD-ICMS/IPI (durante transição)</td>
+          </tr>
+          <tr>
+            <td><strong>2033+</strong></td>
+            <td class="apura-extinto">Extinto</td>
+            <td class="apura-ativo">Vigente</td>
+            <td class="apura-extinto">Extinto</td>
+            <td class="apura-ativo">Pleno</td>
+            <td>Apenas DIBS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Novas obrigações acessórias -->
+  <section class="secao">
+    <h2>Novas obrigações acessórias</h2>
+    <div class="grade" style="margin-top: var(--e-6)">
+      <a class="cartao" href="/conceitos/apuracao-ibs-cbs">
+        <div class="cartao-tipo">Declaração mensal</div>
+        <div class="cartao-titulo">DIBS</div>
+        <div class="cartao-desc">
+          Substitui a EFD-Contribuições para IBS e CBS.
+          Registra débitos, créditos e saldo da apuração. Vigência a partir de jan/2027.
+        </div>
+      </a>
+      <a class="cartao" href="/conceitos/apuracao-ibs-cbs">
+        <div class="cartao-tipo">Pagamento</div>
+        <div class="cartao-titulo">DPS</div>
+        <div class="cartao-desc">
+          Documento de Pagamento Simplificado. Substitui o DARF para IBS e CBS.
+          Em alguns regimes é gerado automaticamente pela Receita Federal / CGIBS.
+        </div>
+      </a>
+      <a class="cartao" href="/conceitos/dere">
+        <div class="cartao-tipo">Regimes específicos</div>
+        <div class="cartao-titulo">DeRE</div>
+        <div class="cartao-desc">
+          Declaração de Regimes Específicos. Obrigatória para serviços financeiros,
+          planos de saúde e concursos de prognósticos. Recepção a partir de 01/10/2026.
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Checklist -->
+  <section class="secao">
+    <h2>Checklist de adequação do sistema</h2>
+    <div class="checklist-container">
+      <div class="checklist-grupo">
+        <h3>Extração de documentos fiscais</h3>
+        <ul class="checklist">
+          <li class="check-feito">Extrair campos IBS e CBS do XML (alíquota e valor)</li>
+          <li class="check-feito">Identificar CRT do emitente para tratar Simples Nacional</li>
+          <li class="check-pendente">Suportar NFS-e Via (federal) além da NFS-e municipal</li>
+          <li class="check-pendente">Suportar DC-e (Documento de Contratação de Serviço Exterior)</li>
+          <li class="check-pendente">Registrar Imposto Seletivo quando presente</li>
+          <li class="check-pendente">Parametrizar alíquota como dado configurável (não constante hardcoded)</li>
+        </ul>
+      </div>
+      <div class="checklist-grupo">
+        <h3>Apuração tributária</h3>
+        <ul class="checklist">
+          <li class="check-pendente">Implementar apuração CBS (débito - crédito) para jan/2027</li>
+          <li class="check-pendente">Separar apuração por período (antes/depois jan/2027)</li>
+          <li class="check-pendente">Modelar DIBS — substitui EFD-Contribuições para CBS/IBS</li>
+          <li class="check-pendente">Modelar DPS — substitui DARF para pagamento de CBS/IBS</li>
+          <li class="check-pendente">Preparar convivência CBS + ICMS entre 2027 e 2033</li>
+          <li class="check-pendente">Monitorar publicação da alíquota definitiva (previsão nov/2026)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Links para aprofundamento -->
+  <section class="secao">
+    <h2>Para aprofundar</h2>
+    <div class="grade">
+      <a class="cartao" href="/situacoes/sistemas-extracao-nfe">
+        <div class="cartao-tipo">Situação completa</div>
+        <div class="cartao-titulo">Sistemas de extração de NF-e</div>
+        <div class="cartao-desc">Guia detalhado: documentos impactados, tabelas de campos, cronograma de apuração e pontos de atenção por período.</div>
+      </a>
+      <a class="cartao" href="/conceitos/apuracao-ibs-cbs">
+        <div class="cartao-tipo">Conceito</div>
+        <div class="cartao-titulo">Como funciona a apuração de IBS e CBS</div>
+        <div class="cartao-desc">Diferenças em relação ao PIS/Cofins e ICMS, DPS, DIBS e impacto direto para sistemas de apuração.</div>
+      </a>
+      <a class="cartao" href="/conceitos/split-payment">
+        <div class="cartao-tipo">Conceito</div>
+        <div class="cartao-titulo">Split payment</div>
+        <div class="cartao-desc">Separação automática de IBS/CBS no momento do pagamento. Não estará disponível em jan/2027 — o modelo de apuração convencional continua.</div>
+      </a>
+      <a class="cartao" href="/normas">
+        <div class="cartao-tipo">Referência</div>
+        <div class="cartao-titulo">Todas as normas</div>
+        <div class="cartao-desc">EC 132/2023, LC 214/2025, LC 227/2026, Decreto 12.955/2026, Ato Conjunto RFB/CGIBS nº 4/2026 e demais atos.</div>
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── Status atual ── */
+  .status-atual {
+    display: flex;
+    gap: var(--e-6);
+    flex-wrap: wrap;
+    margin-bottom: var(--e-12);
+    padding: var(--e-5) var(--e-7);
+    background: rgba(6,12,38,.58);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .status-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--e-3);
+    font-size: var(--t-sm);
+    min-width: 14rem;
+    flex: 1;
+  }
+  .status-item strong { display: block; color: var(--tinta); margin-bottom: 2px; }
+  .status-item span:last-child { color: var(--tinta-fraca); font-family: var(--dado); font-size: var(--t-xs); }
+  .status-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--confirmado);
+    border: 2px solid var(--confirmado);
+    flex-shrink: 0;
+    margin-top: 0.3em;
+    box-shadow: 0 0 0 3px var(--confirmado-bg);
+    animation: pulsar-ponto 2s ease-in-out infinite;
+  }
+  .status-dot-futuro {
+    background: var(--fundo);
+    border-color: var(--previsto);
+    box-shadow: none;
+    animation: none;
+  }
+
+  /* ── Seções ── */
+  .secao { margin: var(--e-16) 0; }
+  .secao h2 { margin-top: 0; }
+
+  /* ── Ondas documentais ── */
+  .ondas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: var(--e-4);
+  }
+  .onda {
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    padding: var(--e-6);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .onda:hover { transform: translateY(-2px); box-shadow: var(--s-glow), var(--s-card); }
+
+  /* Acento lateral colorido */
+  .onda-passada {
+    border-left: 3px solid var(--confirmado);
+    box-shadow: var(--s-card), 0 0 20px rgba(52,211,153,.08), inset 0 1px 0 rgba(255,255,255,.07);
+  }
+  .onda-futura  {
+    border-left: 3px solid var(--borda-forte);
+  }
+
+  /* Linha interna de highlight no topo */
+  .onda::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.16) 40%, rgba(255,255,255,.16) 60%, transparent);
+    pointer-events: none;
+  }
+
+  .onda-data {
+    font-family: var(--dado);
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--tinta);
+    letter-spacing: 0.03em;
+  }
+  .onda-badge {
+    display: inline-flex;
+    font-family: var(--dado);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    width: fit-content;
+  }
+  .badge-vigente  { background: var(--confirmado-bg); color: var(--confirmado); border-color: var(--confirmado-borda); }
+  .badge-previsto { background: var(--previsto-bg);   color: var(--previsto);   border-color: var(--previsto-borda); }
+  .badge-critico  { background: var(--critico-bg);    color: var(--critico);    border-color: var(--critico-borda); }
+
+  .onda-titulo { font-family: var(--display); font-weight: 700; font-size: var(--t-base); margin: var(--e-1) 0 0; color: var(--tinta); line-height: 1.3; }
+  .onda-desc   { font-size: var(--t-sm); color: var(--tinta-media); margin: 0; line-height: 1.6; }
+  .onda-docs   { font-size: var(--t-sm); color: var(--tinta-media); padding-left: var(--e-5); margin: 0; }
+  .onda-docs li { margin-bottom: var(--e-2); line-height: 1.45; }
+  .modelo { font-family: var(--dado); font-size: var(--t-xs); color: var(--tinta-fraca); }
+  .onda-link { font-size: var(--t-sm); font-family: var(--display); font-weight: 600; margin-top: auto; padding-top: var(--e-4); border-top: 1px solid var(--borda); }
+
+  /* ── Cards de info ── */
+  .cartao-info {
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    padding: var(--e-6);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-4);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .cartao-info:hover { transform: translateY(-2px); box-shadow: var(--s-glow), var(--s-card); }
+  .cartao-info-icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px; height: 46px;
+    border-radius: var(--r-lg);
+    background: rgba(59,130,246,.12);
+    border: 1px solid rgba(59,130,246,.22);
+    font-size: 1.35rem;
+    box-shadow: 0 0 16px rgba(59,130,246,.15);
+  }
+  .cartao-info h3 { font-family: var(--display); font-weight: 700; font-size: var(--t-base); margin: 0; color: var(--tinta); line-height: 1.3; }
+  .cartao-info p  { font-size: var(--t-sm); color: var(--tinta-media); margin: 0; line-height: 1.65; }
+
+  /* ── Tabela de campos ── */
+  .tabela-campos { margin: var(--e-3) 0 0; font-size: var(--t-xs); }
+  .tabela-campos th, .tabela-campos td { padding: var(--e-2) var(--e-3); }
+
+  /* ── Tabela de apuração ── */
+  .tabela-apuracao { white-space: nowrap; }
+  .tabela-apuracao th, .tabela-apuracao td { padding: var(--e-3) var(--e-4); font-size: var(--t-sm); }
+
+  .apura-normal    { color: var(--tinta-media); }
+  .apura-teste     { color: var(--previsto); font-style: italic; }
+  .apura-ativo     { color: var(--confirmado); font-weight: 600; }
+  .apura-extinto   { color: var(--critico); text-decoration: line-through; opacity: .6; }
+  .apura-transicao { color: var(--ambar-600); }
+
+  /* ── Checklist ── */
+  .checklist-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+    gap: var(--e-6);
+  }
+  .checklist-grupo {
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    padding: var(--e-6);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .checklist-grupo h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--t-base);
+    margin: 0 0 var(--e-5);
+    color: var(--tinta);
+    padding-bottom: var(--e-4);
+    border-bottom: 1px solid var(--borda);
+  }
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--e-3);
+    font-size: var(--t-sm);
+    padding: var(--e-3) 0;
+    border-bottom: 1px solid var(--borda);
+    color: var(--tinta-media);
+    line-height: 1.55;
+  }
+  .checklist li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .checklist li::before {
+    content: '○';
+    font-family: var(--dado);
+    font-size: 0.85rem;
+    color: var(--borda-forte);
+    flex-shrink: 0;
+    margin-top: 0.1em;
+  }
+  .check-feito { color: var(--confirmado) !important; }
+  .check-feito::before { content: '✓' !important; color: var(--confirmado) !important; font-size: 0.9rem !important; }
+</style>

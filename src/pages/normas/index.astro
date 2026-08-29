@@ -1,0 +1,73 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { dia } from '../../lib/datas';
+
+const normas = (await getCollection('normas')).sort((a, b) => a.data.ordem - b.data.ordem);
+
+const rotuloTipo: Record<string, string> = {
+  emenda_constitucional: 'Emenda constitucional',
+  lei_complementar:      'Lei complementar',
+  lei_ordinaria:         'Lei ordinária',
+  medida_provisoria:     'Medida provisória',
+  decreto:               'Decreto',
+  resolucao:             'Resolução',
+  ato_conjunto:          'Ato conjunto',
+  portaria:              'Portaria',
+  instrucao_normativa:   'Instrução normativa',
+  nota_tecnica:          'Nota técnica',
+  informe_tecnico:       'Informe técnico',
+};
+---
+<Base
+  titulo="Normas"
+  descricao="Todas as normas da Reforma Tributária do Consumo, com link para o texto oficial."
+>
+  <div class="pagina-header">
+    <div class="pagina-badge">Base Normativa · Wiki SAP</div>
+    <h1 class="pagina-h1"><span class="hero-destaque">Normas</span></h1>
+    <p class="pagina-subtitulo">
+      Cada página traz o que a norma faz, o que decorre dela e o link para o texto oficial.
+      {normas.length} normas indexadas. Nenhuma afirmação sem fonte.
+    </p>
+  </div>
+
+  <div class="filtro-wrap" style="margin-bottom: var(--e-8)">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input class="filtro-input" id="filtro-normas" type="search"
+           placeholder="Filtrar por nome ou ementa…" autocomplete="off"
+           aria-label="Filtrar normas" />
+  </div>
+
+  <div class="grade" id="grade-normas">
+    {normas.map((n) => (
+      <a class="cartao" href={`/normas/${n.slug}`} data-texto={`${n.data.titulo} ${n.data.ementa}`.toLowerCase()}>
+        <div class="cartao-tipo">{rotuloTipo[n.data.tipo] ?? n.data.tipo}</div>
+        <div class="cartao-titulo">{n.data.titulo}</div>
+        <div class="cartao-desc">{n.data.ementa}</div>
+        <div class="cartao-meta">{n.data.orgao} · {dia(n.data.data_publicacao)}</div>
+      </a>
+    ))}
+  </div>
+  <p class="filtro-nenhum" id="nenhum-norma" role="status">Nenhuma norma encontrada.</p>
+</Base>
+
+<script>
+  const input  = document.getElementById('filtro-normas') as HTMLInputElement;
+  const itens  = document.querySelectorAll<HTMLElement>('#grade-normas .cartao');
+  const nenhum = document.getElementById('nenhum-norma')!;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let visiveis = 0;
+    itens.forEach((el) => {
+      const ok = !q || (el.dataset.texto ?? '').includes(q);
+      el.style.display = ok ? '' : 'none';
+      if (ok) visiveis++;
+    });
+    nenhum.classList.toggle('visivel', visiveis === 0);
+  });
+</script>

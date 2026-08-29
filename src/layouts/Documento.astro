@@ -1,0 +1,45 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  titulo: string;
+  descricao?: string;
+  etiqueta?: string;
+  secao?: string;    // URL da seção pai, ex: '/normas'
+  secaoNome?: string; // Nome da seção, ex: 'Normas'
+}
+const { titulo, descricao, etiqueta, secao, secaoNome } = Astro.props;
+---
+<Base titulo={titulo} descricao={descricao}>
+  <nav class="breadcrumb" aria-label="Localização">
+    <a href="/">Início</a>
+    {secao && secaoNome && (
+      <>
+        <span class="breadcrumb-sep" aria-hidden="true">›</span>
+        <a href={secao}>{secaoNome}</a>
+      </>
+    )}
+    {etiqueta && (
+      <>
+        <span class="breadcrumb-sep" aria-hidden="true">›</span>
+        <span aria-current="page">{etiqueta}</span>
+      </>
+    )}
+  </nav>
+
+  <article class="documento">
+    <aside class="trilho" aria-label="Metadados">
+      <div class="trilho-cartao">
+        {etiqueta && (
+          <p class="etiqueta" style="margin-bottom: var(--e-4);">{etiqueta}</p>
+        )}
+        <slot name="trilho" />
+      </div>
+    </aside>
+
+    <div class="corpo">
+      <h1>{titulo}</h1>
+      <slot />
+    </div>
+  </article>
+</Base>

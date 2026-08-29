@@ -1,0 +1,22 @@
+---
+interface Props { status: string; desde?: Date; }
+const { status, desde } = Astro.props;
+const rotulo: Record<string, string> = {
+  vigente: 'Vigente',
+  revogada: 'Revogada',
+  parcialmente_revogada: 'Parcialmente revogada',
+  sem_eficacia: 'Sem eficácia',
+};
+const icone: Record<string, string> = {
+  vigente: '●',
+  revogada: '✕',
+  sem_eficacia: '○',
+  parcialmente_revogada: '◑',
+};
+const fmt = (d: Date) =>
+  d.toLocaleDateString('pt-BR', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
+---
+<span class="selo" data-status={status} aria-label={`Status: ${rotulo[status] ?? status}`}>
+  <span aria-hidden="true">{icone[status] ?? '●'}</span>
+  {rotulo[status] ?? status}{desde && <> desde {fmt(desde)}</>}
+</span>
