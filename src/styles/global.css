@@ -190,6 +190,67 @@ body {
     radial-gradient(ellipse at 80% 10%, rgba(139,92,246,.03) 0%, transparent 45%);
 }
 
+/* ── Orbes de fundo animados (aurora/nebulosa) ── */
+.bg-aura {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+/* Orbe 1 — azul grande, topo-esquerda → desce e expande */
+.bg-orb-1 {
+  width: 900px; height: 560px;
+  background: radial-gradient(ellipse, rgba(59,130,246,.18) 0%, transparent 68%);
+  top: -220px; left: -280px;
+  animation: orb-drift-1 30s ease-in-out infinite alternate;
+}
+/* Orbe 2 — violeta, direita → sobe e encolhe */
+.bg-orb-2 {
+  width: 650px; height: 520px;
+  background: radial-gradient(ellipse, rgba(139,92,246,.13) 0%, transparent 68%);
+  top: 20vh; right: -240px;
+  animation: orb-drift-2 38s ease-in-out infinite alternate;
+}
+/* Orbe 3 — ciano, baixo-centro → vai para cima-direita */
+.bg-orb-3 {
+  width: 520px; height: 420px;
+  background: radial-gradient(ellipse, rgba(6,182,212,.1) 0%, transparent 68%);
+  bottom: 0; left: 28%;
+  animation: orb-drift-3 24s ease-in-out infinite alternate;
+}
+/* Orbe 4 — índigo, esquerda-meio → sobe lentamente */
+.bg-orb-4 {
+  width: 420px; height: 360px;
+  background: radial-gradient(ellipse, rgba(99,102,241,.09) 0%, transparent 68%);
+  top: 50vh; left: -120px;
+  animation: orb-drift-4 44s ease-in-out infinite alternate;
+}
+
+@keyframes orb-drift-1 {
+  0%   { transform: translate(0, 0)          scale(1);   }
+  100% { transform: translate(380px, 420px)  scale(1.4); }
+}
+@keyframes orb-drift-2 {
+  0%   { transform: translate(0, 0)           scale(1);    }
+  100% { transform: translate(-320px, -280px) scale(1.25); }
+}
+@keyframes orb-drift-3 {
+  0%   { transform: translate(0, 0)          scale(1);   }
+  100% { transform: translate(280px, -240px) scale(1.3); }
+}
+@keyframes orb-drift-4 {
+  0%   { transform: translate(0, 0)          scale(1);   }
+  100% { transform: translate(180px, -320px) scale(0.8); }
+}
+
+[data-tema='claro'] .bg-aura { opacity: 0; }
+
 /* ── Tipografia ── */
 h1, h2, h3, h4 {
   font-family: var(--display);
