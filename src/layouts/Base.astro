@@ -81,11 +81,12 @@ import '../styles/global.css';
 
         <nav class="nav-wrapper" id="nav-wrapper" role="navigation" aria-label="Navegação principal">
           <ul class="nav">
-            <li><a href="/conceitos"       aria-current={atual('/conceitos')}       class="nav-destaque">Conceito</a></li>
-            <li><a href="/normas"          aria-current={atual('/normas')}          class="nav-destaque">Normas</a></li>
-            <li><a href="/apuracao-cbs"    aria-current={atual('/apuracao-cbs')}    class="nav-destaque">API's</a></li>
-            <li><a href="/obrigacoes-2027" aria-current={atual('/obrigacoes-2027')} class="nav-destaque">Novas Obrigações</a></li>
-            <li><a href="/contabilizacao"  aria-current={atual('/contabilizacao')}  class="nav-destaque">Contabilização</a></li>
+            <li><a href="/conceitos"          aria-current={atual('/conceitos')}          class="nav-destaque">Conceito</a></li>
+            <li><a href="/normas"             aria-current={atual('/normas')}             class="nav-destaque">Normas</a></li>
+            <li><a href="/apuracao-assistida" aria-current={atual('/apuracao-assistida')} class="nav-destaque">Apuração Assistida</a></li>
+            <li><a href="/apuracao-cbs"       aria-current={atual('/apuracao-cbs')}       class="nav-destaque">API's</a></li>
+            <li><a href="/obrigacoes-2027"    aria-current={atual('/obrigacoes-2027')}    class="nav-destaque">Novas Obrigações</a></li>
+            <li><a href="/contabilizacao"     aria-current={atual('/contabilizacao')}     class="nav-destaque">Contabilização</a></li>
             <li class="nav-dropdown-pai">
               <button class="nav-dropdown-btn nav-destaque" aria-expanded="false" aria-haspopup="true">
                 RT x SAP
@@ -160,11 +161,12 @@ import '../styles/global.css';
     <div class="menu-mobile" id="menu-mobile" aria-label="Menu de navegação">
       <ul class="menu-mobile-lista">
         <li><a href="/"               aria-current={rota === '/' ? 'page' : undefined}>Início</a></li>
-        <li><a href="/conceitos"      aria-current={atual('/conceitos')}>Conceito</a></li>
-        <li><a href="/normas"         aria-current={atual('/normas')}>Normas</a></li>
-        <li><a href="/apuracao-cbs"   aria-current={atual('/apuracao-cbs')}>API's</a></li>
-        <li><a href="/obrigacoes-2027" aria-current={atual('/obrigacoes-2027')}>Novas Obrigações</a></li>
-        <li><a href="/contabilizacao"  aria-current={atual('/contabilizacao')}>Contabilização</a></li>
+        <li><a href="/conceitos"          aria-current={atual('/conceitos')}>Conceito</a></li>
+        <li><a href="/normas"             aria-current={atual('/normas')}>Normas</a></li>
+        <li><a href="/apuracao-assistida" aria-current={atual('/apuracao-assistida')}>Apuração Assistida</a></li>
+        <li><a href="/apuracao-cbs"       aria-current={atual('/apuracao-cbs')}>API's</a></li>
+        <li><a href="/obrigacoes-2027"    aria-current={atual('/obrigacoes-2027')}>Novas Obrigações</a></li>
+        <li><a href="/contabilizacao"     aria-current={atual('/contabilizacao')}>Contabilização</a></li>
         <li class="menu-mobile-secao">RT x SAP</li>
         <li><a href="/sap"       aria-current={atual('/sap')}       class="menu-mobile-sub">Impacto da Reforma no seu sistema SAP</a></li>
         <li><a href="/situacoes" aria-current={atual('/situacoes')} class="menu-mobile-sub">O que muda no SAP</a></li>

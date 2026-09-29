@@ -1,0 +1,594 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  titulo="Apuração Assistida IBS e CBS"
+  descricao="Como funciona a apuração assistida do IBS (IPA – CGIBS) e da CBS (ROC – Receita Federal), com APIs públicas, consultas incrementais e cronograma de disponibilização."
+>
+
+  <!-- ══ Hero ══ -->
+  <div class="aa-hero">
+    <div class="aa-hero-badge">CGIBS · Receita Federal · 2026</div>
+    <h1 class="aa-titulo">Apuração Assistida</h1>
+    <p class="aa-sub">
+      O fisco processa cada documento eletrônico e monta a apuração.
+      O contribuinte confere, ajusta e confirma — em vez de calcular e declarar.
+    </p>
+  </div>
+
+  <!-- ══ Arquitetura: duas engenharias em paralelo ══ -->
+  <section class="aa-secao">
+    <div class="aa-secao-label">Arquitetura</div>
+    <h2 class="aa-secao-titulo">Conformidade por Design</h2>
+    <p class="aa-secao-desc">
+      Duas engenharias paralelas processam os mesmos documentos fiscais eletrônicos (DF-e), com visões e apurações distintas. Cada transação recebe um <strong>NSU</strong> — Número Sequencial Único —, um identificador alfanumérico exclusivo que garante rastreabilidade total no processo.
+    </p>
+
+    <!-- Diagrama de duas trilhas -->
+    <div class="aa-diagrama">
+      <div class="aa-diagrama-origem">
+        <div class="aa-diagrama-origem-icone">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="aa-diagrama-origem-label">DF-e emitido</div>
+        <div class="aa-diagrama-origem-desc">NF-e, NFC-e, CT-e, NFS-e com IBS e CBS destacados + NSU</div>
+      </div>
+
+      <div class="aa-diagrama-seta" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+
+      <div class="aa-diagrama-trilhas">
+        <div class="aa-trilha aa-trilha-ibs">
+          <div class="aa-trilha-topo">
+            <span class="aa-trilha-sigla">IPA</span>
+            <span class="aa-trilha-nome">Informações para Apuração</span>
+          </div>
+          <div class="aa-trilha-sub">Apuração do <strong>IBS</strong></div>
+          <div class="aa-trilha-gestor">Gerido pelo CGIBS</div>
+        </div>
+
+        <div class="aa-trilha aa-trilha-cbs">
+          <div class="aa-trilha-topo">
+            <span class="aa-trilha-sigla">ROC</span>
+            <span class="aa-trilha-nome">Registro de Operações Comerciais</span>
+          </div>
+          <div class="aa-trilha-sub">Apuração da <strong>CBS</strong></div>
+          <div class="aa-trilha-gestor">Gerido pela Receita Federal</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ IPA — IBS ══ -->
+  <section class="aa-secao">
+    <div class="aa-secao-label aa-label-ibs">CGIBS · MOC API v1.10 · Set/2026</div>
+    <h2 class="aa-secao-titulo">IPA — Apuração do IBS</h2>
+    <p class="aa-secao-desc">
+      O Comitê Gestor do IBS publicou oficialmente a <strong>Versão 1.10 do MOC</strong> (Manual de Orientação ao Contribuinte) em setembro de 2026. A grande mudança: o documento é agora <strong>público</strong> e o ambiente de testes foi liberado para todo o mercado — e não apenas para as 600 empresas do projeto piloto.
+    </p>
+
+    <!-- Card: o que mudou -->
+    <div class="aa-card">
+      <div class="aa-card-topo aa-card-topo-ibs"></div>
+      <div class="aa-card-corpo">
+        <h3 class="aa-card-h3">O que muda com a liberação pública</h3>
+        <p class="aa-card-desc">Até 23/09/2026 apenas as empresas do piloto tinham acesso. Agora todo o mercado pode acessar:</p>
+        <ul class="aa-lista">
+          <li>Manual de Orientação ao Contribuinte (MOC) da API</li>
+          <li>Ambiente de testes e padrões técnicos</li>
+          <li>Modelos de integração e arquivos Delta e Manuais</li>
+          <li>Conta Corrente Fiscal (CCF)</li>
+          <li>Webhook de disponibilização</li>
+          <li>Regras de fatiamento e incrementalidade</li>
+        </ul>
+        <div class="aa-perfis">
+          <span>Indústria</span><span>Varejo</span><span>Atacado</span><span>Distribuidoras</span>
+          <span>Software houses</span><span>Consultorias</span><span>Auditores</span><span>Fiscal/Contábil</span><span>TI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards: v1.10 e APIs -->
+    <div class="aa-grid-2">
+      <div class="aa-card">
+        <div class="aa-card-topo aa-card-topo-ibs"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">Conteúdo da Versão 1.10</h3>
+          <ul class="aa-lista">
+            <li>Arquitetura completa da Apuração Assistida</li>
+            <li>Operações e lançamentos de movimentação</li>
+            <li>Movimentações financeiras</li>
+            <li>Processamento diário</li>
+            <li>Arquivo Diferencial (Delta)</li>
+            <li>Arquivo Manual</li>
+            <li>Disponibilização via Portal e via API</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="aa-card">
+        <div class="aa-card-topo aa-card-topo-ibs"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">APIs disponíveis na IPA</h3>
+          <ul class="aa-lista aa-lista-api">
+            <li>Habilitação e Webhook de disponibilização</li>
+            <li>Obter Arquivo (listagem, nova solicitação, cancelamento)</li>
+            <li>Consulta de operação e de documento fiscal</li>
+            <li>Consulta de saldo</li>
+            <li>Emissão de Documento de Arrecadação (adquirente)</li>
+            <li>Download do Documento de Arrecadação em PDF</li>
+            <li>Conta Corrente Fiscal (CCF)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: especificações técnicas -->
+    <div class="aa-card">
+      <div class="aa-card-topo aa-card-topo-ibs"></div>
+      <div class="aa-card-corpo">
+        <h3 class="aa-card-h3">Especificações técnicas incluídas no MOC 1.10</h3>
+        <div class="aa-specs-grid">
+          <div class="aa-spec">
+            <div class="aa-spec-nome">Incrementalidade</div>
+            <div class="aa-spec-desc">Regras para consulta incremental — apenas alterações desde a última solicitação</div>
+          </div>
+          <div class="aa-spec">
+            <div class="aa-spec-nome">Fatiamento</div>
+            <div class="aa-spec-desc">Como os arquivos são divididos para otimizar a transferência e o processamento</div>
+          </div>
+          <div class="aa-spec">
+            <div class="aa-spec-nome">Regras operacionais</div>
+            <div class="aa-spec-desc">Limites de solicitação, períodos válidos, sobreposição, expiração, consumo indevido, suspensão temporária</div>
+          </div>
+          <div class="aa-spec">
+            <div class="aa-spec-nome">Exemplos didáticos</div>
+            <div class="aa-spec-desc">Casos de aquisição e fornecimento, com campos e regras aplicadas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ROC — CBS ══ -->
+  <section class="aa-secao">
+    <div class="aa-secao-label aa-label-cbs">Receita Federal · Out–Nov 2026</div>
+    <h2 class="aa-secao-titulo">ROC — Apuração da CBS</h2>
+    <p class="aa-secao-desc">
+      A Receita Federal disponibilizará, a partir de outubro de 2026, <strong>novas APIs gratuitas</strong> para consulta de informações da CBS. As APIs operam com <strong>consultas incrementais</strong> — cada requisição retorna apenas as alterações ocorridas desde a última consulta, reduzindo consumo de recursos e tempo de processamento.
+    </p>
+
+    <!-- Cards de serviços -->
+    <div class="aa-grid-2">
+      <div class="aa-card">
+        <div class="aa-card-topo aa-card-topo-cbs"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">Serviços de consulta</h3>
+          <ul class="aa-lista">
+            <li>Consulta de débitos</li>
+            <li>Consulta de créditos</li>
+            <li>Consulta de pagamentos</li>
+            <li>Consulta de recolhimentos realizados pelo adquirente</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="aa-card">
+        <div class="aa-card-topo aa-card-topo-cbs"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">Emissão de documentos</h3>
+          <ul class="aa-lista">
+            <li>DARF para Recolhimento pelo Adquirente (RAD)</li>
+            <li>DARF para Pagamento do Contribuinte (PCONT)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vantagens das consultas incrementais -->
+    <div class="aa-card">
+      <div class="aa-card-topo aa-card-topo-cbs"></div>
+      <div class="aa-card-corpo">
+        <h3 class="aa-card-h3">Consultas incrementais — vantagens</h3>
+        <p class="aa-card-desc">Cada requisição retorna apenas os dados novos ou alterados desde a última consulta:</p>
+        <div class="aa-vantagens">
+          <div class="aa-vantagem">
+            <div class="aa-vantagem-icone">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="aa-vantagem-titulo">Menor tempo de processamento</div>
+              <div class="aa-vantagem-desc">Requisições menores e respostas mais rápidas</div>
+            </div>
+          </div>
+          <div class="aa-vantagem">
+            <div class="aa-vantagem-icone">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div>
+              <div class="aa-vantagem-titulo">Menor consumo de recursos</div>
+              <div class="aa-vantagem-desc">Arquivos menores para download e armazenamento</div>
+            </div>
+          </div>
+          <div class="aa-vantagem">
+            <div class="aa-vantagem-icone">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div>
+              <div class="aa-vantagem-titulo">Maior eficiência na integração</div>
+              <div class="aa-vantagem-desc">Sistemas dos contribuintes recebem apenas o delta de alterações</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cronograma ROC -->
+    <div class="aa-card">
+      <div class="aa-card-topo aa-card-topo-cbs"></div>
+      <div class="aa-card-corpo">
+        <h3 class="aa-card-h3">Cronograma de disponibilização das APIs ROC</h3>
+        <p class="aa-card-desc">Ambientes: Produção Restrita (Piloto da CBS) e Produção Beta</p>
+        <div class="aa-cronograma">
+          <div class="aa-cron-item">
+            <div class="aa-cron-data aa-cron-data-1">Início outubro/2026</div>
+            <div class="aa-cron-conteudo">
+              <div class="aa-cron-titulo">Consultas de débitos e créditos</div>
+              <ul class="aa-lista aa-lista-sm">
+                <li>Consulta de débitos</li>
+                <li>Consulta de créditos</li>
+              </ul>
+            </div>
+          </div>
+          <div class="aa-cron-item">
+            <div class="aa-cron-data aa-cron-data-2">Início novembro/2026</div>
+            <div class="aa-cron-conteudo">
+              <div class="aa-cron-titulo">Consultas de pagamentos e recolhimentos</div>
+              <ul class="aa-lista aa-lista-sm">
+                <li>Consulta de pagamentos</li>
+                <li>Consulta de recolhimentos realizados pelo adquirente</li>
+              </ul>
+            </div>
+          </div>
+          <div class="aa-cron-item">
+            <div class="aa-cron-data aa-cron-data-3">Final novembro/2026</div>
+            <div class="aa-cron-conteudo">
+              <div class="aa-cron-titulo">Emissão de DARFs</div>
+              <ul class="aa-lista aa-lista-sm">
+                <li>Emitir DARF para Recolhimento pelo Adquirente (RAD)</li>
+                <li>Emitir DARF para Pagamento do Contribuinte (PCONT)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Impacto para software houses ══ -->
+  <section class="aa-secao">
+    <div class="aa-secao-label">Desenvolvimento</div>
+    <h2 class="aa-secao-titulo">Impacto para software houses</h2>
+    <p class="aa-secao-desc">
+      A liberação pública da IPA (MOC v1.10) é a primeira vez que todo o mercado pode acessar a estrutura real dos arquivos, o comportamento incremental, o fatiamento e os exemplos oficiais.
+    </p>
+
+    <div class="aa-grid-2">
+      <div class="aa-card">
+        <div class="aa-card-topo" style="background: linear-gradient(90deg, #8b5cf6 0%, rgba(139,92,246,.3) 100%);"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">O que a liberação pública permite</h3>
+          <ul class="aa-lista">
+            <li>Desenvolvimento paralelo ao piloto</li>
+            <li>Criação de conectores e integrações</li>
+            <li>Testes de Webhook de disponibilização</li>
+            <li>Validação de autenticação</li>
+            <li>Simulação de carga e análise de performance</li>
+            <li>Preparação para o volume real de operações</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="aa-card">
+        <div class="aa-card-topo" style="background: linear-gradient(90deg, #8b5cf6 0%, rgba(139,92,246,.3) 100%);"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">Próximos passos da IPA</h3>
+          <ul class="aa-lista">
+            <li>Novas versões do MOC serão publicadas</li>
+            <li>Novas APIs serão adicionadas gradualmente</li>
+            <li>Funcionalidades serão expandidas</li>
+            <li>Ambiente de testes atualizado continuamente</li>
+          </ul>
+          <div class="aa-nota">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Acompanhe as publicações do CGIBS para novas versões do MOC e mudanças nas regras de integração.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* ── Hero ── */
+    .aa-hero {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2.5rem 0 1rem;
+    }
+    .aa-hero-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      background: rgba(99,102,241,.12);
+      border: 1px solid rgba(99,102,241,.3);
+      color: var(--indigo-400);
+      margin-bottom: 1rem;
+    }
+    .aa-titulo {
+      font-size: 2.6rem; font-weight: 800; margin: 0 0 .75rem;
+      line-height: 1.1; letter-spacing: -.025em;
+    }
+    .aa-sub {
+      color: var(--tinta-media); font-size: .95rem; line-height: 1.7;
+      max-width: 560px; margin: 0 auto;
+    }
+
+    /* ── Seções ── */
+    .aa-secao { margin: 0 0 3rem; }
+    .aa-secao-label {
+      display: inline-block;
+      font-size: .65rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase;
+      color: var(--indigo-400);
+      background: rgba(99,102,241,.1);
+      border: 1px solid rgba(99,102,241,.25);
+      border-radius: 6px; padding: 2px 10px;
+      margin-bottom: .6rem;
+    }
+    .aa-label-ibs { color: #60a5fa; background: rgba(59,130,246,.1); border-color: rgba(59,130,246,.25); }
+    .aa-label-cbs { color: var(--ciano-400); background: rgba(6,182,212,.1); border-color: rgba(6,182,212,.25); }
+
+    .aa-secao-titulo {
+      font-size: 1.55rem; font-weight: 700; margin: 0 0 .6rem;
+      letter-spacing: -.015em;
+    }
+    .aa-secao-desc {
+      color: var(--tinta-media); line-height: 1.72; margin: 0 0 1.5rem;
+      max-width: 720px;
+    }
+
+    /* ── Diagrama de arquitetura ── */
+    .aa-diagrama {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: rgba(8,15,42,.5);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .aa-diagrama-origem {
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      min-width: 120px; text-align: center;
+    }
+    .aa-diagrama-origem-icone {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(59,130,246,.12);
+      border: 1px solid rgba(59,130,246,.3);
+      border-radius: 12px;
+      color: var(--azul-400);
+    }
+    .aa-diagrama-origem-icone svg { width: 22px; height: 22px; }
+    .aa-diagrama-origem-label {
+      font-size: .8rem; font-weight: 700; color: var(--tinta);
+    }
+    .aa-diagrama-origem-desc {
+      font-size: .7rem; color: var(--tinta-fraca); line-height: 1.4;
+    }
+    .aa-diagrama-seta {
+      color: var(--tinta-fraca); flex-shrink: 0;
+    }
+    .aa-diagrama-seta svg { width: 20px; height: 20px; }
+
+    .aa-diagrama-trilhas {
+      display: flex; flex-direction: column; gap: .75rem; flex: 1; min-width: 260px;
+    }
+    .aa-trilha {
+      border-radius: 12px;
+      padding: .9rem 1.1rem;
+      border: 1px solid;
+      display: flex; flex-direction: column; gap: .25rem;
+    }
+    .aa-trilha-ibs {
+      background: rgba(59,130,246,.08);
+      border-color: rgba(59,130,246,.3);
+    }
+    .aa-trilha-cbs {
+      background: rgba(6,182,212,.08);
+      border-color: rgba(6,182,212,.3);
+    }
+    .aa-trilha-topo {
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .aa-trilha-sigla {
+      font-family: var(--dado); font-size: .75rem; font-weight: 700;
+      padding: 1px 8px; border-radius: 6px;
+    }
+    .aa-trilha-ibs .aa-trilha-sigla {
+      background: rgba(59,130,246,.18); color: var(--azul-400);
+      border: 1px solid rgba(59,130,246,.3);
+    }
+    .aa-trilha-cbs .aa-trilha-sigla {
+      background: rgba(6,182,212,.18); color: var(--ciano-400);
+      border: 1px solid rgba(6,182,212,.3);
+    }
+    .aa-trilha-nome {
+      font-size: .78rem; color: var(--tinta); font-weight: 500;
+    }
+    .aa-trilha-sub {
+      font-size: .82rem; color: var(--tinta-media);
+    }
+    .aa-trilha-ibs .aa-trilha-sub strong { color: var(--azul-400); }
+    .aa-trilha-cbs .aa-trilha-sub strong { color: var(--ciano-400); }
+    .aa-trilha-gestor {
+      font-size: .68rem; color: var(--tinta-fraca); font-family: var(--dado);
+      text-transform: uppercase; letter-spacing: .07em;
+    }
+
+    /* ── Cards ── */
+    .aa-grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 680px) { .aa-grid-2 { grid-template-columns: 1fr; } }
+
+    .aa-card {
+      background: rgba(8,15,42,.55);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .aa-card-topo {
+      height: 3px;
+    }
+    .aa-card-topo-ibs {
+      background: linear-gradient(90deg, var(--azul-500) 0%, rgba(34,211,238,.5) 100%);
+    }
+    .aa-card-topo-cbs {
+      background: linear-gradient(90deg, var(--ciano-500) 0%, rgba(34,211,238,.5) 100%);
+    }
+    .aa-card-corpo {
+      padding: 1.25rem 1.4rem;
+    }
+    .aa-card-h3 {
+      font-size: 1rem; font-weight: 700; margin: 0 0 .65rem; color: var(--tinta);
+    }
+    .aa-card-desc {
+      font-size: .88rem; color: var(--tinta-media); margin: 0 0 .8rem; line-height: 1.6;
+    }
+
+    /* ── Listas ── */
+    .aa-lista {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: .35rem;
+    }
+    .aa-lista li {
+      font-size: .875rem; color: var(--tinta-media); line-height: 1.5;
+      padding-left: 1.1rem; position: relative;
+    }
+    .aa-lista li::before {
+      content: '›';
+      position: absolute; left: 0;
+      color: var(--azul-400); font-weight: 700;
+    }
+    .aa-lista-api li::before { color: var(--azul-400); }
+    .aa-lista-sm li { font-size: .82rem; }
+
+    /* Perfis (badges) */
+    .aa-perfis {
+      display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .75rem;
+    }
+    .aa-perfis span {
+      font-size: .68rem; font-weight: 600; padding: 2px 9px; border-radius: 20px;
+      background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.22);
+      color: var(--azul-400);
+    }
+
+    /* ── Specs grid ── */
+    .aa-specs-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .85rem;
+    }
+    @media (max-width: 560px) { .aa-specs-grid { grid-template-columns: 1fr; } }
+    .aa-spec {
+      background: rgba(59,130,246,.06);
+      border: 1px solid rgba(59,130,246,.18);
+      border-radius: 10px; padding: .8rem 1rem;
+    }
+    .aa-spec-nome {
+      font-size: .8rem; font-weight: 700; color: var(--azul-400); margin-bottom: .3rem;
+    }
+    .aa-spec-desc {
+      font-size: .78rem; color: var(--tinta-media); line-height: 1.5;
+    }
+
+    /* ── Vantagens incrementais ── */
+    .aa-vantagens {
+      display: flex; flex-direction: column; gap: .85rem; margin-top: .5rem;
+    }
+    .aa-vantagem {
+      display: flex; gap: .85rem; align-items: flex-start;
+    }
+    .aa-vantagem-icone {
+      width: 34px; height: 34px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(6,182,212,.12);
+      border: 1px solid rgba(6,182,212,.25);
+      border-radius: 9px; color: var(--ciano-400);
+    }
+    .aa-vantagem-icone svg { width: 16px; height: 16px; }
+    .aa-vantagem-titulo {
+      font-size: .875rem; font-weight: 600; color: var(--tinta); margin-bottom: .15rem;
+    }
+    .aa-vantagem-desc {
+      font-size: .8rem; color: var(--tinta-media); line-height: 1.5;
+    }
+
+    /* ── Cronograma ── */
+    .aa-cronograma {
+      display: flex; flex-direction: column; gap: 0; margin-top: .5rem;
+    }
+    .aa-cron-item {
+      display: flex; gap: 1.25rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .aa-cron-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .aa-cron-data {
+      font-family: var(--dado); font-size: .72rem; font-weight: 700;
+      min-width: 130px; padding: 3px 10px; border-radius: 6px; height: fit-content;
+      text-align: center; white-space: nowrap;
+    }
+    .aa-cron-data-1 {
+      background: rgba(52,211,153,.12); border: 1px solid rgba(52,211,153,.3);
+      color: var(--verde-400);
+    }
+    .aa-cron-data-2 {
+      background: rgba(251,191,36,.12); border: 1px solid rgba(251,191,36,.3);
+      color: var(--ambar-400);
+    }
+    .aa-cron-data-3 {
+      background: rgba(6,182,212,.12); border: 1px solid rgba(6,182,212,.3);
+      color: var(--ciano-400);
+    }
+    .aa-cron-conteudo { flex: 1; }
+    .aa-cron-titulo {
+      font-size: .875rem; font-weight: 600; color: var(--tinta); margin-bottom: .4rem;
+    }
+
+    /* ── Nota ── */
+    .aa-nota {
+      display: flex; gap: .6rem; align-items: flex-start;
+      background: rgba(99,102,241,.08);
+      border: 1px solid rgba(99,102,241,.2);
+      border-radius: 8px; padding: .75rem .9rem;
+      margin-top: .85rem;
+      font-size: .82rem; color: var(--tinta-media); line-height: 1.55;
+    }
+    .aa-nota svg {
+      width: 14px; height: 14px; flex-shrink: 0;
+      margin-top: 2px; color: var(--indigo-400);
+    }
+
+    @media (max-width: 560px) {
+      .aa-titulo { font-size: 2rem; }
+      .aa-diagrama { flex-direction: column; }
+      .aa-diagrama-seta { transform: rotate(90deg); }
+      .aa-cron-item { flex-direction: column; gap: .5rem; }
+      .aa-cron-data { min-width: unset; width: fit-content; }
+    }
+  </style>
+</Base>
