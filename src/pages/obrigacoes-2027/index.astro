@@ -589,6 +589,222 @@ import Base from '../../layouts/Base.astro';
     height: 1px;
     background: var(--borda);
   }
+
+  /* ══════════════════════════════════════════════════
+     5. RETENÇÕES NA TRANSIÇÃO
+  ══════════════════════════════════════════════════ */
+  .no-ret-hdr-icone {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    background: rgba(251,191,36,.16);
+    border: 1px solid rgba(251,191,36,.3);
+    display: flex; align-items:center; justify-content:center;
+    flex-shrink: 0;
+  }
+  .no-ret-hdr-icone svg { width:15px; height:15px; color:#fbbf24; }
+  .no-ret-topo {
+    height: 3px;
+    background: linear-gradient(90deg,#fbbf24,rgba(251,146,60,.3));
+  }
+  .no-ret-virada {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--borda);
+  }
+  @media(max-width:640px){ .no-ret-virada{ grid-template-columns:1fr; } }
+  .no-ret-lado {
+    padding: var(--e-5) var(--e-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+  }
+  .no-ret-lado + .no-ret-lado {
+    border-left: 1px solid var(--borda);
+  }
+  @media(max-width:640px){ .no-ret-lado + .no-ret-lado{ border-left:none; border-top:1px solid var(--borda); } }
+  .no-ret-label {
+    font-family: var(--dado);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-self: flex-start;
+  }
+  .no-ret-label.antes {
+    background: rgba(248,113,113,.12);
+    border: 1px solid rgba(248,113,113,.25);
+    color: #fca5a5;
+  }
+  .no-ret-label.depois {
+    background: rgba(251,191,36,.12);
+    border: 1px solid rgba(251,191,36,.28);
+    color: #fde68a;
+  }
+  .no-ret-titulo {
+    font-size: 1.2rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+  }
+  .antes-ret .no-ret-titulo { color: #fca5a5; }
+  .depois-ret .no-ret-titulo { color: #fde68a; }
+  .no-ret-desc {
+    font-size: .875rem;
+    color: var(--tinta-media);
+    line-height: 1.65;
+  }
+  .no-ret-desc strong { color: var(--tinta); }
+  .no-ret-lista {
+    list-style: none;
+    margin: var(--e-2) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .no-ret-lista li {
+    font-size: .82rem;
+    color: var(--tinta-media);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    border-top: 1px solid var(--borda);
+  }
+  .no-ret-lista li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .antes-ret .no-ret-lista li::before { background: #f87171; }
+  .depois-ret .no-ret-lista li::before { background: #fbbf24; }
+  .no-ret-lista li strong { color: var(--tinta); }
+  .no-ret-lista li s { opacity: .4; }
+  .no-ret-regra {
+    padding: var(--e-4) var(--e-5);
+    border-top: 1px solid var(--borda);
+    background: rgba(251,191,36,.03);
+  }
+  .no-ret-regra p {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--tinta-media);
+    line-height: 1.7;
+  }
+  .no-ret-regra strong { color: var(--tinta); }
+  .no-ret-regra em { color: #fde68a; font-style: normal; font-weight: 600; }
+  /* Cenários */
+  .no-cen-wrap {
+    padding: var(--e-4) var(--e-5) var(--e-5);
+    border-top: 1px solid var(--borda);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+  }
+  .no-cen-titulo {
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--tinta-fraca);
+  }
+  .no-cen-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: var(--e-3);
+  }
+  @media(max-width:760px){ .no-cen-grid{ grid-template-columns:1fr; } }
+  .no-cen {
+    border-radius: 14px;
+    padding: var(--e-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-2);
+    border: 1px solid transparent;
+  }
+  .no-cen.cen-antigo  { background:rgba(248,113,113,.05); border-color:rgba(248,113,113,.2); }
+  .no-cen.cen-critico { background:rgba(251,191,36,.05);  border-color:rgba(251,191,36,.25); }
+  .no-cen.cen-novo    { background:rgba(74,222,128,.04);  border-color:rgba(74,222,128,.18); }
+  .no-cen-num {
+    font-family: var(--dado);
+    font-size: .62rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--tinta-fraca);
+  }
+  .no-cen-num-badge {
+    font-size: .58rem;
+    font-weight: 800;
+    background: rgba(251,191,36,.15);
+    border: 1px solid rgba(251,191,36,.3);
+    color: #fde68a;
+    padding: 1px 7px;
+    border-radius: 999px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .no-cen-row { display:flex; flex-direction:column; gap:2px; }
+  .no-cen-row-label {
+    font-size: .63rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--tinta-fraca);
+  }
+  .no-cen-row-val { font-size: .82rem; color: var(--tinta-media); }
+  .no-cen-row-val strong { color: var(--tinta); }
+  .no-cen-resultado {
+    margin-top: var(--e-2);
+    padding: var(--e-2) var(--e-3);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .no-cen.cen-antigo  .no-cen-resultado { background:rgba(248,113,113,.1);  border:1px solid rgba(248,113,113,.25); }
+  .no-cen.cen-critico .no-cen-resultado { background:rgba(74,222,128,.08);  border:1px solid rgba(74,222,128,.22); }
+  .no-cen.cen-novo    .no-cen-resultado { background:rgba(74,222,128,.08);  border:1px solid rgba(74,222,128,.22); }
+  .no-cen-resultado-label {
+    font-size: .62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+  }
+  .no-cen.cen-antigo  .no-cen-resultado-label { color: #f87171; }
+  .no-cen.cen-critico .no-cen-resultado-label { color: #4ade80; }
+  .no-cen.cen-novo    .no-cen-resultado-label { color: #4ade80; }
+  .no-cen-resultado-val {
+    font-family: var(--dado);
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+  .no-cen.cen-antigo  .no-cen-resultado-val { color: #fca5a5; }
+  .no-cen.cen-critico .no-cen-resultado-val { color: #86efac; }
+  .no-cen.cen-novo    .no-cen-resultado-val { color: #86efac; }
+  .no-cen-resultado-base { font-size:.68rem; color:var(--tinta-fraca); margin-top:2px; }
+  /* Alerta de ação (amber) */
+  .no-alerta-acao {
+    margin: 0;
+    padding: var(--e-4) var(--e-5);
+    background: rgba(251,191,36,.07);
+    border-top: 1px solid rgba(251,191,36,.2);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--e-4);
+  }
+  .no-alerta-acao .no-alerta-icone {
+    background: rgba(251,191,36,.16);
+    border: 1px solid rgba(251,191,36,.32);
+  }
+  .no-alerta-acao .no-alerta-icone svg { color: #fbbf24; }
+  .no-alerta-acao .no-alerta-txt strong { color: #fde68a; }
 </style>
 
 <!-- Cabeçalho da página -->
@@ -1022,6 +1238,132 @@ import Base from '../../layouts/Base.astro';
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ══ 5. RETENÇÕES NA TRANSIÇÃO ════════════════════ -->
+  <div class="no-painel">
+    <div class="no-ret-topo"></div>
+    <div class="no-painel-hdr">
+      <div class="no-ret-hdr-icone">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="no-painel-hdr-titulo">Retenções na Transição</div>
+        <div class="no-painel-hdr-sub">O PCC de 4,65% desaparece em 01/01/2027 — o que muda depende da <strong>data do pagamento</strong>, não da nota fiscal</div>
+      </div>
+    </div>
+
+    <!-- Antes / Depois -->
+    <div class="no-ret-virada">
+      <div class="no-ret-lado antes-ret">
+        <span class="no-ret-label antes">Até 31/12/2026</span>
+        <p class="no-ret-titulo">PCC: 4,65%<br/>retido na fonte</p>
+        <p class="no-ret-desc">
+          O art. 30 da Lei 10.833/2003 obriga a retenção de <strong>CSLL + PIS + Cofins</strong> nos pagamentos entre pessoas jurídicas acima de R$ 5.000. Esse conjunto ficou conhecido como <strong>PCC</strong>.
+        </p>
+        <ul class="no-ret-lista">
+          <li>CSLL: <strong>1,00%</strong></li>
+          <li>PIS: <strong>0,65%</strong></li>
+          <li>Cofins: <strong>3,00%</strong></li>
+          <li>Total: <strong>4,65%</strong></li>
+        </ul>
+      </div>
+      <div class="no-ret-lado depois-ret">
+        <span class="no-ret-label depois">A partir de 01/01/2027</span>
+        <p class="no-ret-titulo">Apenas CSLL: 1%<br/>na fonte</p>
+        <p class="no-ret-desc">
+          O art. 509 da <strong>LC 214/2025</strong> altera os arts. 30 e 31 da Lei 10.833/2003. Com a extinção do PIS e da Cofins, desaparecem também as retenções dessas contribuições. Permanece somente a <strong>CSLL de 1%</strong>.
+        </p>
+        <ul class="no-ret-lista">
+          <li>CSLL: <strong>1,00%</strong></li>
+          <li>PIS: <s>0,65%</s> <strong>extinto</strong></li>
+          <li>Cofins: <s>3,00%</s> <strong>extinta</strong></li>
+          <li>Total: <strong>1,00%</strong> (−3,65 p.p.)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Regra-chave -->
+    <div class="no-ret-regra">
+      <p>
+        <strong>Regra determinante:</strong> a retenção é calculada com base na <em>data do pagamento</em>, não na data de emissão da nota fiscal — conforme a redação dos arts. 30 e 31 da Lei 10.833/2003 após a alteração do art. 509 da LC 214/2025. Uma nota emitida em dezembro/2026 e paga em janeiro/2027 segue integralmente as regras de 2027.
+      </p>
+    </div>
+
+    <!-- Cenários práticos -->
+    <div class="no-cen-wrap">
+      <div class="no-cen-titulo">Três cenários práticos</div>
+      <div class="no-cen-grid">
+
+        <div class="no-cen cen-antigo">
+          <span class="no-cen-num">Cenário 1</span>
+          <div class="no-cen-row">
+            <span class="no-cen-row-label">NF emitida em</span>
+            <span class="no-cen-row-val"><strong>Dezembro / 2026</strong></span>
+          </div>
+          <div class="no-cen-row">
+            <span class="no-cen-row-label">Pagamento em</span>
+            <span class="no-cen-row-val"><strong>Dezembro / 2026</strong></span>
+          </div>
+          <div class="no-cen-resultado">
+            <span class="no-cen-resultado-label">Retenção aplicável</span>
+            <span class="no-cen-resultado-val">4,65% PCC</span>
+            <span class="no-cen-resultado-base">CSLL 1% + PIS 0,65% + Cofins 3%</span>
+          </div>
+        </div>
+
+        <div class="no-cen cen-critico">
+          <span class="no-cen-num">Cenário 2 &nbsp;<span class="no-cen-num-badge">Atenção</span></span>
+          <div class="no-cen-row">
+            <span class="no-cen-row-label">NF emitida em</span>
+            <span class="no-cen-row-val"><strong>Dezembro / 2026</strong></span>
+          </div>
+          <div class="no-cen-row">
+            <span class="no-cen-row-label">Pagamento em</span>
+            <span class="no-cen-row-val"><strong>Janeiro / 2027</strong></span>
+          </div>
+          <div class="no-cen-resultado">
+            <span class="no-cen-resultado-label">Retenção aplicável</span>
+            <span class="no-cen-resultado-val">1% CSLL</span>
+            <span class="no-cen-resultado-base">PIS/Cofins já extintos na data do pagamento</span>
+          </div>
+        </div>
+
+        <div class="no-cen cen-novo">
+          <span class="no-cen-num">Cenário 3</span>
+          <div class="no-cen-row">
+            <span class="no-cen-row-label">NF emitida em</span>
+            <span class="no-cen-row-val"><strong>Janeiro / 2027</strong></span>
+          </div>
+          <div class="no-cen-row">
+            <span class="no-cen-row-label">Pagamento em</span>
+            <span class="no-cen-row-val"><strong>Janeiro / 2027</strong></span>
+          </div>
+          <div class="no-cen-resultado">
+            <span class="no-cen-resultado-label">Retenção aplicável</span>
+            <span class="no-cen-resultado-val">1% CSLL</span>
+            <span class="no-cen-resultado-base">Regime inteiramente novo — sem PCC</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Alerta de ação -->
+    <div class="no-alerta-acao">
+      <div class="no-alerta-icone">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="m10.29 3.86-8.6 14.9A2 2 0 0 0 3.45 22h17.1a2 2 0 0 0 1.73-3.01l-8.6-14.9a2 2 0 0 0-3.39 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="no-alerta-txt">
+        <strong>Ação necessária antes de jan/2027</strong>
+        <p>Empresas devem revisar a <em>parametrização fiscal</em> do ERP e os processos de <em>contas a pagar</em>: o código de retenção e a alíquota variam conforme a data prevista de pagamento, não da emissão da NF. Pagamentos de notas de dez/2026 feitos em jan/2027 exigem tratamento diferente do padrão atual.</p>
+      </div>
     </div>
   </div>
 

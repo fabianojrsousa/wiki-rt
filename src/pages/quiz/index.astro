@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 ---
 
-<Base titulo="Quiz · Reforma na Prática" descricao="70 casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e Simples Nacional. Treine para a Reforma Tributária.">
+<Base titulo="Quiz · Reforma na Prática" descricao="78 casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e Simples Nacional. Treine para a Reforma Tributária.">
 
   <div class="qz-page" id="quiz-app">
 
@@ -11,36 +11,49 @@ import Base from '../../layouts/Base.astro';
       <div class="qz-hero">
         <div class="qz-hero-badge">Reforma na Prática</div>
         <h1 class="qz-titulo">Quiz</h1>
-        <p class="qz-sub">70 casos práticos para treinar. Filtre por tema, nível e tipo.<br>Teclas <kbd>1</kbd>–<kbd>4</kbd> respondem · <kbd>Enter</kbd> avança.</p>
+        <p class="qz-sub">78 casos práticos para treinar. Filtre por tema, nível e tipo.<br>Teclas <kbd>1</kbd>–<kbd>4</kbd> respondem · <kbd>Enter</kbd> avança.</p>
       </div>
 
       <div class="qz-filtros">
-        <div class="qz-filtro-grupo">
-          <span class="qz-filtro-label">Tema</span>
+
+        <!-- Painel Tema -->
+        <div class="qz-painel">
+          <div class="qz-painel-header">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            <span>Tema</span>
+          </div>
           <div class="qz-chips" id="chips-tema">
             <button class="qz-chip ativo" data-val="">Todos</button>
-            <button class="qz-chip" data-val="doc">Documentos fiscais <em>11</em></button>
-            <button class="qz-chip" data-val="apu">Apuração assistida <em>10</em></button>
-            <button class="qz-chip" data-val="tra">Transição PIS/Cofins <em>14</em></button>
-            <button class="qz-chip" data-val="sn">Simples Nacional <em>11</em></button>
-            <button class="qz-chip" data-val="spl">Split payment <em>9</em></button>
+            <button class="qz-chip" data-val="doc">Documentos fiscais <em>12</em></button>
+            <button class="qz-chip" data-val="apu">Apuração assistida <em>12</em></button>
+            <button class="qz-chip" data-val="tra">Transição PIS/Cofins <em>16</em></button>
+            <button class="qz-chip" data-val="sn">Simples Nacional <em>12</em></button>
+            <button class="qz-chip" data-val="spl">Split payment <em>10</em></button>
             <button class="qz-chip" data-val="ipi">IPI e IS <em>6</em></button>
             <button class="qz-chip" data-val="der">DeRE <em>4</em></button>
-            <button class="qz-chip" data-val="con">ICMS/ISS <em>5</em></button>
+            <button class="qz-chip" data-val="con">ICMS/ISS <em>6</em></button>
           </div>
         </div>
 
-        <div class="qz-filtro-row">
-          <div class="qz-filtro-grupo">
-            <span class="qz-filtro-label">Tipo</span>
+        <!-- Painéis Tipo + Nível -->
+        <div class="qz-paineis-row">
+          <div class="qz-painel">
+            <div class="qz-painel-header">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              <span>Tipo de questão</span>
+            </div>
             <div class="qz-chips" id="chips-tipo">
               <button class="qz-chip ativo" data-val="">Todos</button>
               <button class="qz-chip" data-val="direto">Caso direto</button>
               <button class="qz-chip" data-val="afirmacao">Análise de afirmação</button>
             </div>
           </div>
-          <div class="qz-filtro-grupo">
-            <span class="qz-filtro-label">Nível</span>
+
+          <div class="qz-painel">
+            <div class="qz-painel-header">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <span>Nível</span>
+            </div>
             <div class="qz-chips" id="chips-nivel">
               <button class="qz-chip ativo" data-val="">Todos</button>
               <button class="qz-chip" data-val="basico">Básico</button>
@@ -49,10 +62,11 @@ import Base from '../../layouts/Base.astro';
             </div>
           </div>
         </div>
+
       </div>
 
       <div class="qz-start-area">
-        <span id="qz-preview" class="qz-preview">70 casos selecionados</span>
+        <span id="qz-preview" class="qz-preview">78 casos selecionados</span>
         <button class="qz-btn-start" id="btn-comecar">Começar quiz ›</button>
       </div>
     </div>
@@ -99,13 +113,47 @@ import Base from '../../layouts/Base.astro';
     }
 
     /* ── Filtros ── */
-    .qz-filtros { display:flex; flex-direction:column; gap:1.5rem; margin-bottom:2.25rem; }
-    .qz-filtro-row { display:flex; gap:2rem; flex-wrap:wrap; }
-    .qz-filtro-grupo { display:flex; flex-direction:column; gap:.6rem; flex:1; min-width:0; }
-    .qz-filtro-label {
-      font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
-      color:var(--tinta-fraca);
+    .qz-filtros { display:flex; flex-direction:column; gap:1rem; margin-bottom:2.25rem; }
+
+    .qz-painel {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem 1.25rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: border-color .2s;
     }
+    .qz-painel:focus-within { border-color: rgba(96,165,250,.28); }
+
+    .qz-painel-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      margin-bottom: .9rem;
+      padding-bottom: .75rem;
+      border-bottom: 1px solid rgba(96,165,250,.15);
+    }
+    .qz-painel-header svg {
+      width: 14px; height: 14px;
+      stroke: #93c5fd;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 4px rgba(147,197,253,.4));
+    }
+    .qz-painel-header span {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .13em;
+      color: #93c5fd;
+      text-shadow: 0 0 12px rgba(147,197,253,.35);
+    }
+
+    .qz-paineis-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 520px) { .qz-paineis-row { grid-template-columns: 1fr; } }
     .qz-chips { display:flex; flex-wrap:wrap; gap:.4rem; }
     .qz-chip {
       padding:5px 12px; border-radius:20px; font-size:.78rem; font-weight:500;
@@ -157,95 +205,121 @@ import Base from '../../layouts/Base.astro';
 
     /* ── Card de questão ── */
     .qz-card {
-      background:var(--superficie); border:1px solid var(--borda);
-      border-radius:18px; overflow:hidden;
-      box-shadow:0 4px 32px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.05) inset;
-      margin-bottom:1rem;
+      background: rgba(8,15,42,.65);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.07) inset;
+      margin-bottom: 1rem;
     }
     .qz-card-topo {
-      padding:1rem 1.4rem;
-      border-bottom:1px solid var(--borda);
-      display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;
-      background:rgba(255,255,255,.02);
+      padding: .9rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+      background: rgba(255,255,255,.025);
     }
     .qz-badge {
-      display:inline-flex; align-items:center; gap:.3rem;
-      padding:3px 9px; border-radius:20px; font-size:.65rem; font-weight:700;
-      letter-spacing:.06em; text-transform:uppercase; border:1px solid;
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: 3px 10px; border-radius: 20px; font-size: .63rem; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase; border: 1px solid;
     }
-    .qz-badge-tema { background:rgba(34,211,238,.08); border-color:rgba(34,211,238,.22); color:var(--ciano-400); }
-    .qz-badge-tipo-afirmacao { background:rgba(251,191,36,.08); border-color:rgba(251,191,36,.22); color:var(--ambar-400); }
-    .qz-badge-tipo-direto { background:rgba(99,102,241,.08); border-color:rgba(99,102,241,.22); color:#a5b4fc; }
-    .qz-badge-nivel { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.12); color:var(--tinta-fraca); }
-    .qz-card-id { font-family:var(--dado); font-size:.65rem; color:var(--tinta-fraca); margin-left:auto; opacity:.7; }
+    .qz-badge-tema { background:rgba(34,211,238,.08); border-color:rgba(34,211,238,.25); color:var(--ciano-400); }
+    .qz-badge-tipo-afirmacao { background:rgba(251,191,36,.1); border-color:rgba(251,191,36,.3); color:var(--ambar-400); }
+    .qz-badge-tipo-direto { background:rgba(99,102,241,.1); border-color:rgba(99,102,241,.3); color:#a5b4fc; }
+    .qz-badge-nivel { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.13); color:var(--tinta-fraca); }
+    .qz-card-id { font-family:var(--dado); font-size:.63rem; color:var(--tinta-fraca); margin-left:auto; opacity:.55; }
 
-    .qz-card-corpo { padding:1.5rem 1.4rem 1.4rem; }
-    .qz-contexto { font-size:1rem; line-height:1.7; color:var(--tinta); margin:0 0 1.25rem; }
+    .qz-card-corpo { padding: 1.75rem 1.5rem 1.5rem; }
 
+    /* Texto da questão — elemento principal */
+    .qz-contexto {
+      font-size: 1.08rem; font-weight: 500; line-height: 1.72;
+      color: #e8f0fe;
+      margin: 0 0 1.4rem;
+    }
+
+    /* Afirmação em destaque */
     .qz-afirmacao {
-      position:relative; margin:0 0 1.25rem;
-      padding:1rem 1.1rem 1rem 1.25rem;
-      background:rgba(251,191,36,.06);
-      border:1px solid rgba(251,191,36,.18);
-      border-left:3px solid var(--ambar-400);
-      border-radius:0 10px 10px 0;
-      font-size:.92rem; line-height:1.65; color:var(--tinta-media);
-      font-style:italic;
+      position: relative; margin: 0 0 1.25rem;
+      padding: 1rem 1.1rem 1rem 1.3rem;
+      background: rgba(251,191,36,.07);
+      border: 1px solid rgba(251,191,36,.2);
+      border-left: 3px solid var(--ambar-400);
+      border-radius: 0 12px 12px 0;
+      font-size: .95rem; line-height: 1.68; color: #f5e8b0;
+      font-style: italic;
     }
 
+    /* Label "Selecione" — pílula colorida */
     .qz-pergunta {
-      font-size:.72rem; font-weight:700; color:var(--tinta-fraca);
-      text-transform:uppercase; letter-spacing:.1em;
-      margin:0 0 .85rem;
+      display: inline-flex; align-items: center;
+      font-size: .63rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .11em;
+      color: #93c5fd;
+      background: rgba(96,165,250,.12);
+      border: 1px solid rgba(96,165,250,.25);
+      border-radius: 6px;
+      padding: 3px 10px;
+      margin: 0 0 .85rem;
     }
 
     /* ── Alternativas ── */
-    .qz-alternativas { display:flex; flex-direction:column; gap:.55rem; }
+    .qz-alternativas { display: flex; flex-direction: column; gap: .5rem; }
     .qz-alt {
-      display:flex; align-items:flex-start; gap:.9rem;
-      padding:.85rem 1rem;
-      border-radius:11px; border:1px solid var(--borda);
-      background:rgba(255,255,255,.02);
-      cursor:pointer; transition:all .18s; text-align:left; width:100%;
-      font-size:.9rem; line-height:1.55; color:var(--tinta-media);
-      box-sizing:border-box;
+      display: flex; align-items: flex-start; gap: .9rem;
+      padding: .95rem 1.1rem;
+      border-radius: 13px;
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(255,255,255,.03);
+      cursor: pointer; transition: all .18s; text-align: left; width: 100%;
+      font-size: .92rem; line-height: 1.58;
+      color: var(--tinta);
+      box-sizing: border-box;
     }
     .qz-alt:hover:not(:disabled) {
-      border-color:rgba(59,130,246,.5); color:var(--tinta);
-      background:rgba(59,130,246,.07);
-      transform:translateX(2px);
+      border-color: rgba(99,102,241,.5);
+      color: #fff;
+      background: rgba(99,102,241,.09);
+      transform: translateX(3px);
     }
     .qz-alt-letra {
-      width:26px; height:26px; border-radius:7px; flex-shrink:0;
-      display:flex; align-items:center; justify-content:center;
-      font-size:.72rem; font-weight:700; font-family:var(--dado);
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-      color:var(--tinta-fraca); transition:all .18s;
-      margin-top:1px;
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 700; font-family: var(--dado);
+      background: rgba(99,102,241,.14);
+      border: 1px solid rgba(99,102,241,.3);
+      color: #a5b4fc;
+      transition: all .18s;
+      margin-top: 1px;
     }
+    .qz-alt:hover:not(:disabled) .qz-alt-letra {
+      background: rgba(99,102,241,.28);
+      border-color: rgba(99,102,241,.55);
+      color: #c7d2fe;
+    }
+
     /* Estados pós-resposta */
     .qz-alt.correta {
-      border-color:rgba(52,211,153,.45); background:rgba(52,211,153,.07);
-      color:var(--tinta);
+      border-color: rgba(52,211,153,.5); background: rgba(52,211,153,.08);
+      color: #e8f0fe;
     }
     .qz-alt.correta .qz-alt-letra {
-      background:rgba(52,211,153,.2); border-color:rgba(52,211,153,.5);
-      color:#34d399;
+      background: rgba(52,211,153,.22); border-color: rgba(52,211,153,.55);
+      color: #34d399;
     }
     .qz-alt.errada {
-      border-color:rgba(255,255,255,.06); background:transparent;
-      color:var(--tinta-fraca); opacity:.45;
+      border-color: rgba(255,255,255,.05); background: transparent;
+      color: var(--tinta-fraca); opacity: .4;
     }
     .qz-alt.selecionada-errada {
-      border-color:rgba(248,113,113,.45); background:rgba(248,113,113,.07);
-      color:var(--tinta); opacity:1;
+      border-color: rgba(248,113,113,.5); background: rgba(248,113,113,.08);
+      color: #e8f0fe; opacity: 1;
     }
     .qz-alt.selecionada-errada .qz-alt-letra {
-      background:rgba(248,113,113,.2); border-color:rgba(248,113,113,.5);
-      color:#f87171;
+      background: rgba(248,113,113,.22); border-color: rgba(248,113,113,.55);
+      color: #f87171;
     }
-    .qz-alt:disabled { cursor:default; }
-    .qz-alt:disabled:not(.correta):not(.errada):not(.selecionada-errada) { opacity:.5; }
+    .qz-alt:disabled { cursor: default; }
+    .qz-alt:disabled:not(.correta):not(.errada):not(.selecionada-errada) { opacity: .45; }
 
     /* ── Feedback ── */
     .qz-feedback {
@@ -340,7 +414,7 @@ import Base from '../../layouts/Base.astro';
 
   <script>
     /* ═══════════════════════════════════════════════
-       BANCO DE CASOS — 70 questões
+       BANCO DE CASOS — 78 questões
     ═══════════════════════════════════════════════ */
     const CASOS = [
       /* ── Documentos fiscais ── */
@@ -1260,6 +1334,116 @@ import Base from '../../layouts/Base.astro';
         exp:`Em 2027 só PIS e Cofins são extintos. As obrigações de ICMS e ISS seguem até a extinção desses impostos.`,
         prat:`Posicione a solução para seis anos de convivência entre os dois modelos.`,
         base:`LC 214/2025 · OFM` },
+
+      /* ── Documentos fiscais · extra ── */
+      { id:'VIS-01', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'basico',
+        contexto:`Pela linha do tempo, em que ordem passam a exigir os campos de IBS e CBS uma imobiliária do regime regular que emite cobranças de locação e uma loja optante do Simples Nacional?<br><br><strong>Linha do tempo — Obrigatoriedade nos documentos fiscais:</strong><br>• 03/08/2026 → NF-e, NFC-e e documentos de transporte<br>• 01/10/2026 → NFS-e, NFCom, DIR e eventos de tabela da DeRE<br>• 15/11/2026 → DeRE: eventos periódicos mensais<br>• 01/12/2026 → <em>Locação, plataformas digitais e condomínios</em><br>• 01/01/2027 → <em>Simples Nacional, monofásicos e importação</em>`,
+        afirmacao:null,
+        alts:[
+          { t:`Imobiliária em 01/12/2026 e loja do Simples em 01/01/2027`, c:true },
+          { t:`As duas desde 03/08/2026, junto com a NF-e`, c:false },
+          { t:`Loja do Simples em 01/10/2026 e imobiliária em 01/12/2026`, c:false },
+          { t:`As duas somente a partir de 01/01/2027`, c:false },
+        ],
+        exp:`Locação de bens ficou no lote de 01/12/2026. Os optantes do Simples, em 01/01/2027, independente da forma de recolhimento.`,
+        prat:`Monte o cronograma de cada cliente pelo tipo de operação, não só pelo regime.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      /* ── Apuração assistida · extras ── */
+      { id:'VIS-03', tipo:'direto', tema:'apu', temaNome:'Apuração assistida', nivel:'basico',
+        contexto:`No ciclo de março/2027, a empresa perdeu a janela de ajustes (etapa 4). O que acontece na etapa 5?<br><br><strong>Ciclo mensal da apuração assistida:</strong><br>1. Emissão dos DF-e — Notas e eventos do mês<br>2. Consolidação pelo Fisco — DF-e, pagamentos e compensações<br>3. Disponibilização — Até o dia 15 do mês seguinte<br>4. Janela de ajustes — Até o último dia útil do mês<br>5. <em>Sem ajuste no prazo → Presumida correta, débito constituído</em>`,
+        afirmacao:null,
+        alts:[
+          { t:`A apuração é presumida correta e o débito se constitui automaticamente, sem prejuízo de lançamento posterior`, c:true },
+          { t:`A Receita reabre a janela de ajustes automaticamente no mês seguinte`, c:false },
+          { t:`O débito fica suspenso até a confirmação expressa do contribuinte`, c:false },
+          { t:`A empresa pode ajustar livremente por cinco anos, sem nenhum efeito`, c:false },
+        ],
+        exp:`A inércia produz efeito jurídico: o valor apresentado pelo Fisco passa a valer como confirmado.`,
+        prat:`Agende a conferência para a segunda quinzena e tenha um suplente.`,
+        base:`LC 214/2025, art. 46 · Taxcel` },
+
+      { id:'VIS-07', tipo:'direto', tema:'apu', temaNome:'Apuração assistida', nivel:'intermediario',
+        contexto:`A apuração assistida mostra débitos de R$ 50.000 e créditos de R$ 32.000. A empresa encontra uma venda cancelada, com R$ 4.000 de IBS e CBS, que não foi refletida. Qual o saldo correto?<br><br><strong>Cascata de apuração com ajuste (valores ilustrativos):</strong><br>• Débitos apresentados: + R$ 50.000<br>• Venda cancelada não refletida (ajuste): − R$ 4.000<br>• Créditos apresentados: − R$ 32.000<br>• <strong>Saldo ajustado: R$ 14.000</strong>`,
+        afirmacao:null,
+        alts:[
+          { t:`R$ 14.000, com ajuste negativo de R$ 4.000 feito dentro do prazo`, c:true },
+          { t:`R$ 18.000, confirmando agora e pedindo restituição depois`, c:false },
+          { t:`R$ 22.000, somando o cancelamento aos débitos do período`, c:false },
+          { t:`R$ 10.000, abatendo o cancelamento duas vezes no saldo`, c:false },
+        ],
+        exp:`O ajuste negativo retira o débito da venda cancelada: 50.000 − 4.000 − 32.000 = 14.000. Sem o ajuste no prazo, vale o valor apresentado.`,
+        prat:`Concilie eventos de cancelamento contra a apuração antes do último dia útil.`,
+        base:`LC 214/2025, art. 46` },
+
+      /* ── Transição PIS/Cofins · extras ── */
+      { id:'VIS-05', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'intermediario',
+        contexto:`Uma loja apurou em junho/2027 o crédito presumido sobre estoque de R$ 480.000 e começa a usar em julho. Qual o valor de cada parcela e contra o que ela é usada?<br><br><strong>Crédito presumido de CBS sobre estoque de R$ 480.000 (valores ilustrativos):</strong><br>• Crédito total (9,25%): R$ 44.400<br>• Parcela mensal (1/12): R$ 3.700<br>• Usado em: 12 parcelas mensais — somente contra débitos de CBS`,
+        afirmacao:null,
+        alts:[
+          { t:`R$ 3.700 por mês, compensados apenas com débitos de CBS`, c:true },
+          { t:`R$ 44.400 de uma só vez, compensados com qualquer tributo federal`, c:false },
+          { t:`R$ 3.700 por mês, compensáveis também com IRPJ e CSLL`, c:false },
+          { t:`R$ 3.333 por mês, pois o crédito equivale a 8,33% do estoque`, c:false },
+        ],
+        exp:`O crédito é 9,25% do estoque (R$ 44.400), usado em 12 parcelas mensais (R$ 3.700) apenas contra débitos de CBS, sem ressarcimento.`,
+        prat:`Projete na solução o consumo das parcelas contra os débitos previstos de CBS.`,
+        base:`LC 214/2025, art. 381 · Econet` },
+
+      { id:'VIS-08', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'basico',
+        contexto:`Pela linha do tempo, o que a EFD-Contribuições ainda exige depois de janeiro/2027?<br><br><strong>O que acontece com a EFD-Contribuições:</strong><br>• até 12/2026 → Escrituração normal de PIS e Cofins<br>• 01/01/2027 → Fim dos fatos geradores novos<br>• 2027 em diante → Retificações de períodos até 12/2026<br>• 2027 em diante → Gestão de saldos credores<br>• Mínimo 5 anos → Guarda e fiscalização`,
+        afirmacao:null,
+        alts:[
+          { t:`Retificações até 12/2026, gestão de saldos credores e guarda por no mínimo cinco anos`, c:true },
+          { t:`Nada, a escrituração deixa de existir em janeiro/2027`, c:false },
+          { t:`Escrituração mensal da CBS, no lugar de PIS e Cofins`, c:false },
+          { t:`Somente a entrega final do período de dezembro/2026`, c:false },
+        ],
+        exp:`A NT RFB 11/2026 mantém a escrituração na transição com finalidade delimitada: retificar, gerir saldos credores e guardar.`,
+        prat:`Mantenha o histórico e o PVA acessíveis na rotina por pelo menos cinco anos.`,
+        base:`NT RFB 11/2026` },
+
+      /* ── Simples Nacional · extra ── */
+      { id:'VIS-06', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'intermediario',
+        contexto:`Uma empresa optou pelo regime regular em setembro e decidiu desistir em 15/12/2026. Pela linha do tempo, o que ela pode fazer?<br><br><strong>Janelas de opção pelo regime regular de IBS e CBS:</strong><br>• 01–30/09/2026 → Janela de opção para 2027<br>• 30/11/2026 → <em>Último dia para cancelar a opção</em><br>• 01/01/2027 → Opção produz efeitos<br>• mar/2027 → Nova janela de opção ou renúncia<br>• 2º sem/2027 → Efeitos da escolha de março`,
+        afirmacao:null,
+        alts:[
+          { t:`Renunciar na janela de março/2027, com efeito no segundo semestre`, c:true },
+          { t:`Cancelar a opção até 31/01/2027, antes do primeiro DAS`, c:false },
+          { t:`Sair do regime regular em janeiro, bastando comunicar a Receita`, c:false },
+          { t:`Apenas renunciar em setembro/2027, com efeito só em 2028`, c:false },
+        ],
+        exp:`O cancelamento era possível até o fim de novembro/2026. Depois, a opção ou renúncia ocorre em março e setembro, com efeito no semestre seguinte.`,
+        prat:`Registre na carteira de clientes do Simples a data limite de revisão de cada decisão.`,
+        base:`Resolução CGSN 186/2026 · Agência Gov` },
+
+      /* ── Split payment e créditos · extra ── */
+      { id:'VIS-04', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'basico',
+        contexto:`Um cliente do regime regular paga R$ 1.265 por PIX em uma operação alcançada pelo split payment. Quanto chega à conta do fornecedor?<br><br><strong>O que acontece com um pagamento no split payment (valores ilustrativos, alíquota combinada de 26,5%):</strong><br>• Pagamento do cliente: R$ 1.265<br>• IBS e CBS ao Fisco na liquidação: R$ 265<br>• Fornecedor recebe: R$ 1.000`,
+        afirmacao:null,
+        alts:[
+          { t:`R$ 1.000, porque IBS e CBS são separados na liquidação e seguem ao Fisco`, c:true },
+          { t:`R$ 1.265, e o fornecedor recolhe o tributo no mês seguinte`, c:false },
+          { t:`R$ 735, porque o tributo é descontado duas vezes na operação`, c:false },
+          { t:`R$ 1.265 menos a tarifa bancária, sem separação de tributo`, c:false },
+        ],
+        exp:`No split payment o IBS e a CBS são segregados no momento da liquidação financeira, e o valor líquido chega ao fornecedor.`,
+        prat:`Projete o caixa pelo valor líquido nas operações que entrarem no split.`,
+        base:`LC 214/2025, art. 35 · v360` },
+
+      /* ── ICMS, ISS e convivência · extra ── */
+      { id:'VIS-02', tipo:'direto', tema:'con', temaNome:'ICMS, ISS e convivência', nivel:'intermediario',
+        contexto:`Um cliente projeta a formação de preço para 2031. Pelo gráfico, como fica o ICMS naquele ano?<br><br><strong>Alíquotas de ICMS e ISS em relação às atuais (EC 132/2023):</strong><br>• 2026–2028: 100% · 2029: 90% · 2030: 80% · <strong>2031: 70%</strong> · 2032: 60% · 2033: 0%<br><em>O IBS ocupa gradualmente o espaço reduzido.</em>`,
+        afirmacao:null,
+        alts:[
+          { t:`Cobrado a 70% das alíquotas atuais, com o IBS ocupando a parcela reduzida`, c:true },
+          { t:`Extinto, substituído integralmente pelo IBS`, c:false },
+          { t:`Cobrado integralmente, pois só muda em 2033`, c:false },
+          { t:`Cobrado a 30% das alíquotas atuais`, c:false },
+        ],
+        exp:`A EC 132/2023 reduz ICMS e ISS em 10% ao ano de 2029 a 2032 (90%, 80%, 70%, 60%) e os extingue em 2033.`,
+        prat:`Projete preços e margens de 2029 em diante com as duas cargas combinadas, ano a ano.`,
+        base:`EC 132/2023, ADCT art. 128 · LC 214/2025` },
     ];
 
     /* ═══════════════════════════════════════════════

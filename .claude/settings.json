@@ -17,7 +17,11 @@
       "Bash(curl -s -o /dev/null -w \" %{http_code}\" http://localhost:4322/sap)",
       "Bash(curl -s -o /dev/null -w \" %{http_code}\" http://localhost:4322/normas)",
       "Bash(curl -s -o /dev/null -w \" %{http_code}\" http://localhost:4322/conceitos)",
-      "Bash(start node_modules/.bin/astro dev --host)"
+      "Bash(start node_modules/.bin/astro dev --host)",
+      "Bash(gh run *)",
+      "Bash(npm list *)",
+      "Bash(curl -s -X POST https://api.cloudflare.com/client/v4/user/tokens -H 'Authorization: Bearer cfoat_sDfszNRE0-gcZzTI95TFNb7p1Po0M9KYrxdgPSDIuxo.5PQVz43K1Y4WQ46f-zikQtssAeP1RK4vM92l8c4Om6o' -H 'Content-Type: application/json' --data '{ *)",
+      "WebFetch(domain:docs.receitafederal.gov.br)"
     ]
   }
 }

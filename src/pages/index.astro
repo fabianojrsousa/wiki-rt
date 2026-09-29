@@ -749,20 +749,95 @@ function badgeClass(criticidade: string) {
   /* ── HERO DIREITA ── */
   .hero-direita { display: flex; flex-direction: column; gap: .75rem; padding-top: var(--e-5); }
 
+  /* ── Animações idle dos ícones — bounce + glow ── */
+  /* Cada animação: ação rápida nos primeiros ~30%, repouso nos 70% restantes */
+  @keyframes quiz-idle {
+    0%, 35%, 100% { transform: translateY(0) scale(1);         filter: drop-shadow(0 0 2px rgba(59,130,246,.15)); }
+    9%             { transform: translateY(-12px) scale(1.28);  filter: drop-shadow(0 0 22px rgba(59,130,246,1)) drop-shadow(0 0 9px rgba(59,130,246,.75)); }
+    18%            { transform: translateY(4px) scale(.88);     filter: drop-shadow(0 0 4px rgba(59,130,246,.2)); }
+    27%            { transform: translateY(-5px) scale(1.08);   filter: drop-shadow(0 0 12px rgba(59,130,246,.6)); }
+  }
+  @keyframes pod-idle {
+    0%, 35%, 100% { transform: scale(1);     filter: drop-shadow(0 0 2px rgba(34,197,94,.15)); }
+    9%             { transform: scale(1.42);  filter: drop-shadow(0 0 22px rgba(34,197,94,1)) drop-shadow(0 0 9px rgba(34,197,94,.75)); }
+    18%            { transform: scale(.82);   filter: drop-shadow(0 0 4px rgba(34,197,94,.2)); }
+    27%            { transform: scale(1.14);  filter: drop-shadow(0 0 12px rgba(34,197,94,.6)); }
+  }
+  @keyframes glos-idle {
+    0%, 38%, 100% { transform: rotate(0deg);   filter: drop-shadow(0 0 2px rgba(6,182,212,.15)); }
+    9%             { transform: rotate(-22deg); filter: drop-shadow(0 0 22px rgba(6,182,212,1)) drop-shadow(0 0 9px rgba(6,182,212,.75)); }
+    19%            { transform: rotate(9deg);   filter: drop-shadow(0 0 4px rgba(6,182,212,.2)); }
+    28%            { transform: rotate(-6deg);  filter: drop-shadow(0 0 12px rgba(6,182,212,.5)); }
+  }
+
+  /* Glow de fundo na linha ao pico da animação */
+  @keyframes quiz-row-glow {
+    0%, 35%, 100% { background: transparent; border-left-color: transparent; }
+    9%             { background: rgba(59,130,246,.13); border-left-color: rgba(59,130,246,.5); }
+  }
+  @keyframes pod-row-glow {
+    0%, 35%, 100% { background: transparent; border-left-color: transparent; }
+    9%             { background: rgba(34,197,94,.11);  border-left-color: rgba(34,197,94,.5);  }
+  }
+  @keyframes glos-row-glow {
+    0%, 38%, 100% { background: transparent; border-left-color: transparent; }
+    9%             { background: rgba(6,182,212,.1);   border-left-color: rgba(6,182,212,.5);  }
+  }
+
   .hero-links { display: flex; flex-direction: column; gap: 0; }
   .hero-link {
-    display: flex; align-items: center; gap: .75rem;
-    padding: .55rem .4rem; border-radius: 8px;
-    text-decoration: none; transition: background .15s;
+    display: flex; align-items: center; gap: .85rem;
+    padding: .65rem .5rem; border-radius: 10px;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: background .2s, transform .22s, border-color .22s, box-shadow .22s;
   }
-  .hero-link:hover { background: rgba(255,255,255,.04); }
-  .hero-link svg { width: 16px; height: 16px; flex-shrink: 0; }
-  .hero-link-quiz svg { color: var(--azul-400); }
-  .hero-link-pod  svg { color: var(--verde-400); }
-  .hero-link-glos svg { color: var(--ciano-400); }
-  .hero-link span { display: flex; flex-direction: column; gap: 1px; }
-  .hero-link strong { font-size: .83rem; font-weight: 600; color: var(--tinta); }
-  .hero-link em { font-style: normal; font-size: .7rem; color: var(--tinta-fraca); }
+  .hero-link-quiz { animation: quiz-row-glow 4s ease-in-out infinite; }
+  .hero-link-pod  { animation: pod-row-glow  4s ease-in-out infinite; animation-delay: -1.33s; }
+  .hero-link-glos { animation: glos-row-glow 4s ease-in-out infinite; animation-delay: -2.67s; }
+  .hero-link:hover { transform: translateX(5px); animation: none; }
+
+  .hero-link svg {
+    width: 22px; height: 22px; flex-shrink: 0;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), filter .22s;
+  }
+
+  /* Quiz — bounce para cima com mola */
+  .hero-link-quiz svg {
+    color: var(--azul-400);
+    animation: quiz-idle 4s ease-in-out infinite;
+  }
+  /* Podcasts — pulsa como gravação ativa */
+  .hero-link-pod svg {
+    color: var(--verde-400);
+    animation: pod-idle 4s ease-in-out infinite;
+    animation-delay: -1.33s;
+  }
+  /* Glossário — gira como abrindo uma página */
+  .hero-link-glos svg {
+    color: var(--ciano-400);
+    animation: glos-idle 4s ease-in-out infinite;
+    animation-delay: -2.67s;
+  }
+
+  /* Hover: cancela idle, aplica estado de foco */
+  .hero-link:hover svg { animation: none; transform: scale(1.25); }
+
+  .hero-link-quiz:hover { background: rgba(59,130,246,.09); border-left-color: rgba(59,130,246,.55); }
+  .hero-link-pod:hover  { background: rgba(34,197,94,.08);  border-left-color: rgba(34,197,94,.55);  }
+  .hero-link-glos:hover { background: rgba(6,182,212,.08);  border-left-color: rgba(6,182,212,.55);  }
+  .hero-link-quiz:hover svg { filter: drop-shadow(0 0 12px rgba(59,130,246,.95)); }
+  .hero-link-pod:hover  svg { filter: drop-shadow(0 0 12px rgba(34,197,94,.95));  }
+  .hero-link-glos:hover svg { filter: drop-shadow(0 0 12px rgba(6,182,212,.95));  }
+
+  .hero-link span { display: flex; flex-direction: column; gap: 2px; }
+  .hero-link strong {
+    font-family: var(--display); font-size: .9rem; font-weight: 600;
+    color: var(--tinta); letter-spacing: -.01em;
+    transition: color .2s;
+  }
+  .hero-link:hover strong { color: #fff; }
+  .hero-link em { font-style: normal; font-size: .78rem; color: var(--tinta-media); line-height: 1.35; }
 
   /* ── ILUSTRAÇÃO ── */
   .ilustracao-wrapper { width: 100%; }

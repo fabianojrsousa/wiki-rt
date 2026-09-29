@@ -36,6 +36,10 @@ import '../styles/global.css';
       <div class="cabecalho-inner">
 
         <a class="marca" href="/" aria-label="Radar RT — início">
+          <!-- tags que aparecem quando o radar detecta -->
+          <span class="radar-tag radar-tag-sap">SAP</span>
+          <span class="radar-tag radar-tag-erp">IMPOSTOS</span>
+          <span class="radar-tag radar-tag-reforma">Reforma</span>
           <svg class="marca-icone" viewBox="0 0 40 40" width="42" height="42" aria-hidden="true" fill="none">
             <defs>
               <radialGradient id="rg" cx="50%" cy="50%" r="50%">
@@ -43,14 +47,23 @@ import '../styles/global.css';
                 <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
               </radialGradient>
             </defs>
+            <!-- anéis estáticos -->
             <circle cx="20" cy="20" r="19" fill="rgba(6,9,26,.85)" stroke="rgba(96,165,250,.28)" stroke-width="1"/>
             <circle cx="20" cy="20" r="13.5" stroke="rgba(96,165,250,.18)" stroke-width="0.75"/>
             <circle cx="20" cy="20" r="8"    stroke="rgba(96,165,250,.18)" stroke-width="0.75"/>
-            <path d="M20,20 L33.5,12 A13.5,13.5 0 0,0 20,6.5 Z" fill="rgba(96,165,250,.12)"/>
-            <line x1="20" y1="20" x2="33.5" y2="12" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="29.5" cy="13.5" r="2.2" fill="#60a5fa"/>
-            <circle cx="29.5" cy="13.5" r="4.5" fill="rgba(96,165,250,.18)"/>
-            <circle cx="20" cy="20" r="1.8" fill="#93c5fd"/>
+            <!-- blips de detecção (sincronizados com a varredura) -->
+            <circle class="radar-blip radar-blip-sap"     cx="35" cy="14" r="1.2" fill="#60a5fa"/>
+            <circle class="radar-blip radar-blip-erp"     cx="8"  cy="31" r="1.2" fill="#60a5fa"/>
+            <circle class="radar-blip radar-blip-reforma" cx="4"  cy="18" r="1.2" fill="#60a5fa"/>
+            <!-- varredura rotacionando -->
+            <g class="radar-sweep">
+              <path d="M20,20 L33.5,12 A13.5,13.5 0 0,0 20,6.5 Z" fill="rgba(96,165,250,.14)"/>
+              <line x1="20" y1="20" x2="33.5" y2="12" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+              <circle class="radar-ping" cx="29.5" cy="13.5" r="4.5" fill="rgba(96,165,250,.22)"/>
+              <circle cx="29.5" cy="13.5" r="2.2" fill="#60a5fa"/>
+            </g>
+            <!-- ponto central -->
+            <circle class="radar-centro" cx="20" cy="20" r="1.8" fill="#93c5fd"/>
           </svg>
           <span class="marca-texto">
             <span class="marca-sup">RADAR</span>
@@ -60,14 +73,24 @@ import '../styles/global.css';
 
         <nav class="nav-wrapper" id="nav-wrapper" role="navigation" aria-label="Navegação principal">
           <ul class="nav">
-            <li><a href="/sap"             aria-current={atual('/sap')} class="nav-destaque">RT x SAP</a></li>
-            <li><a href="/linha-do-tempo"  aria-current={atual('/linha-do-tempo')}>Linha do tempo</a></li>
-            <li><a href="/situacoes"       aria-current={atual('/situacoes')}>O que muda no SAP</a></li>
-            <li><a href="/conceitos"       aria-current={atual('/conceitos')}>Conceitos</a></li>
-            <li><a href="/normas"          aria-current={atual('/normas')}>Normas</a></li>
-            <li><a href="/apuracao-cbs"       aria-current={atual('/apuracao-cbs')}>API's</a></li>
-            <li><a href="/contabilizacao"   aria-current={atual('/contabilizacao')}>Contabilização</a></li>
-            <li><a href="/obrigacoes-2027"  aria-current={atual('/obrigacoes-2027')}>Novas Obrigações</a></li>
+            <li><a href="/conceitos"       aria-current={atual('/conceitos')}       class="nav-destaque">Conceito</a></li>
+            <li><a href="/normas"          aria-current={atual('/normas')}          class="nav-destaque">Normas</a></li>
+            <li><a href="/apuracao-cbs"    aria-current={atual('/apuracao-cbs')}    class="nav-destaque">API's</a></li>
+            <li><a href="/obrigacoes-2027" aria-current={atual('/obrigacoes-2027')} class="nav-destaque">Novas Obrigações</a></li>
+            <li><a href="/contabilizacao"  aria-current={atual('/contabilizacao')}  class="nav-destaque">Contabilização</a></li>
+            <li class="nav-dropdown-pai">
+              <button class="nav-dropdown-btn nav-destaque" aria-expanded="false" aria-haspopup="true">
+                RT x SAP
+                <svg class="nav-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </button>
+              <ul class="nav-dropdown" role="menu">
+                <li><a href="/sap"       aria-current={atual('/sap')}       role="menuitem">Impacto da Reforma no seu sistema SAP</a></li>
+                <li><a href="/situacoes" aria-current={atual('/situacoes')} role="menuitem">O que muda no SAP</a></li>
+              </ul>
+            </li>
           </ul>
         </nav>
 
@@ -129,14 +152,15 @@ import '../styles/global.css';
     <div class="menu-mobile" id="menu-mobile" aria-label="Menu de navegação">
       <ul class="menu-mobile-lista">
         <li><a href="/"               aria-current={rota === '/' ? 'page' : undefined}>Início</a></li>
-        <li><a href="/sap"            aria-current={atual('/sap')} class="menu-mobile-destaque">RT x SAP</a></li>
-        <li><a href="/linha-do-tempo" aria-current={atual('/linha-do-tempo')}>Linha do tempo</a></li>
-        <li><a href="/situacoes"      aria-current={atual('/situacoes')}>O que muda no SAP</a></li>
-        <li><a href="/conceitos"      aria-current={atual('/conceitos')}>Conceitos</a></li>
+        <li><a href="/conceitos"      aria-current={atual('/conceitos')}>Conceito</a></li>
         <li><a href="/normas"         aria-current={atual('/normas')}>Normas</a></li>
-        <li><a href="/apuracao-cbs"    aria-current={atual('/apuracao-cbs')}>API's</a></li>
-        <li><a href="/contabilizacao"  aria-current={atual('/contabilizacao')}>Contabilização</a></li>
+        <li><a href="/apuracao-cbs"   aria-current={atual('/apuracao-cbs')}>API's</a></li>
         <li><a href="/obrigacoes-2027" aria-current={atual('/obrigacoes-2027')}>Novas Obrigações</a></li>
+        <li><a href="/contabilizacao"  aria-current={atual('/contabilizacao')}>Contabilização</a></li>
+        <li class="menu-mobile-secao">RT x SAP</li>
+        <li><a href="/sap"       aria-current={atual('/sap')}       class="menu-mobile-sub">Impacto da Reforma no seu sistema SAP</a></li>
+        <li><a href="/situacoes" aria-current={atual('/situacoes')} class="menu-mobile-sub">O que muda no SAP</a></li>
+        <li><a href="/linha-do-tempo" aria-current={atual('/linha-do-tempo')}>Linha do tempo</a></li>
         <li><a href="/quiz"            aria-current={atual('/quiz')}>Quiz</a></li>
         <li><a href="/podcasts"        aria-current={atual('/podcasts')}>Podcasts</a></li>
         <li><a href="/glossario"       aria-current={atual('/glossario')}>Glossário</a></li>
@@ -170,10 +194,13 @@ import '../styles/global.css';
       <main id="conteudo-principal"><slot /></main>
 
       <footer class="rodape">
-        <p>
-          Informação pública com fonte oficial citada. Não é consultoria tributária.
-          <a href="/como-este-site-funciona">Como este site funciona</a>.
-        </p>
+        <div class="rodape-info">
+          <p>
+            Informação pública com fonte oficial citada. Não é consultoria tributária.
+            <a href="/como-este-site-funciona">Como este site funciona</a>.
+          </p>
+          <p class="rodape-colab">Colaboradores: Fabiano Sousa &nbsp;·&nbsp; Idelvan Vasconcelos &nbsp;·&nbsp; Felipe Andrade</p>
+        </div>
         <a class="rodape-rss" href="/rss.xml" aria-label="Feed RSS">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -258,6 +285,257 @@ import '../styles/global.css';
       </svg>
     </button>
 
+    <style>
+      /* ── Animações do logo radar ── */
+      .radar-sweep {
+        transform-origin: 20px 20px;
+        animation: radar-girar 4s linear infinite;
+      }
+
+      @keyframes radar-girar {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+
+      .radar-ping {
+        transform-origin: 29.5px 13.5px;
+        animation: radar-ping 4s ease-out infinite;
+      }
+
+      @keyframes radar-ping {
+        0%   { transform: scale(1);   opacity: .55; }
+        65%  { transform: scale(3);   opacity: 0;   }
+        100% { transform: scale(3);   opacity: 0;   }
+      }
+
+      .radar-centro {
+        transform-origin: 20px 20px;
+        animation: radar-pulso 2s ease-in-out infinite;
+      }
+
+      @keyframes radar-pulso {
+        0%, 100% { opacity: 1;   transform: scale(1);    }
+        50%       { opacity: .4; transform: scale(1.5);  }
+      }
+
+      /* ── Colaboradores ── */
+      .rodape-info { flex: 1; min-width: 0; }
+
+      .rodape-colab {
+        margin: .35rem 0 0;
+        font-size: var(--t-sm);
+        color: var(--tinta-fraca, #475569);
+      }
+
+      /* ── Tags de detecção ── */
+      .marca { position: relative; overflow: visible; }
+
+      .radar-tag {
+        position: absolute;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: #93c5fd;
+        background: rgba(6,9,26,.92);
+        border: 1px solid rgba(96,165,250,.5);
+        border-radius: 3px;
+        padding: 2px 5px;
+        opacity: 0;
+        pointer-events: none;
+        white-space: nowrap;
+        z-index: 20;
+        box-shadow: 0 0 8px rgba(96,165,250,.25);
+      }
+
+      /* ciclo de 12s: cada tag ocupa 4s do ciclo, nunca aparecem juntas */
+      .radar-tag-sap     { top: 4px;  left: -2px;  animation: radar-tag-flash 12s ease-out infinite; animation-delay: 0s; }
+      .radar-tag-erp     { top: 28px; left: -16px; animation: radar-tag-flash 12s ease-out infinite; animation-delay: -8s; }
+      .radar-tag-reforma { top: 4px;  left: -14px; animation: radar-tag-flash 12s ease-out infinite; animation-delay: -4s; }
+
+      @keyframes radar-tag-flash {
+        0%    { opacity: 0; transform: scale(.8) translateY(2px); }
+        4%    { opacity: 1; transform: scale(1.05) translateY(0); }
+        8%    { opacity: .95; transform: scale(1); }
+        28%   { opacity: .6; }
+        33%   { opacity: 0; }   /* some antes dos próximos 4s */
+        100%  { opacity: 0; }
+      }
+
+      /* ── Blips no SVG (mesmo ciclo 12s) ── */
+      .radar-blip { opacity: 0; }
+      .radar-blip-sap     { animation: radar-blip 12s ease-out infinite; animation-delay: 0s; }
+      .radar-blip-erp     { animation: radar-blip 12s ease-out infinite; animation-delay: -8s; }
+      .radar-blip-reforma { animation: radar-blip 12s ease-out infinite; animation-delay: -4s; }
+
+      @keyframes radar-blip {
+        0%   { opacity: 0; }
+        4%   { opacity: 1; }
+        28%  { opacity: .5; }
+        33%  { opacity: 0; }
+        100% { opacity: 0; }
+      }
+
+      /* ── Ênfase permanente no logo ── */
+      .marca-sup {
+        font-size: .75rem !important;
+        letter-spacing: .2em !important;
+        color: #93c5fd !important;
+        text-shadow: 0 0 10px rgba(96,165,250,.5);
+      }
+
+      .marca-nome {
+        font-size: 1.9rem !important;
+        filter: drop-shadow(0 0 6px rgba(96,165,250,.35));
+        animation: rt-radar-glow 4s ease-in-out infinite;
+      }
+
+      @keyframes rt-radar-glow {
+        0%, 74%  { filter: drop-shadow(0 0 6px rgba(96,165,250,.35)); }
+        84%      { filter: drop-shadow(0 0 12px rgba(96,165,250,.7)) brightness(1.15); }
+        92%      { filter: drop-shadow(0 0 22px rgba(96,165,250,1))  brightness(1.3); }
+        100%     { filter: drop-shadow(0 0 6px rgba(96,165,250,.35)); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .radar-sweep, .radar-ping, .radar-centro,
+        .radar-blip, .radar-tag, .marca-nome { animation: none; }
+      }
+
+      /* ── Dropdown RT x SAP ── */
+      .nav-dropdown-pai { position: relative; }
+
+      .nav-dropdown-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        cursor: pointer;
+        /* mesmos estilos de .nav a */
+        font-family: var(--display);
+        font-size: var(--t-sm);
+        font-weight: 500;
+        text-decoration: none;
+        color: rgba(255,255,255,.82);
+        padding: 0.4rem var(--e-4);
+        border-radius: var(--r-md);
+        border: 1px solid rgba(255,255,255,.22);
+        background: linear-gradient(160deg, rgba(255,255,255,.18) 0%, rgba(255,255,255,.09) 100%);
+        backdrop-filter: blur(16px) saturate(160%);
+        -webkit-backdrop-filter: blur(16px) saturate(160%);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.3),
+          inset 0 -1px 0 rgba(0,0,0,.18),
+          0 2px 12px rgba(0,0,0,.25);
+        transition:
+          color var(--dur) var(--ease),
+          background var(--dur) var(--ease),
+          border-color var(--dur) var(--ease),
+          box-shadow var(--dur) var(--ease);
+        white-space: nowrap;
+      }
+
+      .nav-dropdown-btn:hover {
+        color: #ffffff;
+        background: linear-gradient(160deg, rgba(255,255,255,.26) 0%, rgba(255,255,255,.14) 100%);
+        border-color: rgba(255,255,255,.36);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.4),
+          inset 0 -1px 0 rgba(0,0,0,.15),
+          0 4px 20px rgba(0,0,0,.35);
+      }
+
+      .nav-dropdown-chevron {
+        width: 13px;
+        height: 13px;
+        transition: transform .2s ease;
+        flex-shrink: 0;
+      }
+
+      .nav-dropdown-btn[aria-expanded="true"] .nav-dropdown-chevron {
+        transform: rotate(180deg);
+      }
+
+      .nav-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + .6rem);
+        right: 0;
+        min-width: 260px;
+        list-style: none;
+        margin: 0;
+        padding: .4rem;
+        background: rgba(6,9,26,.92);
+        border: 1px solid rgba(59,130,246,.3);
+        border-radius: .75rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 18px rgba(59,130,246,.12);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        z-index: 200;
+      }
+
+      .nav-dropdown.aberto { display: block; }
+
+      .nav-dropdown li a {
+        display: block;
+        padding: .55rem 1rem;
+        font-family: var(--display);
+        font-size: var(--t-sm);
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        color: var(--azul-200, #bfdbfe);
+        border-radius: .5rem;
+        border: 1px solid rgba(59,130,246,.28);
+        background: linear-gradient(135deg, rgba(59,130,246,.18) 0%, rgba(99,102,241,.10) 100%);
+        box-shadow:
+          inset 0 1px 0 rgba(147,197,253,.25),
+          inset 0 -1px 0 rgba(0,0,0,.12),
+          0 0 10px rgba(59,130,246,.12);
+        white-space: nowrap;
+        transition: color .15s, background .15s, border-color .15s, box-shadow .15s;
+        margin-bottom: .25rem;
+      }
+
+      .nav-dropdown li:last-child a { margin-bottom: 0; }
+
+      .nav-dropdown li a:hover,
+      .nav-dropdown li a:focus {
+        color: #ffffff;
+        background: linear-gradient(135deg, rgba(59,130,246,.32) 0%, rgba(99,102,241,.22) 100%);
+        border-color: rgba(59,130,246,.55);
+        box-shadow:
+          inset 0 1px 0 rgba(147,197,253,.4),
+          inset 0 -1px 0 rgba(0,0,0,.15),
+          0 0 18px rgba(59,130,246,.25);
+        outline: none;
+      }
+
+      .nav-dropdown li a[aria-current="page"] {
+        color: #ffffff;
+        border-color: rgba(59,130,246,.6);
+        background: linear-gradient(135deg, rgba(59,130,246,.38) 0%, rgba(99,102,241,.26) 100%);
+      }
+
+      /* ── Mobile: seção RT x SAP ── */
+      .menu-mobile-secao {
+        padding: .45rem 1.25rem .2rem;
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--texto-terciario, #64748b);
+        pointer-events: none;
+        margin-top: .4rem;
+      }
+
+      .menu-mobile-sub {
+        padding-left: 2rem !important;
+        font-size: .9rem !important;
+        color: var(--texto-secundario, #94a3b8) !important;
+      }
+    </style>
+
     <script>
       // ── Tema ──
       const html = document.documentElement;
@@ -298,6 +576,33 @@ import '../styles/global.css';
       menuMobile.querySelectorAll('a').forEach((a) => {
         a.addEventListener('click', fecharMenuMobile);
       });
+
+      // ── Dropdown RT x SAP ──
+      const dropBtn  = document.querySelector('.nav-dropdown-btn') as HTMLButtonElement | null;
+      const dropMenu = document.querySelector('.nav-dropdown')      as HTMLElement | null;
+
+      if (dropBtn && dropMenu) {
+        dropBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const aberto = dropMenu.classList.toggle('aberto');
+          dropBtn.setAttribute('aria-expanded', String(aberto));
+        });
+
+        document.addEventListener('click', () => {
+          dropMenu.classList.remove('aberto');
+          dropBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        dropMenu.querySelectorAll('a').forEach((a) => {
+          a.addEventListener('keydown', (e) => {
+            if ((e as KeyboardEvent).key === 'Escape') {
+              dropMenu.classList.remove('aberto');
+              dropBtn.setAttribute('aria-expanded', 'false');
+              dropBtn.focus();
+            }
+          });
+        });
+      }
 
       // ── Barra de progresso de leitura ──
       const barraLeitura = document.getElementById('progresso-barra')!;

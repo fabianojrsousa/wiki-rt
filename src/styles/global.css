@@ -1015,6 +1015,55 @@ tr:last-child td { border-bottom: 0; }
 .indice a:hover { color: var(--link); }
 .indice p { margin: var(--e-1) 0 0; font-size: var(--t-sm); color: var(--tinta-media); }
 
+/* ── Introdução da Reforma (página Conceitos) ── */
+.reforma-intro {
+  background: linear-gradient(135deg, rgba(59,130,246,.07) 0%, rgba(99,102,241,.04) 100%);
+  border: 1px solid rgba(96,165,250,.18);
+  border-radius: var(--r-lg);
+  padding: var(--e-6) var(--e-8);
+  margin-bottom: var(--e-8);
+}
+
+.reforma-intro-titulo {
+  font-size: var(--t-lg);
+  font-weight: 700;
+  color: var(--tinta-forte);
+  margin: 0 0 var(--e-4);
+}
+
+.reforma-intro p {
+  font-size: var(--t-base);
+  color: var(--tinta-media);
+  line-height: 1.75;
+  margin: 0 0 var(--e-3);
+}
+
+.reforma-intro p:last-of-type { margin-bottom: 0; }
+
+.reforma-intro a {
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+}
+.reforma-intro a:hover { text-decoration: underline; }
+
+.reforma-intro-pilares {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2);
+  margin-top: var(--e-5);
+}
+
+.reforma-intro-pilares span {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--azul-300);
+  background: rgba(96,165,250,.1);
+  border: 1px solid rgba(96,165,250,.22);
+  border-radius: var(--r-md);
+  padding: var(--e-1) var(--e-3);
+}
+
 /* ── Footer ── */
 .rodape {
   border-top: 1px solid var(--borda);
@@ -1373,17 +1422,17 @@ tr:last-child td { border-bottom: 0; }
 .sc-icone { font-size: 1rem; line-height: 1; }
 .sc-titulo {
   font-family: var(--display);
-  font-size: var(--t-sm);
+  font-size: 0.9rem;
   font-weight: 700;
+  letter-spacing: -.01em;
   color: var(--tinta);
   margin: 0;
 }
 .sc-ver-todas {
-  font-family: var(--dado);
-  font-size: 0.7rem;
+  font-size: 0.73rem;
   color: var(--azul-400);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
 }
 .sc-ver-todas:hover { color: var(--azul-300); }
@@ -1509,7 +1558,7 @@ tr:last-child td { border-bottom: 0; }
 .atualiz-item:hover { background: rgba(255,255,255,.04); }
 .atualiz-data {
   font-family: var(--dado);
-  font-size: 0.62rem;
+  font-size: 0.66rem;
   color: var(--tinta-fraca);
   white-space: nowrap;
 }
@@ -1517,12 +1566,11 @@ tr:last-child td { border-bottom: 0; }
 .atualiz-badge {
   display: inline-block;
   width: fit-content;
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-family: var(--dado);
-  font-size: 0.58rem;
+  padding: 1px 7px;
+  border-radius: 5px;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: .04em;
+  letter-spacing: .05em;
   text-transform: uppercase;
 }
 .atualiz-badge.badge-critico  { background: rgba(239,68,68,.2);  color: #f87171; }
@@ -1530,8 +1578,10 @@ tr:last-child td { border-bottom: 0; }
 .atualiz-badge.badge-medio    { background: rgba(59,130,246,.2); color: var(--azul-400); }
 .atualiz-badge.badge-info     { background: rgba(148,163,184,.15); color: var(--tinta-media); }
 .atualiz-titulo {
-  font-size: 0.72rem;
+  font-family: var(--display);
+  font-size: 0.8rem;
   font-weight: 600;
+  letter-spacing: -.01em;
   color: var(--tinta);
   text-decoration: none;
   white-space: nowrap;
@@ -1541,7 +1591,7 @@ tr:last-child td { border-bottom: 0; }
 }
 .atualiz-titulo:hover { color: var(--azul-400); }
 .atualiz-afeta {
-  font-size: 0.63rem;
+  font-size: 0.68rem;
   color: var(--tinta-fraca);
   white-space: nowrap;
   overflow: hidden;
@@ -1559,8 +1609,8 @@ tr:last-child td { border-bottom: 0; }
   margin-top: var(--e-3);
   padding-top: var(--e-3);
   border-top: 1px solid var(--borda);
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: 0.76rem;
+  font-weight: 500;
   color: var(--azul-400);
   text-decoration: none;
   transition: color var(--dur);
