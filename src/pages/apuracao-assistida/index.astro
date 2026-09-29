@@ -61,6 +61,20 @@ import Base from '../../layouts/Base.astro';
     </div>
   </section>
 
+  <!-- ══ Imagem de arquitetura ══ -->
+  <figure class="aa-figura">
+    <img
+      src="/apuracao-assistida-arquitetura.jpg"
+      alt="Diagrama de arquitetura da Apuração Assistida: DFes distribuídos por NSU para duas trilhas — CGIBS IBS (DFes → IPA → Kafka → Apuração IBS) e Receita Federal CBS (DFes → ROC → Kafka → Apuração CBS) — convergindo no Portal da Reforma"
+      class="aa-figura-img"
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption class="aa-figura-legenda">
+      Pilares · Sincronismo — os DFes são distribuídos via NSU para as duas trilhas de apuração, que convergem no Portal da Reforma.
+    </figcaption>
+  </figure>
+
   <!-- ══ IPA — IBS ══ -->
   <section class="aa-secao">
     <div class="aa-secao-label aa-label-ibs">CGIBS · MOC API v1.10 · Set/2026</div>
@@ -311,6 +325,27 @@ import Base from '../../layouts/Base.astro';
   </section>
 
   <style>
+    /* ── Figura / imagem de arquitetura ── */
+    .aa-figura {
+      margin: 0 0 2.5rem;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(8,15,42,.5);
+    }
+    .aa-figura-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .aa-figura-legenda {
+      padding: .65rem 1.1rem;
+      font-size: .75rem;
+      color: var(--tinta-fraca);
+      border-top: 1px solid rgba(255,255,255,.07);
+      line-height: 1.5;
+    }
+
     /* ── Hero ── */
     .aa-hero {
       text-align: center;
