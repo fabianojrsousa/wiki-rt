@@ -1,0 +1,1029 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  titulo="Novas Obrigações 2027"
+  descricao="O que acaba, o que fica e o que é criado nas obrigações acessórias da Reforma Tributária — de 2027 até a extinção do ICMS e ISS em 2033."
+>
+<style>
+  /* ── Contentor geral ─────────────────────────────── */
+  .no-wrap { display:flex; flex-direction:column; gap:var(--e-6,2.5rem); }
+
+  /* ══════════════════════════════════════════════════
+     1. STATS — três números grandes
+  ══════════════════════════════════════════════════ */
+  .no-stats {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: var(--e-4);
+  }
+  @media(max-width:640px){ .no-stats{ grid-template-columns:1fr; gap:var(--e-3); } }
+
+  .no-stat {
+    background: rgba(8,15,42,.7);
+    border: 1px solid var(--borda-forte);
+    border-radius: 18px;
+    padding: var(--e-5) var(--e-5) var(--e-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .no-stat::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: .06;
+    pointer-events: none;
+  }
+  .no-stat.s-encerra::after { background: #f87171; }
+  .no-stat.s-novo::after    { background: #4ade80; }
+  .no-stat.s-cont::after    { background: #fbbf24; }
+
+  .no-stat-acento {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 18px 18px 0 0;
+  }
+  .no-stat.s-encerra .no-stat-acento { background:linear-gradient(90deg,#f87171,rgba(248,113,113,.2)); }
+  .no-stat.s-novo    .no-stat-acento { background:linear-gradient(90deg,#4ade80,rgba(34,211,238,.3)); }
+  .no-stat.s-cont    .no-stat-acento { background:linear-gradient(90deg,#fbbf24,rgba(251,146,60,.3)); }
+
+  .no-stat-num {
+    font-family: var(--dado);
+    font-size: clamp(2.6rem,5vw,3.5rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -.04em;
+    padding-top: var(--e-3);
+  }
+  .no-stat.s-encerra .no-stat-num { color:#f87171; }
+  .no-stat.s-novo    .no-stat-num { color:#4ade80; }
+  .no-stat.s-cont    .no-stat-num { color:#fbbf24; }
+
+  .no-stat-titulo {
+    font-size: .92rem;
+    font-weight: 700;
+    color: var(--tinta);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+  .no-stat-sub {
+    font-family: var(--dado);
+    font-size: .72rem;
+    color: var(--tinta-fraca);
+    margin-top: 2px;
+  }
+  .no-stat-lista {
+    list-style: none;
+    margin: var(--e-3) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    text-align: left;
+  }
+  .no-stat-lista li {
+    font-size: .78rem;
+    color: var(--tinta-media);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 0;
+    border-top: 1px solid var(--borda);
+  }
+  .no-stat-lista li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .no-stat.s-encerra .no-stat-lista li::before { background:#f87171; }
+  .no-stat.s-novo    .no-stat-lista li::before { background:#4ade80; }
+  .no-stat.s-cont    .no-stat-lista li::before { background:#fbbf24; }
+
+  /* ══════════════════════════════════════════════════
+     2. VIRADA — antes vs. depois
+  ══════════════════════════════════════════════════ */
+  .no-virada {
+    background: rgba(8,15,42,.7);
+    border: 1px solid var(--borda-forte);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .no-virada-topo {
+    height: 3px;
+    background: linear-gradient(90deg,var(--azul-400) 0%,rgba(34,211,238,.4) 100%);
+  }
+  .no-virada-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  @media(max-width:640px){ .no-virada-grid{ grid-template-columns:1fr; } }
+
+  .no-lado {
+    padding: var(--e-6) var(--e-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+  }
+  .no-lado + .no-lado {
+    border-left: 1px solid var(--borda);
+  }
+  @media(max-width:640px){ .no-lado + .no-lado{ border-left:none; border-top:1px solid var(--borda); } }
+
+  .no-lado-label {
+    font-family: var(--dado);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-self: flex-start;
+  }
+  .no-lado-label.antes {
+    background: rgba(248,113,113,.12);
+    border: 1px solid rgba(248,113,113,.25);
+    color: #fca5a5;
+  }
+  .no-lado-label.depois {
+    background: rgba(34,211,238,.1);
+    border: 1px solid rgba(34,211,238,.25);
+    color: #67e8f9;
+  }
+
+  .no-lado-titulo {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+  }
+  .no-lado.antes-lado .no-lado-titulo { color: #fca5a5; }
+  .no-lado.depois-lado .no-lado-titulo { color: #67e8f9; }
+
+  .no-lado-desc {
+    font-size: .875rem;
+    color: var(--tinta-media);
+    line-height: 1.65;
+  }
+  .no-lado-desc strong { color: var(--tinta); }
+
+  .no-passos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+    margin-top: var(--e-2);
+  }
+  .no-passo {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--e-3);
+  }
+  .no-passo-num {
+    font-family: var(--dado);
+    font-size: .7rem;
+    font-weight: 900;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .depois-lado .no-passo-num {
+    background: rgba(34,211,238,.15);
+    border: 1px solid rgba(34,211,238,.3);
+    color: #67e8f9;
+  }
+  .antes-lado .no-passo-num {
+    background: rgba(248,113,113,.12);
+    border: 1px solid rgba(248,113,113,.25);
+    color: #fca5a5;
+  }
+  .no-passo-txt {
+    font-size: .85rem;
+    color: var(--tinta-media);
+    line-height: 1.55;
+  }
+  .no-passo-txt strong { color: var(--tinta); }
+
+  /* Alerta silêncio — faixa vermelha */
+  .no-alerta-silencio {
+    margin: 0;
+    padding: var(--e-4) var(--e-5);
+    background: rgba(248,113,113,.1);
+    border-top: 1px solid rgba(248,113,113,.25);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--e-4);
+  }
+  .no-alerta-icone {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(248,113,113,.18);
+    border: 1px solid rgba(248,113,113,.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .no-alerta-icone svg { width: 18px; height: 18px; color: #f87171; }
+  .no-alerta-txt { flex: 1; min-width: 0; }
+  .no-alerta-txt strong {
+    display: block;
+    font-size: .92rem;
+    font-weight: 800;
+    color: #fca5a5;
+    margin-bottom: 3px;
+  }
+  .no-alerta-txt p {
+    margin: 0;
+    font-size: .82rem;
+    color: var(--tinta-media);
+    line-height: 1.6;
+  }
+  .no-alerta-txt p em { color: var(--tinta); font-style: normal; font-weight: 600; }
+
+  /* ══════════════════════════════════════════════════
+     3. PAINEL DE OBRIGAÇÕES — 3 colunas
+  ══════════════════════════════════════════════════ */
+  .no-painel {
+    background: rgba(8,15,42,.7);
+    border: 1px solid var(--borda-forte);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .no-painel-hdr {
+    padding: var(--e-4) var(--e-5);
+    border-bottom: 1px solid var(--borda);
+    background: rgba(255,255,255,.02);
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+  }
+  .no-painel-hdr-titulo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--tinta);
+  }
+  .no-painel-hdr-sub {
+    font-size: .78rem;
+    color: var(--tinta-fraca);
+  }
+
+  .no-cols {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+  }
+  @media(max-width:860px){ .no-cols{ grid-template-columns:1fr; } }
+
+  .no-col {
+    display: flex;
+    flex-direction: column;
+  }
+  .no-col + .no-col {
+    border-left: 1px solid var(--borda);
+  }
+  @media(max-width:860px){ .no-col + .no-col{ border-left:none; border-top:1px solid var(--borda); } }
+
+  .no-col-hdr {
+    padding: var(--e-4) var(--e-4) var(--e-3);
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    position: sticky;
+    top: 0;
+  }
+  .no-col.encerra .no-col-hdr { background:rgba(248,113,113,.08); border-bottom:2px solid rgba(248,113,113,.25); }
+  .no-col.novo    .no-col-hdr { background:rgba(74,222,128,.07);  border-bottom:2px solid rgba(74,222,128,.22); }
+  .no-col.cont    .no-col-hdr { background:rgba(251,191,36,.07);  border-bottom:2px solid rgba(251,191,36,.22); }
+
+  .no-col-icone {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    display: flex; align-items:center; justify-content:center;
+    flex-shrink: 0;
+  }
+  .no-col.encerra .no-col-icone { background:rgba(248,113,113,.18); border:1px solid rgba(248,113,113,.3); }
+  .no-col.novo    .no-col-icone { background:rgba(74,222,128,.16);  border:1px solid rgba(74,222,128,.28); }
+  .no-col.cont    .no-col-icone { background:rgba(251,191,36,.14);  border:1px solid rgba(251,191,36,.26); }
+  .no-col.encerra .no-col-icone svg { color:#f87171; width:15px; height:15px; }
+  .no-col.novo    .no-col-icone svg { color:#4ade80; width:15px; height:15px; }
+  .no-col.cont    .no-col-icone svg { color:#fbbf24; width:15px; height:15px; }
+
+  .no-col-hdr-txt {}
+  .no-col-hdr-titulo {
+    font-size: .82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .no-col.encerra .no-col-hdr-titulo { color:#f87171; }
+  .no-col.novo    .no-col-hdr-titulo { color:#4ade80; }
+  .no-col.cont    .no-col-hdr-titulo { color:#fbbf24; }
+  .no-col-hdr-count {
+    font-family: var(--dado);
+    font-size: .7rem;
+    color: var(--tinta-fraca);
+  }
+
+  .no-col-items {
+    display: flex;
+    flex-direction: column;
+    padding: var(--e-3) var(--e-3);
+    gap: var(--e-2);
+    flex: 1;
+  }
+
+  .no-item {
+    border-radius: 12px;
+    padding: var(--e-3) var(--e-4);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid transparent;
+    transition: border-color .15s;
+  }
+  .no-col.encerra .no-item { background:rgba(248,113,113,.05); }
+  .no-col.novo    .no-item { background:rgba(74,222,128,.04);  }
+  .no-col.cont    .no-item { background:rgba(251,191,36,.04);  }
+  .no-col.encerra .no-item:hover { border-color:rgba(248,113,113,.2); }
+  .no-col.novo    .no-item:hover { border-color:rgba(74,222,128,.18);  }
+  .no-col.cont    .no-item:hover { border-color:rgba(251,191,36,.18);  }
+
+  .no-item-titulo {
+    font-size: .875rem;
+    font-weight: 700;
+    color: var(--tinta);
+    word-break: break-word;
+    min-width: 0;
+  }
+  .no-item-badge {
+    font-family: var(--dado);
+    font-size: .65rem;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-self: flex-start;
+  }
+  .no-col.encerra .no-item-badge { background:rgba(248,113,113,.14); border:1px solid rgba(248,113,113,.28); color:#fca5a5; }
+  .no-col.novo    .no-item-badge { background:rgba(74,222,128,.12);  border:1px solid rgba(74,222,128,.25);  color:#86efac; }
+  .no-col.cont    .no-item-badge { background:rgba(251,191,36,.12);  border:1px solid rgba(251,191,36,.25);  color:#fde68a; }
+  .no-item-badge.destaque-badge  { background:rgba(156,163,175,.1);  border:1px solid rgba(156,163,175,.2);  color:#9ca3af; }
+  .no-item-badge.adiado-badge    { background:rgba(251,191,36,.11);  border:1px solid rgba(251,191,36,.24);  color:#fde68a; }
+
+  .no-item-desc {
+    font-size: .79rem;
+    color: var(--tinta-fraca);
+    line-height: 1.55;
+  }
+  .no-item-desc strong { color: var(--tinta-media); }
+
+  /* nota de rodapé dentro do painel */
+  .no-painel-nota {
+    padding: var(--e-3) var(--e-5);
+    border-top: 1px solid var(--borda);
+    background: rgba(251,191,36,.04);
+    display: flex;
+    gap: var(--e-3);
+    align-items: flex-start;
+  }
+  .no-painel-nota svg { width:15px; height:15px; color:#fbbf24; flex-shrink:0; margin-top:2px; }
+  .no-painel-nota p { margin:0; font-size:.78rem; color:var(--tinta-fraca); line-height:1.55; }
+  .no-painel-nota p strong { color:var(--tinta-media); }
+
+  /* ══════════════════════════════════════════════════
+     4. TIMELINE VISUAL
+  ══════════════════════════════════════════════════ */
+  .no-tl-card {
+    background: rgba(8,15,42,.7);
+    border: 1px solid var(--borda-forte);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .no-tl-hdr {
+    padding: var(--e-4) var(--e-5);
+    border-bottom: 1px solid var(--borda);
+    background: rgba(34,211,238,.06);
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+  }
+  .no-tl-hdr-icone {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    background: rgba(34,211,238,.14);
+    border: 1px solid rgba(34,211,238,.28);
+    display: flex; align-items:center; justify-content:center;
+    flex-shrink: 0;
+  }
+  .no-tl-hdr-icone svg { width:15px; height:15px; color:#22d3ee; }
+  .no-tl-hdr-titulo { font-size:1rem; font-weight:700; color:var(--tinta); }
+  .no-tl-hdr-sub { font-size:.78rem; color:var(--tinta-fraca); }
+
+  .no-tl-body {
+    padding: var(--e-5) var(--e-5) var(--e-4);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  /* linha central vertical */
+  .no-tl-body::before {
+    content:'';
+    position:absolute;
+    left: calc(var(--e-5) + 42px);
+    top: var(--e-5);
+    bottom: var(--e-4);
+    width: 2px;
+    background: linear-gradient(180deg,
+      rgba(34,211,238,.4) 0%,
+      rgba(34,211,238,.15) 50%,
+      rgba(34,211,238,.06) 100%
+    );
+    border-radius: 2px;
+  }
+  @media(max-width:540px){
+    .no-tl-body::before{ left: calc(var(--e-4) + 30px); }
+  }
+
+  .no-tl-evento {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--e-4);
+    padding: var(--e-3) 0;
+    position: relative;
+  }
+
+  .no-tl-data-col {
+    width: 86px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 3px;
+  }
+  @media(max-width:540px){ .no-tl-data-col{ width:60px; } }
+
+  .no-tl-data {
+    font-family: var(--dado);
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--tinta-fraca);
+    text-align: right;
+    line-height: 1.3;
+  }
+  .no-tl-evento.marco .no-tl-data { color: #22d3ee; }
+
+  /* dot na linha */
+  .no-tl-dot-col {
+    width: 16px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 5px;
+    position: relative;
+    z-index: 1;
+  }
+  .no-tl-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--borda-forte);
+    border: 2px solid rgba(34,211,238,.25);
+    flex-shrink: 0;
+  }
+  .no-tl-evento.marco .no-tl-dot {
+    width: 16px; height: 16px;
+    background: rgba(34,211,238,.25);
+    border: 2px solid #22d3ee;
+    box-shadow: 0 0 10px rgba(34,211,238,.35);
+  }
+  .no-tl-evento.alerta .no-tl-dot {
+    background: rgba(248,113,113,.2);
+    border-color: #f87171;
+  }
+  .no-tl-evento.positivo .no-tl-dot {
+    background: rgba(74,222,128,.18);
+    border-color: #4ade80;
+  }
+  .no-tl-evento.neutro .no-tl-dot {
+    background: rgba(251,191,36,.14);
+    border-color: #fbbf24;
+  }
+
+  /* conteúdo do evento */
+  .no-tl-content { flex: 1; min-width: 0; padding-bottom: var(--e-4); }
+
+  .no-tl-evento-titulo {
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--tinta);
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .no-tl-evento.marco .no-tl-evento-titulo {
+    font-size: 1rem;
+    color: #67e8f9;
+  }
+  .no-tl-evento-desc {
+    font-size: .8rem;
+    color: var(--tinta-fraca);
+    line-height: 1.6;
+    margin-top: 4px;
+    word-break: break-word;
+  }
+  .no-tl-evento-desc strong { color: var(--tinta-media); }
+
+  /* tags inline na timeline */
+  .no-tl-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 7px;
+  }
+  .no-tl-tag {
+    font-family: var(--dado);
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .no-tl-tag.vermelho { background:rgba(248,113,113,.13); border:1px solid rgba(248,113,113,.25); color:#fca5a5; }
+  .no-tl-tag.verde    { background:rgba(74,222,128,.11);  border:1px solid rgba(74,222,128,.22);  color:#86efac; }
+  .no-tl-tag.amarelo  { background:rgba(251,191,36,.1);   border:1px solid rgba(251,191,36,.22);  color:#fde68a; }
+  .no-tl-tag.cinza    { background:rgba(156,163,175,.09); border:1px solid rgba(156,163,175,.18); color:#9ca3af; }
+  .no-tl-tag.ciano    { background:rgba(34,211,238,.1);   border:1px solid rgba(34,211,238,.22);  color:#67e8f9; }
+
+  /* separador de ano */
+  .no-tl-ano {
+    font-family: var(--dado);
+    font-size: .65rem;
+    font-weight: 900;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--tinta-fraca);
+    padding: var(--e-2) 0 var(--e-1);
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    opacity: .5;
+  }
+  .no-tl-ano::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--borda);
+  }
+</style>
+
+<!-- Cabeçalho da página -->
+<div class="pagina-header">
+  <div class="pagina-badge">Obrigações · Reforma Tributária</div>
+  <h1 class="pagina-h1">
+    Novas <span class="hero-destaque">Obrigações</span>
+  </h1>
+  <p class="pagina-subtitulo">
+    O que acaba, o que fica e o que é criado nas obrigações acessórias a partir de 2027 — até a extinção do ICMS e ISS em 2033.
+  </p>
+</div>
+
+<div class="no-wrap">
+
+  <!-- ══ 1. STATS ══════════════════════════════════════════ -->
+  <div class="no-stats">
+
+    <div class="no-stat s-encerra">
+      <div class="no-stat-acento"></div>
+      <span class="no-stat-num">3</span>
+      <span class="no-stat-titulo">Encerram</span>
+      <span class="no-stat-sub">em jan/2027</span>
+      <ul class="no-stat-lista">
+        <li>EFD-Contribuições (novas competências)</li>
+        <li>PIS e Cofins</li>
+        <li>DCTF (já foi em 2025)</li>
+      </ul>
+    </div>
+
+    <div class="no-stat s-novo">
+      <div class="no-stat-acento"></div>
+      <span class="no-stat-num">5</span>
+      <span class="no-stat-titulo">Novidades</span>
+      <span class="no-stat-sub">novos mecanismos</span>
+      <ul class="no-stat-lista">
+        <li>Campos IBS/CBS nos XMLs</li>
+        <li>Apuração assistida</li>
+        <li>DeRE</li>
+        <li>RAD</li>
+        <li>Split payment</li>
+      </ul>
+    </div>
+
+    <div class="no-stat s-cont">
+      <div class="no-stat-acento"></div>
+      <span class="no-stat-num">5+</span>
+      <span class="no-stat-titulo">Continuam</span>
+      <span class="no-stat-sub">até 2033</span>
+      <ul class="no-stat-lista">
+        <li>EFD ICMS/IPI</li>
+        <li>DCTFWeb + MIT</li>
+        <li>Obrigações estaduais do ICMS</li>
+        <li>ISS e obrigações municipais</li>
+        <li>NF-e e documentos fiscais</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ══ 2. A GRANDE VIRADA ════════════════════════════════ -->
+  <div class="no-virada">
+    <div class="no-virada-topo"></div>
+    <div class="no-virada-grid">
+
+      <div class="no-lado antes-lado">
+        <span class="no-lado-label antes">Até 2026</span>
+        <p class="no-lado-titulo">Você calcula<br/>e declara</p>
+        <div class="no-passos">
+          <div class="no-passo">
+            <span class="no-passo-num">1</span>
+            <span class="no-passo-txt">Empresa apura PIS/Cofins e demais tributos internamente</span>
+          </div>
+          <div class="no-passo">
+            <span class="no-passo-num">2</span>
+            <span class="no-passo-txt">Empresa declara os valores calculados via EFD-Contribuições e DCTFWeb</span>
+          </div>
+          <div class="no-passo">
+            <span class="no-passo-num">3</span>
+            <span class="no-passo-txt">Fisco pode questionar depois. O ônus de provar que está certo é da empresa</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-lado depois-lado">
+        <span class="no-lado-label depois">A partir de 2027</span>
+        <p class="no-lado-titulo">O Fisco calcula,<br/>você confere</p>
+        <div class="no-passos">
+          <div class="no-passo">
+            <span class="no-passo-num">1</span>
+            <span class="no-passo-txt">Empresa emite NF-e, NFC-e, NFS-e com os campos IBS/CBS no XML</span>
+          </div>
+          <div class="no-passo">
+            <span class="no-passo-num">2</span>
+            <span class="no-passo-txt">Receita Federal entrega uma apuração pré-pronta até o <strong>dia 15</strong> do mês seguinte</span>
+          </div>
+          <div class="no-passo">
+            <span class="no-passo-num">3</span>
+            <span class="no-passo-txt">Empresa tem até o <strong>último dia útil</strong> para confirmar, ajustar ou contestar</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Alerta crítico -->
+    <div class="no-alerta-silencio">
+      <div class="no-alerta-icone">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="m10.29 3.86-8.6 14.9A2 2 0 0 0 3.45 22h17.1a2 2 0 0 0 1.73-3.01l-8.6-14.9a2 2 0 0 0-3.39 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="no-alerta-txt">
+        <strong>Silêncio = confissão de dívida  —  art. 46 da LC 214/2025</strong>
+        <p>Se a empresa não se manifestar no prazo, o valor calculado pelo Fisco é presumido correto e o crédito tributário é constituído <em>automaticamente</em> — sem notificação adicional. É obrigatório nomear um responsável para revisar a apuração todo mês. Não existe "deixar passar para ver".</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3. PAINEL DE OBRIGAÇÕES ═══════════════════════════ -->
+  <div class="no-painel">
+    <div class="no-painel-hdr">
+      <div>
+        <div class="no-painel-hdr-titulo">Painel de obrigações</div>
+        <div class="no-painel-hdr-sub">O que muda em cada obrigação acessória</div>
+      </div>
+    </div>
+
+    <div class="no-cols">
+
+      <!-- Coluna: Encerram -->
+      <div class="no-col encerra">
+        <div class="no-col-hdr">
+          <div class="no-col-icone">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <div class="no-col-hdr-txt">
+            <div class="no-col-hdr-titulo">Encerram</div>
+            <div class="no-col-hdr-count">3 obrigações</div>
+          </div>
+        </div>
+        <div class="no-col-items">
+
+          <div class="no-item">
+            <div class="no-item-titulo">EFD-Contribuições</div>
+            <span class="no-item-badge">Encerra jan/2027</span>
+            <div class="no-item-desc">
+              Não terá leiaute para CBS ou IBS. Encerra para <strong>fatos novos</strong> — continua obrigatória para retificação dos períodos até 2026 por 5 anos.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">PIS e Cofins</div>
+            <span class="no-item-badge">Extintos jan/2027</span>
+            <div class="no-item-desc">
+              Substituídos pela CBS. Cálculo, apuração e recolhimento encerram definitivamente.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">DCTF</div>
+            <span class="no-item-badge destaque-badge">Já extinta — 2025</span>
+            <div class="no-item-desc">
+              Substituída pela DCTFWeb + MIT. Não é evento de 2027 — já aconteceu.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Coluna: Novidades -->
+      <div class="no-col novo">
+        <div class="no-col-hdr">
+          <div class="no-col-icone">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+          </div>
+          <div class="no-col-hdr-txt">
+            <div class="no-col-hdr-titulo">Novidades</div>
+            <div class="no-col-hdr-count">5 mecanismos</div>
+          </div>
+        </div>
+        <div class="no-col-items">
+
+          <div class="no-item">
+            <div class="no-item-titulo">Campos IBS/CBS nos XMLs</div>
+            <span class="no-item-badge">Desde ago/2026</span>
+            <div class="no-item-desc">
+              NF-e, CT-e, NFS-e e demais documentos passam a ter campos obrigatórios de IBS e CBS. É a base de toda a apuração.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">Apuração assistida</div>
+            <span class="no-item-badge">Jan/2027</span>
+            <div class="no-item-desc">
+              Fisco entrega apuração pré-pronta até o dia 15. Empresa tem até o último dia útil para ajustar. Silêncio = dívida automática.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">DeRE</div>
+            <span class="no-item-badge">Out/2026</span>
+            <div class="no-item-desc">
+              Declaração de Regimes Específicos — para serviços financeiros, planos de saúde, concursos. Recebem apuração até o <strong>dia 20</strong>.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">RAD — Recolhimento pelo Adquirente</div>
+            <span class="no-item-badge">Jan/2027</span>
+            <div class="no-item-desc">
+              O comprador recolhe IBS/CBS diretamente, acelerando o crédito para o vendedor.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">Split payment</div>
+            <span class="no-item-badge adiado-badge">Facultativo 2027 · B2B obrigatório 2028</span>
+            <div class="no-item-desc">
+              Separação automática do IBS/CBS no pagamento. Obrigatoriedade B2B adiada para 2028 (RFB, ago/2026).
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Coluna: Continuam -->
+      <div class="no-col cont">
+        <div class="no-col-hdr">
+          <div class="no-col-icone">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="no-col-hdr-txt">
+            <div class="no-col-hdr-titulo">Continuam</div>
+            <div class="no-col-hdr-count">5+ obrigações</div>
+          </div>
+        </div>
+        <div class="no-col-items">
+
+          <div class="no-item">
+            <div class="no-item-titulo">EFD ICMS/IPI</div>
+            <span class="no-item-badge">Até 2033</span>
+            <div class="no-item-desc">
+              Confirmada pela Receita Federal. ICMS e IPI seguem até o fim do período de transição.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">DCTFWeb + MIT</div>
+            <span class="no-item-badge">Mantida</span>
+            <div class="no-item-desc">
+              Continua para IRPJ, CSLL, IPI, IOF e contribuições previdenciárias. Não é afetada pela reforma.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">Obrigações estaduais do ICMS</div>
+            <span class="no-item-badge">Até 2033</span>
+            <div class="no-item-desc">
+              GIA, SPED ICMS, declarações por estado — permanecem durante todo o período de convivência.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">ISS e obrigações municipais</div>
+            <span class="no-item-badge">Até 2033</span>
+            <div class="no-item-desc">
+              NFS-e municipal e declarações locais seguem até a extinção do ISS. Cada município mantém suas regras.
+            </div>
+          </div>
+
+          <div class="no-item">
+            <div class="no-item-titulo">NF-e e documentos fiscais</div>
+            <span class="no-item-badge">Com campos novos</span>
+            <div class="no-item-desc">
+              A emissão continua igual. O que muda são os campos de IBS/CBS dentro do XML.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- fim no-cols -->
+
+    <div class="no-painel-nota">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="m10.29 3.86-8.6 14.9A2 2 0 0 0 3.45 22h17.1a2 2 0 0 0 1.73-3.01l-8.6-14.9a2 2 0 0 0-3.39 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <p>Empresas do regime regular vão operar <strong>dois sistemas em paralelo de 2027 a 2032:</strong> CBS/IBS no modelo novo (apuração assistida) e ICMS/ISS no modelo atual. Esse é o maior custo operacional da transição.</p>
+    </div>
+  </div>
+
+  <!-- ══ 4. TIMELINE VISUAL ════════════════════════════════ -->
+  <div class="no-tl-card">
+    <div class="no-tl-hdr">
+      <div class="no-tl-hdr-icone">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <div>
+        <div class="no-tl-hdr-titulo">Linha do tempo 2026 – 2033</div>
+        <div class="no-tl-hdr-sub">Quando cada obrigação muda</div>
+      </div>
+    </div>
+
+    <div class="no-tl-body">
+
+      <div class="no-tl-ano">2026</div>
+
+      <div class="no-tl-evento positivo">
+        <div class="no-tl-data-col"><span class="no-tl-data">Jan</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">Ano-teste IBS/CBS</div>
+          <div class="no-tl-evento-desc">Alíquota de 1% (0,1% IBS + 0,9% CBS) para o regime regular. Dispensado o recolhimento efetivo.</div>
+          <div class="no-tl-tags"><span class="no-tl-tag verde">Sem recolhimento</span></div>
+        </div>
+      </div>
+
+      <div class="no-tl-evento positivo">
+        <div class="no-tl-data-col"><span class="no-tl-data">03 Ago</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">1ª onda — NF-e, CT-e e documentos de transporte</div>
+          <div class="no-tl-evento-desc">Campos obrigatórios de IBS/CBS nos XMLs entram em produção para NF-e, NFC-e, CT-e, MDF-e e demais.</div>
+          <div class="no-tl-tags"><span class="no-tl-tag ciano">Campos IBS/CBS</span></div>
+        </div>
+      </div>
+
+      <div class="no-tl-evento neutro">
+        <div class="no-tl-data-col"><span class="no-tl-data">01 Out</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">2ª onda — NFS-e, NFCom e início da DeRE</div>
+          <div class="no-tl-evento-desc">NFS-e (maioria dos serviços ISS), NFCom, DIR. Primeiros eventos de tabela da DeRE.</div>
+          <div class="no-tl-tags"><span class="no-tl-tag ciano">2ª onda</span><span class="no-tl-tag amarelo">DeRE</span></div>
+        </div>
+      </div>
+
+      <div class="no-tl-evento neutro">
+        <div class="no-tl-data-col"><span class="no-tl-data">15 Nov</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">Primeira entrega periódica da DeRE</div>
+          <div class="no-tl-evento-desc">Eventos mensais da DeRE — referente ao período de outubro/2026.</div>
+          <div class="no-tl-tags"><span class="no-tl-tag amarelo">DeRE</span></div>
+        </div>
+      </div>
+
+      <div class="no-tl-evento neutro">
+        <div class="no-tl-data-col"><span class="no-tl-data">01 Dez</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">3ª onda — plataformas digitais e locações</div>
+          <div class="no-tl-evento-desc">NFS-e para plataformas digitais, locações, condomínios, BP-e aéreo e semiurbano.</div>
+          <div class="no-tl-tags"><span class="no-tl-tag ciano">3ª onda</span></div>
+        </div>
+      </div>
+
+      <div class="no-tl-evento alerta">
+        <div class="no-tl-data-col"><span class="no-tl-data">31 Dez</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">Última competência de PIS/Cofins na EFD-Contribuições</div>
+          <div class="no-tl-evento-desc">Último período de apuração. A partir de jan/2027 não há mais leiaute para novos fatos.</div>
+          <div class="no-tl-tags"><span class="no-tl-tag vermelho">EFD-Contrib.</span></div>
+        </div>
+      </div>
+
+      <div class="no-tl-ano">2027</div>
+
+      <div class="no-tl-evento marco">
+        <div class="no-tl-data-col"><span class="no-tl-data">01 Jan</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">Marco principal — CBS entra em vigor</div>
+          <div class="no-tl-evento-desc"><strong>PIS e Cofins extintos.</strong> CBS começa a ser recolhida. EFD-Contribuições encerra para novos fatos. Apuração assistida entra em operação. Simples Nacional passa a emitir com campos IBS/CBS. RAD disponível.</div>
+          <div class="no-tl-tags">
+            <span class="no-tl-tag vermelho">PIS/Cofins extintos</span>
+            <span class="no-tl-tag verde">CBS entra</span>
+            <span class="no-tl-tag ciano">Apuração assistida</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-tl-ano">2028</div>
+
+      <div class="no-tl-evento neutro">
+        <div class="no-tl-data-col"><span class="no-tl-data">2028</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">Split payment B2B obrigatório</div>
+          <div class="no-tl-evento-desc">ICMS e ISS seguem em plena vigência. Split payment torna-se obrigatório para operações B2B (foi adiado de 2027).</div>
+          <div class="no-tl-tags"><span class="no-tl-tag ciano">Split payment</span><span class="no-tl-tag amarelo">ICMS/ISS vigentes</span></div>
+        </div>
+      </div>
+
+      <div class="no-tl-ano">2029 – 2032</div>
+
+      <div class="no-tl-evento neutro">
+        <div class="no-tl-data-col"><span class="no-tl-data">2029–32</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">Redução gradual do ICMS e ISS</div>
+          <div class="no-tl-evento-desc">IBS cresce proporcionalmente enquanto ICMS e ISS são reduzidos. Todas as obrigações acessórias de ICMS e ISS permanecem ativas durante esse período.</div>
+          <div class="no-tl-tags"><span class="no-tl-tag amarelo">2 sistemas em paralelo</span></div>
+        </div>
+      </div>
+
+      <div class="no-tl-ano">2033</div>
+
+      <div class="no-tl-evento positivo">
+        <div class="no-tl-data-col"><span class="no-tl-data">2033</span></div>
+        <div class="no-tl-dot-col"><div class="no-tl-dot"></div></div>
+        <div class="no-tl-content">
+          <div class="no-tl-evento-titulo">Fim da transição — sistema unificado</div>
+          <div class="no-tl-evento-desc">IBS e CBS integrais. ICMS e ISS extintos. EFD ICMS/IPI, GIA e todas as declarações municipais encerram. Um único sistema de apuração.</div>
+          <div class="no-tl-tags">
+            <span class="no-tl-tag vermelho">ICMS/ISS extintos</span>
+            <span class="no-tl-tag verde">Sistema unificado</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</Base>

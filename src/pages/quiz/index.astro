@@ -1,0 +1,1428 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base titulo="Quiz · Reforma na Prática" descricao="70 casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e Simples Nacional. Treine para a Reforma Tributária.">
+
+  <div class="qz-page" id="quiz-app">
+
+    <!-- ══ View: Início ══ -->
+    <div id="qv-inicio">
+      <div class="qz-hero">
+        <div class="qz-hero-badge">Reforma na Prática</div>
+        <h1 class="qz-titulo">Quiz</h1>
+        <p class="qz-sub">70 casos práticos para treinar. Filtre por tema, nível e tipo.<br>Teclas <kbd>1</kbd>–<kbd>4</kbd> respondem · <kbd>Enter</kbd> avança.</p>
+      </div>
+
+      <div class="qz-filtros">
+        <div class="qz-filtro-grupo">
+          <span class="qz-filtro-label">Tema</span>
+          <div class="qz-chips" id="chips-tema">
+            <button class="qz-chip ativo" data-val="">Todos</button>
+            <button class="qz-chip" data-val="doc">Documentos fiscais <em>11</em></button>
+            <button class="qz-chip" data-val="apu">Apuração assistida <em>10</em></button>
+            <button class="qz-chip" data-val="tra">Transição PIS/Cofins <em>14</em></button>
+            <button class="qz-chip" data-val="sn">Simples Nacional <em>11</em></button>
+            <button class="qz-chip" data-val="spl">Split payment <em>9</em></button>
+            <button class="qz-chip" data-val="ipi">IPI e IS <em>6</em></button>
+            <button class="qz-chip" data-val="der">DeRE <em>4</em></button>
+            <button class="qz-chip" data-val="con">ICMS/ISS <em>5</em></button>
+          </div>
+        </div>
+
+        <div class="qz-filtro-row">
+          <div class="qz-filtro-grupo">
+            <span class="qz-filtro-label">Tipo</span>
+            <div class="qz-chips" id="chips-tipo">
+              <button class="qz-chip ativo" data-val="">Todos</button>
+              <button class="qz-chip" data-val="direto">Caso direto</button>
+              <button class="qz-chip" data-val="afirmacao">Análise de afirmação</button>
+            </div>
+          </div>
+          <div class="qz-filtro-grupo">
+            <span class="qz-filtro-label">Nível</span>
+            <div class="qz-chips" id="chips-nivel">
+              <button class="qz-chip ativo" data-val="">Todos</button>
+              <button class="qz-chip" data-val="basico">Básico</button>
+              <button class="qz-chip" data-val="intermediario">Intermediário</button>
+              <button class="qz-chip" data-val="avancado">Avançado</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qz-start-area">
+        <span id="qz-preview" class="qz-preview">70 casos selecionados</span>
+        <button class="qz-btn-start" id="btn-comecar">Começar quiz ›</button>
+      </div>
+    </div>
+
+    <!-- ══ View: Rodada ══ -->
+    <div id="qv-rodada" hidden>
+      <div class="qz-top-bar">
+        <button class="qz-btn-sair" id="btn-sair-quiz" title="Voltar ao início">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </button>
+        <div class="qz-prog-wrap">
+          <div class="qz-prog-bar"><div class="qz-prog-fill" id="qz-prog"></div></div>
+        </div>
+        <span id="qz-contador" class="qz-contador"></span>
+      </div>
+      <div id="qz-card-area"></div>
+    </div>
+
+    <!-- ══ View: Fim ══ -->
+    <div id="qv-fim" hidden>
+      <div id="qz-resultado-area"></div>
+    </div>
+
+  </div>
+
+  <style>
+    .qz-page { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+    /* Hero */
+    .qz-hero { text-align:center; margin-bottom:2.5rem; }
+    .qz-hero-badge {
+      display:inline-block; padding:3px 10px; border-radius:20px;
+      font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.25);
+      color:var(--ciano-400); margin-bottom:.75rem;
+    }
+    .qz-titulo { font-size:2.25rem; font-weight:700; margin:0 0 .5rem; line-height:1.2; }
+    .qz-sub { color:var(--tinta-media); font-size:.9rem; line-height:1.6; margin:0; }
+    .qz-sub kbd {
+      display:inline-block; padding:1px 5px; border-radius:4px; font-size:.75rem;
+      font-family:var(--dado); background:var(--superficie-2); border:1px solid var(--borda-forte);
+    }
+
+    /* Filtros */
+    .qz-filtros { display:flex; flex-direction:column; gap:1.25rem; margin-bottom:2rem; }
+    .qz-filtro-row { display:flex; gap:1.5rem; flex-wrap:wrap; }
+    .qz-filtro-grupo { display:flex; flex-direction:column; gap:.5rem; flex:1; min-width:0; }
+    .qz-filtro-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--tinta-fraca); }
+    .qz-chips { display:flex; flex-wrap:wrap; gap:.4rem; }
+    .qz-chip {
+      padding:4px 11px; border-radius:20px; font-size:.8rem; font-weight:500;
+      border:1px solid var(--borda); background:var(--superficie);
+      color:var(--tinta-media); cursor:pointer; transition:all .15s;
+    }
+    .qz-chip em { font-style:normal; opacity:.55; font-size:.72rem; font-family:var(--dado); }
+    .qz-chip:hover { border-color:var(--borda-forte); color:var(--tinta); }
+    .qz-chip.ativo { background:rgba(59,130,246,.15); border-color:rgba(59,130,246,.4); color:var(--azul-400); font-weight:600; }
+
+    /* Start area */
+    .qz-start-area { display:flex; align-items:center; gap:1rem; justify-content:space-between; flex-wrap:wrap; }
+    .qz-preview { font-family:var(--dado); font-size:.8rem; color:var(--tinta-fraca); }
+    .qz-btn-start {
+      padding:.65rem 1.5rem; border-radius:10px; font-size:.9rem; font-weight:600;
+      background:linear-gradient(135deg, var(--azul-500) 0%, var(--ciano-500) 100%);
+      color:#fff; border:none; cursor:pointer; transition:all .2s;
+      box-shadow:0 4px 20px rgba(59,130,246,.35);
+    }
+    .qz-btn-start:hover { transform:translateY(-1px); box-shadow:0 6px 28px rgba(59,130,246,.45); }
+
+    /* Top bar */
+    .qz-top-bar { display:flex; align-items:center; gap:.75rem; margin-bottom:1.5rem; }
+    .qz-btn-sair {
+      width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+      border:1px solid var(--borda); background:var(--superficie); color:var(--tinta-fraca); cursor:pointer; flex-shrink:0;
+      transition:all .15s;
+    }
+    .qz-btn-sair:hover { color:var(--tinta); border-color:var(--borda-forte); }
+    .qz-btn-sair svg { width:14px; height:14px; }
+    .qz-prog-wrap { flex:1; }
+    .qz-prog-bar { height:4px; border-radius:2px; background:var(--superficie-2); overflow:hidden; }
+    .qz-prog-fill { height:100%; border-radius:2px; background:linear-gradient(90deg, var(--azul-500), var(--ciano-400)); transition:width .4s; }
+    .qz-contador { font-family:var(--dado); font-size:.78rem; color:var(--tinta-fraca); white-space:nowrap; }
+
+    /* Question card */
+    .qz-card {
+      background:var(--superficie); border:1px solid var(--borda);
+      border-radius:14px; padding:1.5rem; margin-bottom:1rem;
+      box-shadow:var(--s-card);
+    }
+    .qz-card-meta { display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+    .qz-badge {
+      padding:2px 8px; border-radius:12px; font-size:.68rem; font-weight:700;
+      letter-spacing:.04em; text-transform:uppercase;
+    }
+    .qz-badge-tema { background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.2); color:var(--ciano-400); }
+    .qz-badge-tipo-afirmacao { background:rgba(251,191,36,.1); border:1px solid rgba(251,191,36,.2); color:var(--ambar-400); }
+    .qz-badge-tipo-direto { background:rgba(99,102,241,.1); border:1px solid rgba(99,102,241,.2); color:var(--indigo-400); }
+    .qz-badge-nivel { background:var(--superficie-2); border:1px solid var(--borda); color:var(--tinta-fraca); }
+    .qz-card-id { font-family:var(--dado); font-size:.68rem; color:var(--tinta-fraca); margin-left:auto; }
+
+    .qz-contexto { font-size:.95rem; line-height:1.6; color:var(--tinta); margin-bottom:1rem; }
+    .qz-afirmacao {
+      border-left:3px solid var(--ambar-400); padding:.75rem 1rem;
+      background:rgba(251,191,36,.05); border-radius:0 8px 8px 0;
+      font-size:.88rem; line-height:1.6; color:var(--tinta-media);
+      margin:0 0 1rem; font-style:italic;
+    }
+    .qz-pergunta { font-size:.85rem; font-weight:600; color:var(--tinta-fraca); margin-bottom:.9rem; text-transform:uppercase; letter-spacing:.04em; }
+
+    /* Alternatives */
+    .qz-alternativas { display:flex; flex-direction:column; gap:.5rem; }
+    .qz-alt {
+      display:flex; align-items:flex-start; gap:.75rem; padding:.75rem 1rem;
+      border-radius:10px; border:1px solid var(--borda); background:var(--superficie);
+      cursor:pointer; transition:all .15s; text-align:left; width:100%;
+      font-size:.9rem; line-height:1.5; color:var(--tinta-media);
+    }
+    .qz-alt:hover:not(:disabled) { border-color:var(--azul-400); color:var(--tinta); background:rgba(59,130,246,.06); }
+    .qz-alt-letra {
+      width:24px; height:24px; border-radius:6px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.72rem; font-weight:700; font-family:var(--dado);
+      background:var(--superficie-2); border:1px solid var(--borda);
+      color:var(--tinta-fraca); transition:all .15s;
+    }
+    .qz-alt.correta { border-color:rgba(52,211,153,.5); background:rgba(52,211,153,.08); color:var(--tinta); }
+    .qz-alt.correta .qz-alt-letra { background:rgba(52,211,153,.2); border-color:rgba(52,211,153,.5); color:#34d399; }
+    .qz-alt.errada { border-color:rgba(248,113,113,.35); background:rgba(248,113,113,.05); color:var(--tinta-fraca); opacity:.7; }
+    .qz-alt.selecionada-errada { border-color:rgba(248,113,113,.5); background:rgba(248,113,113,.08); color:var(--tinta); opacity:1; }
+    .qz-alt.selecionada-errada .qz-alt-letra { background:rgba(248,113,113,.2); border-color:rgba(248,113,113,.5); color:#f87171; }
+    .qz-alt:disabled { cursor:default; }
+
+    /* Feedback */
+    .qz-feedback {
+      margin-top:1rem; padding:1rem; border-radius:10px;
+      border-left:3px solid; font-size:.88rem; line-height:1.6;
+    }
+    .qz-feedback.acertou { background:rgba(52,211,153,.06); border-color:var(--verde-400); }
+    .qz-feedback.errou { background:rgba(248,113,113,.06); border-color:var(--vermelho-400); }
+    .qz-feedback-titulo { font-weight:700; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.4rem; }
+    .qz-feedback.acertou .qz-feedback-titulo { color:var(--verde-400); }
+    .qz-feedback.errou .qz-feedback-titulo { color:var(--vermelho-400); }
+    .qz-feedback p { margin:0 0 .4rem; color:var(--tinta-media); }
+    .qz-feedback p:last-child { margin-bottom:0; }
+    .qz-feedback .qz-base { font-size:.75rem; font-family:var(--dado); color:var(--tinta-fraca); margin-top:.5rem; }
+
+    /* Next button */
+    .qz-acao { display:flex; justify-content:flex-end; margin-top:1rem; }
+    .qz-btn-next {
+      padding:.55rem 1.25rem; border-radius:8px; font-size:.85rem; font-weight:600;
+      background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.3);
+      color:var(--azul-400); cursor:pointer; transition:all .15s;
+    }
+    .qz-btn-next:hover { background:rgba(59,130,246,.25); border-color:rgba(59,130,246,.5); }
+
+    /* Resultado */
+    .qz-result-hero { text-align:center; padding:2rem 0 1.5rem; }
+    .qz-result-score { font-size:3.5rem; font-weight:700; font-family:var(--dado); line-height:1; }
+    .qz-result-score span { font-size:1.5rem; opacity:.5; }
+    .qz-result-msg { font-size:1rem; color:var(--tinta-media); margin-top:.5rem; }
+    .qz-result-pct { font-size:1.5rem; font-weight:700; margin-top:.25rem; }
+    .qz-result-pct.bom { color:var(--verde-400); }
+    .qz-result-pct.ok { color:var(--ambar-400); }
+    .qz-result-pct.ruim { color:var(--vermelho-400); }
+
+    .qz-result-temas { margin:1.5rem 0; display:flex; flex-direction:column; gap:.5rem; }
+    .qz-result-tema {
+      display:flex; align-items:center; gap:.75rem; padding:.6rem .9rem;
+      border-radius:8px; background:var(--superficie); border:1px solid var(--borda);
+    }
+    .qz-result-tema-nome { flex:1; font-size:.85rem; }
+    .qz-result-tema-score { font-family:var(--dado); font-size:.8rem; color:var(--tinta-fraca); }
+    .qz-result-tema-bar-wrap { width:80px; height:5px; border-radius:3px; background:var(--superficie-2); overflow:hidden; }
+    .qz-result-tema-bar { height:100%; border-radius:3px; transition:width .5s; }
+
+    .qz-result-acoes { display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center; margin-top:2rem; }
+    .qz-btn-novo {
+      padding:.6rem 1.4rem; border-radius:10px; font-size:.88rem; font-weight:600;
+      background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.3);
+      color:var(--azul-400); cursor:pointer; transition:all .15s;
+    }
+    .qz-btn-novo:hover { background:rgba(59,130,246,.25); }
+    .qz-btn-erros {
+      padding:.6rem 1.4rem; border-radius:10px; font-size:.88rem; font-weight:600;
+      background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.3);
+      color:var(--vermelho-400); cursor:pointer; transition:all .15s;
+    }
+    .qz-btn-erros:hover { background:rgba(248,113,113,.2); }
+    .qz-btn-erros:disabled { opacity:.4; cursor:default; }
+
+    @media(max-width:600px) {
+      .qz-page { padding:1.25rem .9rem 4rem; }
+      .qz-titulo { font-size:1.75rem; }
+      .qz-filtro-row { flex-direction:column; gap:.9rem; }
+    }
+  </style>
+
+  <script>
+    /* ═══════════════════════════════════════════════
+       BANCO DE CASOS — 70 questões
+    ═══════════════════════════════════════════════ */
+    const CASOS = [
+      /* ── Documentos fiscais ── */
+      { id:'DOC-01', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'basico',
+        contexto:`Uma distribuidora do regime regular tenta autorizar uma NF-e em 15/09/2026 sem o grupo de IBS e CBS. O que acontece?`,
+        afirmacao:null,
+        alts:[
+          { t:`A nota é rejeitada, pois a NF-e exige os campos de IBS e CBS desde 03/08/2026`, c:true },
+          { t:`A nota é autorizada, os campos só serão exigidos em 2027`, c:false },
+          { t:`A nota é autorizada e a empresa recebe multa no mês seguinte`, c:false },
+          { t:`A nota é autorizada se o CST do ICMS estiver correto`, c:false },
+        ],
+        exp:`O Ato Conjunto RFB/CGIBS nº 4/2026 fixou 03/08/2026 para NF-e, NFC-e e principais documentos de transporte. A partir da data, o validador rejeita o documento sem os campos de IBS e CBS.`,
+        prat:`Revise no ERP a classificação tributária de IBS/CBS de cada produto antes de emitir. Nota rejeitada é faturamento parado.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      { id:'DOC-02', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'basico',
+        contexto:`Um escritório de engenharia sujeito ao ISS pergunta, em 20/09/2026, desde quando precisa informar IBS e CBS na NFS-e.`,
+        afirmacao:null,
+        alts:[
+          { t:`A partir de 01/10/2026, junto com a maior parte dos serviços sujeitos ao ISS`, c:true },
+          { t:`Desde 03/08/2026, junto com a NF-e`, c:false },
+          { t:`Só a partir de 01/01/2027`, c:false },
+          { t:`Só em 2029, quando o ISS começar a cair`, c:false },
+        ],
+        exp:`O cronograma colocou a NFS-e da maior parte dos serviços sujeitos ao ISS no lote de 01/10/2026, junto com NFCom e Declaração de Importação de Remessa.`,
+        prat:`Teste agora a emissão com os novos campos no emissor nacional ou municipal. Faltam dias para o lote.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      { id:'DOC-03', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'intermediario',
+        contexto:`Uma empresa cuja receita vem de locação de imóveis quer saber quando passa a destacar IBS e CBS nos documentos.`,
+        afirmacao:null,
+        alts:[
+          { t:`A partir de 01/12/2026, no lote das exceções nomeadas`, c:true },
+          { t:`A partir de 03/08/2026`, c:false },
+          { t:`A partir de 01/10/2026`, c:false },
+          { t:`Só quando o split payment começar`, c:false },
+        ],
+        exp:`Locação de bens móveis e imóveis, plataformas digitais, condomínios e bens imateriais fora do ICMS ficaram no lote de 01/12/2026.`,
+        prat:`Mapeie contratos de locação vigentes e confirme como o sistema vai gerar o documento de cada cobrança a partir de dezembro.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      { id:'DOC-04', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'basico',
+        contexto:`Uma loja do Simples Nacional já recebe notas de fornecedores com IBS e CBS destacados. A partir de quando ela própria precisa emitir com esses campos?`,
+        afirmacao:null,
+        alts:[
+          { t:`A partir de 01/01/2027`, c:true },
+          { t:`Desde 03/08/2026, como os fornecedores`, c:false },
+          { t:`Nunca, o Simples está dispensado`, c:false },
+          { t:`Só se optar pelo regime regular de IBS/CBS`, c:false },
+        ],
+        exp:`O Ato Conjunto postergou a obrigatoriedade dos campos de IBS e CBS para os optantes do Simples para 01/01/2027, mesmo para quem mantém tudo no DAS.`,
+        prat:`Use o último trimestre de 2026 para atualizar cadastro de produtos e emissor. Receber notas com IBS/CBS não muda a sua data de emissão.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      { id:'DOC-05', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'intermediario',
+        contexto:`O município do prestador ainda não adaptou o emissor de NFS-e para receber os campos de IBS e CBS. Qual a situação do contribuinte?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não há descumprimento da obrigação acessória quando a impossibilidade é responsabilidade exclusiva do ente federativo`, c:true },
+          { t:`Fica sujeito a multa por cada nota sem os campos`, c:false },
+          { t:`Deve parar de emitir até o município se adaptar`, c:false },
+          { t:`Perde a dispensa de recolhimento do ano-teste`, c:false },
+        ],
+        exp:`A orientação conjunta RFB/CGIBS para 2026 diz que o contribuinte impossibilitado de emitir por responsabilidade única do ente federativo não descumpre a obrigação acessória.`,
+        prat:`Guarde evidência da limitação do emissor municipal (prints, comunicados, protocolos) para cada competência.`,
+        base:`Orientações RFB/CGIBS 2026` },
+
+      { id:'DOC-06', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'intermediario',
+        contexto:`Uma pessoa física enquadrada como contribuinte de IBS/CBS pela locação de vários imóveis pergunta sobre CNPJ.`,
+        afirmacao:null,
+        alts:[
+          { t:`Precisa estar inscrita no CNPJ desde julho/2026, apenas para fins cadastrais`, c:true },
+          { t:`Precisa abrir uma empresa e transferir os imóveis`, c:false },
+          { t:`O CNPJ só será exigido em 2033`, c:false },
+          { t:`Pessoa física nunca é contribuinte de IBS/CBS`, c:false },
+        ],
+        exp:`Desde julho/2026 as pessoas físicas contribuintes de IBS e CBS devem se inscrever no CNPJ, exclusivamente para fins cadastrais.`,
+        prat:`Liste clientes pessoa física com atividade habitual (locação, por exemplo) e confira se a inscrição foi feita.`,
+        base:`Receita Federal, Orientações 2026` },
+
+      { id:'DOC-07', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'basico',
+        contexto:`Uma empresa do regime regular emitiu todas as notas de 2026 com IBS (0,1%) e CBS (0,9%) conforme as notas técnicas. Precisa recolher esses valores?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, em 2026 quem cumpre as obrigações acessórias fica dispensado do recolhimento`, c:true },
+          { t:`Sim, integralmente, por DARF mensal`, c:false },
+          { t:`Só o IBS, por ser estadual e municipal`, c:false },
+          { t:`Sim, mas pode compensar com ICMS`, c:false },
+        ],
+        exp:`2026 é o ano-teste. A dispensa de recolhimento vale para quem emite documentos e declarações observando as normas vigentes.`,
+        prat:`A dispensa depende do preenchimento correto. Trate erro de campo em 2026 como risco real, não como detalhe de teste.`,
+        base:`LC 214/2025 · Receita Federal` },
+
+      { id:'AF-DOC-01', tipo:'afirmacao', tema:'doc', temaNome:'Documentos fiscais', nivel:'intermediario',
+        contexto:`Durante 2026, um documento fiscal é autorizado mesmo sem o preenchimento de um campo de IBS/CBS cuja regra de validação foi flexibilizada.`,
+        afirmacao:`Se o documento foi autorizado pela administração tributária, significa que a empresa cumpriu integralmente a obrigação de informar aquele campo.`,
+        alts:[
+          { t:`Incorreta: a autorização indica só que o documento passou nas regras de validação ativas; o dever de informar decorre da legislação e das notas técnicas, e a ausência pode afetar a apuração, o crédito do cliente e a dispensa de 2026`, c:true },
+          { t:`Correta: com a regra de validação flexibilizada, o campo deixa de ser exigível para os documentos emitidos naquele período`, c:false },
+          { t:`Correta durante 2026, porque o ano-teste dispensa o preenchimento dos campos de IBS/CBS e exige apenas a autorização do documento`, c:false },
+          { t:`Incorreta apenas se houver notificação posterior da Sefaz; sem notificação em 90 dias, o documento é considerado completo`, c:false },
+        ],
+        exp:`Regra de validação suspensa ou em modo de alerta apenas deixa de rejeitar o documento. O cumprimento da obrigação é medido pela legislação, e a dispensa de recolhimento de 2026 é condicionada ao cumprimento correto das obrigações acessórias.`,
+        prat:`A solução fiscal deve ter validação própria dos campos de IBS/CBS, independente das rejeições ativas no autorizador, e alertar antes da emissão.`,
+        base:`LC 214/2025 · Orientações RFB/CGIBS 2026` },
+
+      { id:'AF-DOC-02', tipo:'afirmacao', tema:'doc', temaNome:'Documentos fiscais', nivel:'basico',
+        contexto:`Uma loja do Simples que manteve IBS e CBS dentro do DAS planeja a emissão de 2027.`,
+        afirmacao:`Como fiquei no DAS, posso continuar emitindo NF-e sem os campos de IBS e CBS em 2027.`,
+        alts:[
+          { t:`Incorreta: a partir de 01/01/2027 os optantes do Simples também devem emitir os documentos com os campos de IBS e CBS`, c:true },
+          { t:`Correta: os campos só são obrigatórios para quem optou pelo regime regular`, c:false },
+          { t:`Correta até 2033, quando o Simples se adapta integralmente à reforma`, c:false },
+          { t:`Incorreta apenas para vendas a outras empresas; vendas a consumidor seguem sem os campos`, c:false },
+        ],
+        exp:`O Ato Conjunto RFB/CGIBS nº 4/2026 fixou 01/01/2027 para os optantes do Simples, independente da forma de recolhimento.`,
+        prat:`Atualize cadastro e emissor dos clientes do Simples ainda em 2026.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      { id:'AF-DOC-03', tipo:'afirmacao', tema:'doc', temaNome:'Documentos fiscais', nivel:'intermediario',
+        contexto:`Uma NF-e de venda foi autorizada e cancelada dentro do prazo no mesmo mês.`,
+        afirmacao:`O cancelamento não afeta a apuração assistida, porque o débito de IBS e CBS nasceu na autorização.`,
+        alts:[
+          { t:`Incorreta: a apuração considera os eventos vinculados aos documentos, e um cancelamento válido retira o débito daquela operação`, c:true },
+          { t:`Correta: o débito só sai com retificação manual na apuração`, c:false },
+          { t:`Correta, e o valor vira crédito no mês seguinte`, c:false },
+          { t:`Incorreta só se o cancelamento ocorrer em até 24 horas`, c:false },
+        ],
+        exp:`A apuração assistida consolida documentos fiscais eletrônicos com seus eventos, e o contribuinte ajusta o que não estiver refletido.`,
+        prat:`Na conferência, trate eventos de cancelamento e devolução como item obrigatório do checklist mensal.`,
+        base:`LC 214/2025, art. 46` },
+
+      { id:'AF-DOC-04', tipo:'afirmacao', tema:'doc', temaNome:'Documentos fiscais', nivel:'avancado',
+        contexto:`Na implantação, a equipe quer parametrizar IBS e CBS de forma rápida.`,
+        afirmacao:`A classificação tributária de IBS e CBS pode ser definida por NCM uma única vez e vale para todas as operações do produto.`,
+        alts:[
+          { t:`Incorreta: a classificação depende também da operação, do destinatário e de regimes ou reduções aplicáveis, e o mesmo produto pode ter tratamentos diferentes`, c:true },
+          { t:`Correta: a classificação é uma característica fixa do NCM`, c:false },
+          { t:`Correta, exceto para produtos importados`, c:false },
+          { t:`Incorreta: a classificação é definida nota a nota pelo Fisco`, c:false },
+        ],
+        exp:`Reduções, isenções e regimes específicos podem depender da operação e do adquirente, não só do produto.`,
+        prat:`Parametrize regras por produto e por operação na solução, com cenários de teste antes de dezembro.`,
+        base:`LC 214/2025 · Notas técnicas dos DF-e` },
+
+      /* ── Apuração assistida ── */
+      { id:'APU-01', tipo:'direto', tema:'apu', temaNome:'Apuração assistida', nivel:'basico',
+        contexto:`Hoje a empresa calcula PIS/Cofins, escritura na EFD Contribuições e paga. Como funciona o fechamento mensal da CBS em 2027?`,
+        afirmacao:null,
+        alts:[
+          { t:`A Receita monta a apuração assistida a partir dos documentos fiscais e a empresa confirma ou ajusta`, c:true },
+          { t:`A empresa calcula e envia uma EFD CBS até o dia 10`, c:false },
+          { t:`O contador lança o valor da CBS na DCTFWeb`, c:false },
+          { t:`A CBS é apurada uma vez por ano na ECF`, c:false },
+        ],
+        exp:`A lógica se inverte. O Fisco entrega uma apuração pré-pronta com base nos documentos eletrônicos e a empresa faz ajustes positivos ou negativos.`,
+        prat:`A nota fiscal correta vira a obrigação mais importante. Erro na emissão aparece direto na apuração.`,
+        base:`LC 214/2025 · Taxcel` },
+
+      { id:'APU-02', tipo:'direto', tema:'apu', temaNome:'Apuração assistida', nivel:'basico',
+        contexto:`O responsável esqueceu de revisar a apuração assistida de fevereiro/2027, que tinha um débito a maior. Passou o prazo. E agora?`,
+        afirmacao:null,
+        alts:[
+          { t:`A apuração é presumida correta e o crédito tributário se constitui automaticamente, com efeito de confissão de dívida`, c:true },
+          { t:`A Receita envia notificação e aguarda resposta sem prazo`, c:false },
+          { t:`A apuração é cancelada e refeita no mês seguinte`, c:false },
+          { t:`O split payment corrige o erro automaticamente`, c:false },
+        ],
+        exp:`A inércia produz efeito jurídico. Passado o prazo, vale o número apresentado pelo Fisco, sem prejuízo de lançamento de ofício posterior.`,
+        prat:`Defina um responsável e um suplente por empresa e um dia fixo no calendário para validar a apuração.`,
+        base:`LC 214/2025 · Escola Superior ESN` },
+
+      { id:'APU-03', tipo:'direto', tema:'apu', temaNome:'Apuração assistida', nivel:'intermediario',
+        contexto:`Empresa não obrigada à DeRE. Até quando ela pode ajustar a apuração assistida da CBS de março/2027?`,
+        afirmacao:null,
+        alts:[
+          { t:`Até o último dia útil de abril/2027`, c:true },
+          { t:`Até o dia 15 de abril/2027`, c:false },
+          { t:`Até o dia 25 de março/2027`, c:false },
+          { t:`Por até cinco anos, sem consequência`, c:false },
+        ],
+        exp:`A Receita disponibiliza a apuração até o dia 15 do mês seguinte. O contribuinte ajusta até o último dia útil desse mesmo mês.`,
+        prat:`Na prática sobram cerca de duas semanas úteis por mês. Planeje a conferência para a segunda quinzena.`,
+        base:`Taxcel · Decreto 12.955/2026` },
+
+      { id:'APU-04', tipo:'direto', tema:'apu', temaNome:'Apuração assistida', nivel:'basico',
+        contexto:`O contador quer conferir se a apuração assistida da CBS está correta. Qual base usar?`,
+        afirmacao:null,
+        alts:[
+          { t:`Os XMLs das notas de entrada e saída, que trazem os campos de IBS e CBS`, c:true },
+          { t:`O arquivo da EFD Contribuições do mês`, c:false },
+          { t:`A DCTFWeb`, c:false },
+          { t:`O livro de apuração do ICMS`, c:false },
+        ],
+        exp:`O SPED tradicional não traz dados de IBS e CBS. A conferência exige importar os XMLs para validar débitos e créditos.`,
+        prat:`Confirme que o sistema guarda e lê os XMLs de entrada. Sem eles não há como contestar o Fisco.`,
+        base:`IOB` },
+
+      { id:'APU-05', tipo:'direto', tema:'apu', temaNome:'Apuração assistida', nivel:'intermediario',
+        contexto:`Em 2026 a apuração assistida no ambiente beta mostra valores que não batem com o controle interno. Qual o efeito?`,
+        afirmacao:null,
+        alts:[
+          { t:`Nenhuma cobrança em 2026, mas é o momento de corrigir cadastro, pois em 2027 o erro vira débito`, c:true },
+          { t:`A empresa já deve o valor exibido`, c:false },
+          { t:`A divergência gera multa automática`, c:false },
+          { t:`O ambiente beta substitui a EFD Contribuições de 2026`, c:false },
+        ],
+        exp:`Em 2026 a apuração assistida não gera cobrança. A partir de 2027, confirmar uma apuração errada significa pagar tributo errado.`,
+        prat:`Use as divergências de 2026 como lista de correções de cadastro e parametrização.`,
+        base:`Taxcel · OFM` },
+
+      { id:'APU-06', tipo:'direto', tema:'apu', temaNome:'Apuração assistida', nivel:'basico',
+        contexto:`Um cliente acredita que, com a apuração assistida, não precisará mais se preocupar com obrigações acessórias. Como responder?`,
+        afirmacao:null,
+        alts:[
+          { t:`A apuração assistida depende delas: documentos fiscais corretos são a base do cálculo, e as obrigações de ICMS e ISS continuam`, c:true },
+          { t:`Correto, o Fisco passa a fazer tudo`, c:false },
+          { t:`Correto a partir de 2027 para empresas do Lucro Real`, c:false },
+          { t:`Só a DeRE continua existindo`, c:false },
+        ],
+        exp:`A apuração assistida não elimina as obrigações acessórias. Ela transfere para a empresa um papel de auditoria com prazo curto.`,
+        prat:`Posicione o serviço como conferência mensal, não como fim do trabalho fiscal.`,
+        base:`Tax Group` },
+
+      { id:'AF-APU-01', tipo:'afirmacao', tema:'apu', temaNome:'Apuração assistida', nivel:'intermediario',
+        contexto:`Na nova sistemática, a administração tributária monta a apuração assistida de IBS e CBS com diferentes informações sobre as operações do contribuinte.`,
+        afirmacao:`Como os documentos fiscais eletrônicos já registram os valores de IBS e CBS, a apuração assistida utilizará exclusivamente essas informações para determinar os débitos do período.`,
+        alts:[
+          { t:`A afirmação é incompleta: além dos DF-e e seus eventos, a apuração considera registros de extinção de débitos e dados já disponíveis ao Fisco, e o contribuinte ainda pode ajustá-la no prazo`, c:true },
+          { t:`A afirmação está correta: os DF-e autorizados são a única fonte da apuração, e cancelamentos ou devoluções só entram por retificação do contribuinte`, c:false },
+          { t:`A afirmação é incorreta, porque a apuração assistida parte da declaração mensal do contribuinte e usa os DF-e apenas como cruzamento de malha`, c:false },
+          { t:`A afirmação está correta para os débitos, e os créditos do período são informados pelo contribuinte na EFD ICMS/IPI até 2033`, c:false },
+        ],
+        exp:`O art. 46 da LC 214/2025 prevê a consolidação de documentos fiscais eletrônicos, registros de extinção de débitos e demais informações disponíveis. O resultado é presumido correto se não houver ajuste no prazo.`,
+        prat:`Na solução fiscal, a conferência precisa cruzar XMLs, eventos (cancelamento, devolução) e pagamentos, não só o valor destacado na autorização.`,
+        base:`LC 214/2025, art. 46 · Taxcel · Escola Superior ESN` },
+
+      { id:'AF-APU-02', tipo:'afirmacao', tema:'apu', temaNome:'Apuração assistida', nivel:'basico',
+        contexto:`Um cliente discorda de um débito na apuração assistida de maio/2027.`,
+        afirmacao:`Se eu não concordar com a apuração, basta não confirmar. Sem minha confirmação, o débito não é constituído.`,
+        alts:[
+          { t:`Incorreta: sem ajuste no prazo, a apuração é presumida correta e o crédito tributário se constitui automaticamente; discordar exige ajuste formal até o último dia útil do mês seguinte`, c:true },
+          { t:`Correta: a apuração só produz efeito com a confirmação expressa do contribuinte no portal`, c:false },
+          { t:`Correta nos três primeiros meses de 2027, período de adaptação sem efeitos de confissão`, c:false },
+          { t:`Incorreta: o débito só é constituído após lançamento de ofício do Fisco em até cinco anos`, c:false },
+        ],
+        exp:`Na apuração assistida a inércia produz efeito jurídico. A discordância se faz por ajustes positivos ou negativos dentro do prazo.`,
+        prat:`Configure alertas na solução para apurações sem conferência a poucos dias do fim do prazo.`,
+        base:`LC 214/2025 · Escola Superior ESN` },
+
+      { id:'AF-APU-03', tipo:'afirmacao', tema:'apu', temaNome:'Apuração assistida', nivel:'basico',
+        contexto:`Um parceiro de implantação avalia como a solução fiscal vai conferir a apuração assistida.`,
+        afirmacao:`Podemos conferir a apuração assistida usando os arquivos SPED que a solução já gera hoje.`,
+        alts:[
+          { t:`Incorreta: o SPED atual não traz IBS e CBS; a conferência depende dos XMLs de entrada e saída, dos eventos dos documentos e dos pagamentos`, c:true },
+          { t:`Correta: a EFD-Contribuições será adaptada para receber os campos de CBS a partir de 2027`, c:false },
+          { t:`Correta: a EFD ICMS/IPI passa a carregar IBS e CBS, e basta cruzá-la com a apuração`, c:false },
+          { t:`Incorreta: a apuração assistida não pode ser conferida, apenas confirmada ou contestada judicialmente`, c:false },
+        ],
+        exp:`O leiaute da EFD-Contribuições não será adaptado para os novos tributos, e o SPED tradicional não traz IBS e CBS.`,
+        prat:`Priorize no roadmap a captura e guarda de XMLs de entrada com os grupos de IBS/CBS.`,
+        base:`IOB · TOTVS` },
+
+      { id:'AF-APU-04', tipo:'afirmacao', tema:'apu', temaNome:'Apuração assistida', nivel:'basico',
+        contexto:`O analista fiscal compara a rotina nova com a atual.`,
+        afirmacao:`Ajustes na apuração assistida podem ser feitos a qualquer tempo, como uma retificação de EFD.`,
+        alts:[
+          { t:`Incorreta: os ajustes têm prazo até o último dia útil do mês seguinte ao período; depois disso a apuração é presumida correta`, c:true },
+          { t:`Correta: vale o prazo de cinco anos das retificações`, c:false },
+          { t:`Correta até o fechamento do ano`, c:false },
+          { t:`Incorreta: a apuração assistida não aceita ajustes`, c:false },
+        ],
+        exp:`O contribuinte faz ajustes positivos e negativos até o último dia útil do mês seguinte ao período de apuração.`,
+        prat:`Troque a mentalidade de retificar depois pela de conferir antes do prazo.`,
+        base:`Taxcel · Escola Superior ESN` },
+
+      /* ── Transição PIS/Cofins ── */
+      { id:'TRA-01', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'intermediario',
+        contexto:`Uma loja no regime cumulativo de PIS/Cofins nunca tomou crédito sobre compras e terá R$ 500 mil em estoque em 31/12/2026. O que acontece com esse estoque?`,
+        afirmacao:null,
+        alts:[
+          { t:`Gera crédito presumido de CBS de 9,25% sobre o estoque existente em janeiro/2027`, c:true },
+          { t:`Nada, quem era cumulativo não tem direito a crédito`, c:false },
+          { t:`Gera crédito de IBS para uso a partir de 2033`, c:false },
+          { t:`Gera restituição em dinheiro de PIS/Cofins`, c:false },
+        ],
+        exp:`A LC 214/2025 concede crédito presumido de CBS sobre o estoque de bens materiais para quem estava no cumulativo, na ST ou no monofásico.`,
+        prat:`Inventário de 31/12/2026 bem documentado. No exemplo, são R$ 46.250 em crédito.`,
+        base:`LC 214/2025 · Andersen Ballão` },
+
+      { id:'TRA-02', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'avancado',
+        contexto:`No mesmo caso de crédito presumido sobre estoque, parte das mercadorias é importada. Como calcular essa parte?`,
+        afirmacao:null,
+        alts:[
+          { t:`Considera o valor efetivamente pago de PIS/Cofins-Importação no desembaraço`, c:true },
+          { t:`Aplica 9,25% sobre o valor aduaneiro, igual ao nacional`, c:false },
+          { t:`Bens importados não geram crédito presumido`, c:false },
+          { t:`Aplica a alíquota cheia da CBS de 2027`, c:false },
+        ],
+        exp:`Para bens importados, o crédito deve considerar o PIS/Cofins-Importação efetivamente pago no desembaraço.`,
+        prat:`Separe no inventário itens nacionais e importados, com as DIs vinculadas.`,
+        base:`Andersen Ballão · LC 214/2025` },
+
+      { id:'TRA-03', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'intermediario',
+        contexto:`Um cliente devolve em janeiro/2027 uma mercadoria vendida em dezembro/2026, com PIS/Cofins. Como fica?`,
+        afirmacao:null,
+        alts:[
+          { t:`Gera crédito de CBS no valor do PIS/Cofins que incidiu na operação original`, c:true },
+          { t:`Retifica a EFD Contribuições de dezembro e pede restituição`, c:false },
+          { t:`O tributo pago em 2026 é perdido`, c:false },
+          { t:`Gera crédito de ICMS equivalente`, c:false },
+        ],
+        exp:`Operações feitas na vigência de PIS/Cofins, canceladas ou devolvidas a partir de 01/01/2027, geram crédito de CBS no valor dessas contribuições.`,
+        prat:`Garanta que a nota de devolução referencie a nota original, para rastrear o valor do crédito.`,
+        base:`LC 214/2025 · APET` },
+
+      { id:'TRA-04', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'avancado',
+        contexto:`Em abril/2027 a empresa descobre que não tomou crédito de PIS/Cofins sobre energia elétrica de 2025. O que é mais prudente?`,
+        afirmacao:null,
+        alts:[
+          { t:`O ideal era escriturar antes de 2027; agora, retificar a EFD Contribuições, ciente do risco de questionamento`, c:true },
+          { t:`Lançar o crédito na apuração assistida da CBS`, c:false },
+          { t:`Nada, a EFD Contribuições foi extinta`, c:false },
+          { t:`Declarar o crédito na EFD ICMS/IPI`, c:false },
+        ],
+        exp:`A EFD Contribuições segue para retificar fatos até 31/12/2026. Especialistas recomendam apurar créditos antes de 2027 por risco de restrição interpretativa.`,
+        prat:`Faça a revisão de créditos de PIS/Cofins agora, antes de dezembro/2026.`,
+        base:`NT RFB 11/2026 · APET` },
+
+      { id:'TRA-05', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'basico',
+        contexto:`Em maio/2027 surge um erro na EFD Contribuições de novembro/2026. Dá para retificar?`,
+        afirmacao:null,
+        alts:[
+          { t:`Sim, a escrituração segue exigida para retificação de fatos até 31/12/2026`, c:true },
+          { t:`Não, a EFD Contribuições deixou de existir em 2027`, c:false },
+          { t:`Só via processo administrativo`, c:false },
+          { t:`Só se o erro for a favor da Receita`, c:false },
+        ],
+        exp:`Pela NT RFB 11/2026, a EFD Contribuições permanece para controle, fiscalização e retificação de fatos até 31/12/2026, por no mínimo cinco anos.`,
+        prat:`Mantenha o PVA e os arquivos de 2022 a 2026 acessíveis na rotina.`,
+        base:`NT RFB 11/2026` },
+
+      { id:'TRA-06', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'basico',
+        contexto:`O analista espera que o leiaute da EFD Contribuições ganhe registros de CBS em 2027. Isso vai acontecer?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, o leiaute não será adaptado para CBS, IBS ou Imposto Seletivo`, c:true },
+          { t:`Sim, com novos blocos para CBS`, c:false },
+          { t:`Sim, mas só para o Lucro Real`, c:false },
+          { t:`Sim, a partir de julho/2027`, c:false },
+        ],
+        exp:`A partir de janeiro/2027 a EFD Contribuições deixa de receber novos fatos geradores e não terá leiaute adaptado para os novos tributos.`,
+        prat:`A CBS sai dos documentos fiscais e da apuração assistida. Não espere um SPED novo para ela.`,
+        base:`TOTVS Espaço Legislação` },
+
+      { id:'TRA-07', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'intermediario',
+        contexto:`A empresa terá saldo credor de PIS/Cofins em 31/12/2026. O que acontece com ele?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não se perde: a EFD Contribuições segue para gestão dos saldos credores e a LC 214 regula o aproveitamento`, c:true },
+          { t:`Perde-se na extinção dos tributos`, c:false },
+          { t:`Vira crédito de ICMS`, c:false },
+          { t:`É devolvido automaticamente em janeiro/2027`, c:false },
+        ],
+        exp:`A EFD Contribuições não é encerrada de imediato justamente pela existência de saldos credores remanescentes.`,
+        prat:`Concilie o saldo credor até dezembro/2026 e documente a origem de cada parcela.`,
+        base:`NT RFB 11/2026 · IOB` },
+
+      { id:'TRA-08', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'basico',
+        contexto:`Em fevereiro/2027 o financeiro pergunta onde está a guia de PIS e Cofins de janeiro.`,
+        afirmacao:null,
+        alts:[
+          { t:`Não existe mais: PIS e Cofins foram extintos em 01/01/2027 e substituídos pela CBS`, c:true },
+          { t:`Sai normalmente, a extinção é só em 2033`, c:false },
+          { t:`Sai junto com a guia do ICMS`, c:false },
+          { t:`Só sai para empresas do Lucro Real`, c:false },
+        ],
+        exp:`A partir de 01/01/2027 PIS e Cofins deixam de existir e a CBS é cobrada.`,
+        prat:`Atualize o calendário de pagamentos e o fluxo de caixa com a CBS antes de janeiro.`,
+        base:`LC 214/2025` },
+
+      { id:'TRA-09', tipo:'direto', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'avancado',
+        contexto:`Qual o desenho das alíquotas de CBS e IBS em 2027?`,
+        afirmacao:null,
+        alts:[
+          { t:`CBS pela alíquota de referência reduzida em 0,1 ponto, para acomodar o IBS de teste`, c:true },
+          { t:`CBS de 0,9% e IBS de 0,1%, como em 2026`, c:false },
+          { t:`CBS de 9,25%, igual ao PIS/Cofins`, c:false },
+          { t:`IBS cheio e CBS de teste`, c:false },
+        ],
+        exp:`Em 2027 começa a cobrança real da CBS, com a referência reduzida em 0,1 ponto em 2027 e 2028, enquanto o IBS segue em teste.`,
+        prat:`Revise tabelas de preço com a CBS cheia. Não projete 2027 com as alíquotas de 2026.`,
+        base:`OFM · LC 214/2025` },
+
+      { id:'AF-TRA-01', tipo:'afirmacao', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'basico',
+        contexto:`Um cliente pretende desligar em janeiro/2027 todos os processos ligados à EFD-Contribuições, já que PIS e Cofins deixam de ter novos fatos geradores.`,
+        afirmacao:`A partir de janeiro de 2027 posso descontinuar tudo o que envolve a EFD-Contribuições.`,
+        alts:[
+          { t:`Manter os processos: a escrituração segue exigida para retificar períodos até 12/2026, controlar e usar saldos credores e atender fiscalização por no mínimo cinco anos; o que acaba é a escrituração de fatos novos`, c:true },
+          { t:`Descontinuar: sem fatos geradores novos, a obrigação e a guarda dos dados históricos deixam de ser exigidas pela Receita`, c:false },
+          { t:`Manter apenas o arquivo de dezembro/2026, porque retificações de meses anteriores ficam vedadas após a extinção das contribuições`, c:false },
+          { t:`Migrar os processos para a apuração assistida da CBS, que passa a receber as retificações de PIS/Cofins de períodos anteriores`, c:false },
+        ],
+        exp:`A NT RFB 11/2026 mantém a EFD-Contribuições na transição com finalidade delimitada: controle, fiscalização, retificação de fatos até 31/12/2026 e gestão de saldos credores.`,
+        prat:`Mantenha PVA, parametrização e histórico de 2022 a 2026 ativos na solução. Devoluções de vendas de 2026 feitas em 2027 também dependem desse histórico.`,
+        base:`NT RFB 11/2026 · TOTVS` },
+
+      { id:'AF-TRA-02', tipo:'afirmacao', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'avancado',
+        contexto:`Uma empresa tem saldo credor de PIS/Cofins e também atende aos requisitos do crédito presumido de CBS sobre o estoque de abertura.`,
+        afirmacao:`Os dois créditos serão usados contra a CBS, então podemos controlar tudo em um único saldo de crédito de CBS.`,
+        alts:[
+          { t:`Saldos separados: o legado de PIS/Cofins (escriturado na EFD-Contribuições, compensável com CBS e, conforme a natureza, com outros tributos ou ressarcível) e o presumido de estoque (apurado até 30/06/2027, em 12 parcelas, só contra CBS)`, c:true },
+          { t:`Saldo único de crédito de CBS, pois os dois têm a mesma natureza, o mesmo prazo de cinco anos e as mesmas formas de utilização`, c:false },
+          { t:`Tratar os dois como crédito presumido de CBS e apropriar o total integralmente na apuração de janeiro/2027`, c:false },
+          { t:`Manter só o crédito presumido de estoque, porque o saldo de PIS/Cofins se extingue junto com as contribuições em 31/12/2026`, c:false },
+        ],
+        exp:`O saldo de PIS/Cofins escriturado até 31/12/2026 pode ser compensado com CBS, com outros tributos federais pelas regras atuais ou ressarcido quando já tinha essa característica. O crédito presumido do art. 381 é apurado até 30/06/2027, usado em 12 parcelas mensais e só compensa débitos de CBS.`,
+        prat:`Crie na solução contas de controle distintas, com origem, saldo, parcelas e prazo de decadência de cada crédito.`,
+        base:`LC 214/2025, art. 381 · Econet · Moore` },
+
+      { id:'AF-TRA-03', tipo:'afirmacao', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'intermediario',
+        contexto:`Uma empresa terá crédito presumido de CBS sobre estoque maior do que seus débitos mensais de CBS.`,
+        afirmacao:`Se não houver débito de CBS suficiente, o crédito presumido de estoque pode ser pedido em ressarcimento em dinheiro.`,
+        alts:[
+          { t:`Incorreta: o crédito presumido de estoque só compensa débitos de CBS, em 12 parcelas mensais, e o saldo não usado decai em cinco anos`, c:true },
+          { t:`Correta: aplica-se o ressarcimento em 60 dias previsto para créditos de CBS`, c:false },
+          { t:`Correta, desde que o pedido seja feito até 30/06/2027`, c:false },
+          { t:`Incorreta: o crédito pode ser usado para pagar IRPJ e CSLL`, c:false },
+        ],
+        exp:`Pelo art. 381 da LC 214/2025 e o Decreto 12.955/2026, o crédito presumido de estoque é só para compensação com CBS, sem ressarcimento.`,
+        prat:`Projete na solução o consumo das 12 parcelas contra os débitos esperados para identificar saldo ocioso.`,
+        base:`LC 214/2025, art. 381 · Econet` },
+
+      { id:'AF-TRA-04', tipo:'afirmacao', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'intermediario',
+        contexto:`Uma empresa fez o inventário de 31/12/2026 e deixou o cálculo do crédito presumido para depois.`,
+        afirmacao:`Como o inventário já está feito, posso apurar e informar o crédito presumido de estoque quando quiser em 2027.`,
+        alts:[
+          { t:`Incorreta: a apuração tem prazo até 30/06/2027, e o uso ocorre em 12 parcelas mensais a partir do período seguinte`, c:true },
+          { t:`Correta: não há prazo, só o de decadência de cinco anos`, c:false },
+          { t:`Correta até dezembro/2027`, c:false },
+          { t:`Incorreta: o crédito precisava ser informado na EFD-Contribuições de dezembro/2026`, c:false },
+        ],
+        exp:`O inventário considera exclusivamente 31/12/2026, a apuração vai até 30/06/2027 e a utilização é em 12 parcelas iguais e sucessivas.`,
+        prat:`Agende a apuração do crédito presumido no primeiro semestre de 2027 e guarde o inventário por cinco anos.`,
+        base:`Econet · Decreto 12.955/2026` },
+
+      { id:'AF-TRA-05', tipo:'afirmacao', tema:'tra', temaNome:'Transição PIS/Cofins', nivel:'avancado',
+        contexto:`Na revisão de 2027, o cliente encontra créditos de PIS/Cofins de 2025 que nunca foram escriturados.`,
+        afirmacao:`Posso lançar esses créditos diretamente como crédito de CBS na apuração de 2027.`,
+        alts:[
+          { t:`Incorreta: o saldo aproveitável é o escriturado na EFD-Contribuições; lançar depois exige retificação dos períodos de origem, com risco de questionamento`, c:true },
+          { t:`Correta: créditos de PIS/Cofins viram crédito de CBS automaticamente`, c:false },
+          { t:`Correta, desde que dentro do prazo de cinco anos`, c:false },
+          { t:`Incorreta: créditos de 2025 já estão prescritos`, c:false },
+        ],
+        exp:`A LC 214/2025 trata do aproveitamento de saldos escriturados até 31/12/2026. Especialistas recomendam apurar e escriturar créditos, inclusive extemporâneos, antes da virada.`,
+        prat:`Rode a revisão de créditos de PIS/Cofins agora, com as retificações feitas ainda em 2026.`,
+        base:`Moore · APET · NT RFB 11/2026` },
+
+      /* ── Simples Nacional ── */
+      { id:'SN-01', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'intermediario',
+        contexto:`Um cliente do Simples optou pelo regime regular de IBS/CBS em setembro. Em outubro, a simulação mostrou que não compensa. Ainda dá para voltar?`,
+        afirmacao:null,
+        alts:[
+          { t:`Sim, a opção pode ser cancelada até o último dia de novembro/2026`, c:true },
+          { t:`Não, a opção é irretratável desde o envio`, c:false },
+          { t:`Só em janeiro/2027`, c:false },
+          { t:`Só saindo do Simples`, c:false },
+        ],
+        exp:`Pela Resolução CGSN 186/2026, a opção feita em setembro pode ser cancelada até o fim de novembro/2026. Depois disso fica irretratável.`,
+        prat:`Refaça a simulação com a carteira real de clientes antes de 30/11/2026.`,
+        base:`Resolução CGSN 186/2026` },
+
+      { id:'SN-02', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'intermediario',
+        contexto:`Uma empresa do Simples não fez a opção pelo regime regular de IBS/CBS em setembro/2026. Perdeu a chance?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, pode optar em março/2027, com efeito a partir do segundo semestre de 2027`, c:true },
+          { t:`Sim, só em setembro/2027`, c:false },
+          { t:`Sim, definitivamente`, c:false },
+          { t:`Pode optar a qualquer mês de 2027`, c:false },
+        ],
+        exp:`A partir de 2027 a opção ou renúncia ocorre em março e setembro. Quem opta em março passa ao regime regular no segundo semestre.`,
+        prat:`Deixe março/2027 marcado como janela de revisão para clientes que perderam setembro.`,
+        base:`Agência Gov / Serpro` },
+
+      { id:'SN-03', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'intermediario',
+        contexto:`Uma indústria do regime regular compra de dois fornecedores do Simples: um ficou no DAS e outro optou pelo regime regular de IBS/CBS. Como fica o crédito?`,
+        afirmacao:null,
+        alts:[
+          { t:`Do fornecedor no DAS, crédito limitado ao IBS/CBS devidos no Simples; do outro, o valor destacado, condicionado à extinção do débito`, c:true },
+          { t:`Crédito igual nos dois casos`, c:false },
+          { t:`Nenhum crédito em compras do Simples`, c:false },
+          { t:`Crédito cheio nos dois casos`, c:false },
+        ],
+        exp:`Pelo art. 47, § 9º da LC 214, o crédito de compra do Simples no DAS é limitado ao devido no regime. No regime regular, vale o destaque.`,
+        prat:`Revise a matriz de fornecedores: o regime de IBS/CBS do fornecedor passa a afetar o custo líquido da compra.`,
+        base:`LC 214/2025, art. 47` },
+
+      { id:'SN-04', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'intermediario',
+        contexto:`Uma empresa que manteve IBS e CBS dentro do DAS pode se creditar dos tributos destacados nas suas compras?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, sem a opção pelo regime regular não há apropriação de créditos de IBS/CBS`, c:true },
+          { t:`Sim, integralmente`, c:false },
+          { t:`Sim, limitado a 50%`, c:false },
+          { t:`Só nas compras de ativo`, c:false },
+        ],
+        exp:`O art. 47, § 9º da LC 214/2025 impede que o optante que fica no DAS aproprie créditos de IBS e CBS nas próprias aquisições.`,
+        prat:`Empresas com muita compra tributada e venda B2B são as candidatas a simular o regime regular.`,
+        base:`LC 214/2025, art. 47` },
+
+      { id:'SN-05', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'basico',
+        contexto:`Um MEI quer optar pelo recolhimento de IBS e CBS pelo regime regular. É possível?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, a opção não se aplica ao MEI`, c:true },
+          { t:`Sim, em setembro/2026`, c:false },
+          { t:`Sim, em março/2027`, c:false },
+          { t:`Sim, se faturar acima de R$ 81 mil`, c:false },
+        ],
+        exp:`A possibilidade de apurar IBS e CBS pelo regime regular vale para ME e EPP do Simples, exceto MEI.`,
+        prat:`Para MEI, o foco é emitir corretamente a partir de 2027, não a escolha de regime.`,
+        base:`LC 214/2025 · CGM` },
+
+      { id:'SN-06', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'basico',
+        contexto:`O dono de uma empresa do Simples teme que optar pelo regime regular de IBS/CBS o tire do Simples. Procede?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, ele permanece no Simples para os demais tributos e só IBS e CBS saem do DAS`, c:true },
+          { t:`Sim, a opção exclui do Simples`, c:false },
+          { t:`Sim, mas só no primeiro ano`, c:false },
+          { t:`Não, e IBS/CBS continuam no DAS`, c:false },
+        ],
+        exp:`No chamado Simples híbrido a empresa segue no Simples para IRPJ, CSLL, INSS patronal e demais tributos do DAS, apurando IBS e CBS por fora.`,
+        prat:`Explique ao cliente que muda a rotina de IBS/CBS, com apuração mensal e conferência.`,
+        base:`PFP Advocacia · Leles Magalhães` },
+
+      { id:'SN-07', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'avancado',
+        contexto:`Uma empresa abre CNPJ em 10/11/2026 e quer o Simples com IBS/CBS pelo regime regular. Como funciona?`,
+        afirmacao:null,
+        alts:[
+          { t:`Faz as opções na inscrição; o regime regular de IBS/CBS vale para janeiro a junho/2027`, c:true },
+          { t:`Só pode optar em março/2027`, c:false },
+          { t:`Precisa esperar setembro/2027`, c:false },
+          { t:`Não pode optar no primeiro ano`, c:false },
+        ],
+        exp:`Para CNPJs inscritos de 01/10 a 31/12/2026, a opção ocorre na inscrição e o regime regular de IBS/CBS vale para o primeiro semestre de 2027.`,
+        prat:`Inclua a decisão de IBS/CBS no checklist de abertura de empresa.`,
+        base:`Resolução CGSN 186/2026` },
+
+      { id:'SN-08', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'intermediario',
+        contexto:`Qual perfil de empresa do Simples tende a ganhar mais com a opção pelo regime regular de IBS/CBS?`,
+        afirmacao:null,
+        alts:[
+          { t:`A que vende principalmente para empresas do regime regular, que querem crédito cheio`, c:true },
+          { t:`A que vende só para consumidor final pessoa física`, c:false },
+          { t:`A que não tem compras tributadas`, c:false },
+          { t:`O MEI prestador de serviços`, c:false },
+        ],
+        exp:`O ganho está no crédito que o cliente empresarial aproveita. Para venda ao consumidor final, o crédito não tem valor para o comprador.`,
+        prat:`Classifique a carteira de clientes por tipo (B2B regular, B2B Simples, B2C) antes de recomendar.`,
+        base:`Migalhas · Contábeis` },
+
+      { id:'SN-09', tipo:'direto', tema:'sn', temaNome:'Simples Nacional', nivel:'avancado',
+        contexto:`Uma empresa no Simples híbrido recebeu ressarcimento de créditos de IBS/CBS em 2027 e quer voltar a recolher tudo no DAS. Qual o limite legal?`,
+        afirmacao:null,
+        alts:[
+          { t:`A lei veda a saída do regime regular para quem recebeu ressarcimento no ano-calendário corrente ou anterior`, c:true },
+          { t:`Nenhum limite`, c:false },
+          { t:`Pode sair em qualquer mês`, c:false },
+          { t:`Deve devolver o ressarcimento e sai no mês seguinte`, c:false },
+        ],
+        exp:`A LC 214/2025 veda a retirada do regime regular ao optante que recebeu ressarcimento de créditos desses tributos no ano corrente ou anterior.`,
+        prat:`Antes de pedir ressarcimento, avalie se o cliente pode querer voltar ao DAS em breve.`,
+        base:`LC 214/2025 · CGM` },
+
+      { id:'AF-SN-01', tipo:'afirmacao', tema:'sn', temaNome:'Simples Nacional', nivel:'intermediario',
+        contexto:`Um consultor comercial recomenda o regime regular de IBS/CBS a toda a carteira do Simples.`,
+        afirmacao:`Optar pelo Simples híbrido sempre reduz a carga, porque a empresa passa a tomar créditos de IBS e CBS.`,
+        alts:[
+          { t:`Incorreta: no regime regular a empresa debita pela alíquota cheia, sem a redução do DAS; o ganho depende de clientes B2B que aproveitam crédito e de compras creditáveis, e exige simulação`, c:true },
+          { t:`Correta: o crédito nas compras sempre supera o aumento do débito`, c:false },
+          { t:`Correta para qualquer empresa com faturamento acima de R$ 1 milhão`, c:false },
+          { t:`Incorreta: optantes do Simples não podem tomar créditos em nenhuma hipótese`, c:false },
+        ],
+        exp:`A opção muda débitos e créditos. Para quem vende a consumidor final e compra pouco com crédito, pode aumentar a carga.`,
+        prat:`Use na solução uma simulação comparativa por cliente: DAS integral versus híbrido, com a carteira real de vendas e compras.`,
+        base:`Migalhas · Leles Magalhães · LC 214/2025` },
+
+      { id:'AF-SN-02', tipo:'afirmacao', tema:'sn', temaNome:'Simples Nacional', nivel:'intermediario',
+        contexto:`O setor de compras compara fornecedores para 2027.`,
+        afirmacao:`Comprar de um fornecedor do Simples que ficou no DAS gera o mesmo crédito que comprar do regime regular, desde que a NF-e traga IBS e CBS.`,
+        alts:[
+          { t:`Incorreta: da compra de fornecedor do Simples no DAS, o crédito se limita ao IBS e à CBS devidos dentro do Simples`, c:true },
+          { t:`Correta: o crédito é sempre o valor destacado na nota`, c:false },
+          { t:`Correta, desde que o fornecedor tenha mais de um ano no Simples`, c:false },
+          { t:`Incorreta: compras de optantes do Simples nunca geram crédito`, c:false },
+        ],
+        exp:`O art. 47, § 9º da LC 214/2025 limita o crédito do adquirente ao valor devido no regime simplificado.`,
+        prat:`Inclua o regime de IBS/CBS do fornecedor no cadastro e no cálculo de custo líquido de compra.`,
+        base:`LC 214/2025, art. 47 · Leles Magalhães` },
+
+      /* ── Split payment e créditos ── */
+      { id:'SPL-01', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'basico',
+        contexto:`O tesoureiro quer saber se em janeiro/2027 o banco já vai reter IBS e CBS nos recebimentos.`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, o split payment não começa em janeiro/2027 e terá implementação gradual`, c:true },
+          { t:`Sim, em todos os meios de pagamento`, c:false },
+          { t:`Sim, apenas no PIX`, c:false },
+          { t:`Sim, apenas no boleto`, c:false },
+        ],
+        exp:`O CGIBS confirmou em agosto/2026 que o split não funcionará em janeiro/2027. A implementação será em etapas definidas por ato conjunto.`,
+        prat:`Mantenha o planejamento de caixa de 2027 sem retenção automática, mas acompanhe o ato conjunto.`,
+        base:`CGIBS · v360` },
+
+      { id:'SPL-02', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'intermediario',
+        contexto:`Um supermercado vende a consumidores pessoa física com cartão de crédito e débito. Na primeira fase do split payment, essas vendas entram?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, a primeira fase não alcança vendas a pessoa física nem pagamentos com cartão ou voucher`, c:true },
+          { t:`Sim, supermercados são prioridade`, c:false },
+          { t:`Sim, só no débito`, c:false },
+          { t:`Só vendas acima de R$ 1.000`, c:false },
+        ],
+        exp:`A primeira fase, prevista para o segundo semestre de 2027, exclui vendas a pessoa física e cartões. Supermercados não foram dispensados como categoria.`,
+        prat:`No varejo B2C, o impacto de caixa do split em 2027 tende a ser pequeno. Priorize a emissão correta.`,
+        base:`Contábeis · Jorge Gomes Advogados` },
+
+      { id:'SPL-03', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'intermediario',
+        contexto:`Uma empresa paga serviços a um MEI por PIX. Haverá separação de IBS/CBS no pagamento?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, operações com fornecedor MEI ficam fora do split`, c:true },
+          { t:`Sim, pela alíquota de referência`, c:false },
+          { t:`Sim, só no PIX`, c:false },
+          { t:`Sim, se o valor passar do limite do MEI`, c:false },
+        ],
+        exp:`Operações em que o fornecedor é MEI ficam fora do split, pois não há IBS ou CBS a separar no pagamento.`,
+        prat:`Marque fornecedores MEI no cadastro para que o sistema de pagamentos não espere segregação.`,
+        base:`Jorge Gomes Advogados` },
+
+      { id:'SPL-04', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'avancado',
+        contexto:`Uma venda B2B parcelada pelo fornecedor em 5 vezes entra no split payment. Como ocorre a segregação?`,
+        afirmacao:null,
+        alts:[
+          { t:`Proporcionalmente, no pagamento de cada parcela`, c:true },
+          { t:`Integralmente, na primeira parcela`, c:false },
+          { t:`Integralmente, na última parcela`, c:false },
+          { t:`Não há split em vendas parceladas`, c:false },
+        ],
+        exp:`Pelo manual preliminar de operações, na venda parcelada pelo fornecedor a segregação de IBS e CBS ocorre proporcionalmente em cada parcela.`,
+        prat:`Ajuste a projeção de recebíveis: cada parcela chega líquida do tributo.`,
+        base:`Juscon · Manual preliminar do split` },
+
+      { id:'SPL-05', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'avancado',
+        contexto:`Em 2027, sem split payment obrigatório, como o comprador do regime regular apropria crédito de CBS?`,
+        afirmacao:null,
+        alts:[
+          { t:`Pela regra de transição do art. 48: com base no destaque correto em documento fiscal idôneo, com debate sobre quando essa dispensa termina`, c:true },
+          { t:`Só após comprovar o pagamento pelo fornecedor, sempre`, c:false },
+          { t:`Não há crédito até o split começar`, c:false },
+          { t:`Só com a guia do fornecedor anexada`, c:false },
+        ],
+        exp:`O art. 48 permite o crédito pelo destaque enquanto split e recolhimento pelo adquirente não estiverem implementados. Há leitura de que a disponibilização do recolhimento pelo adquirente já encerraria a dispensa.`,
+        prat:`Tema de consultoria: acompanhe atos conjuntos e documente a regra aplicada em cada mês.`,
+        base:`LC 214/2025, art. 48 · Piraci Oliveira` },
+
+      { id:'SPL-06', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'intermediario',
+        contexto:`Quando o split payment estiver em vigor para uma operação, o que muda no caixa do fornecedor?`,
+        afirmacao:null,
+        alts:[
+          { t:`O IBS e a CBS são separados na liquidação e vão ao Fisco; o fornecedor recebe o valor líquido`, c:true },
+          { t:`Nada, o fornecedor recolhe no mês seguinte como hoje`, c:false },
+          { t:`O comprador paga o tributo em guia separada no fim do ano`, c:false },
+          { t:`O banco devolve o tributo ao fornecedor em 30 dias`, c:false },
+        ],
+        exp:`O split antecipa a saída do tributo para o momento do pagamento e muda a previsão de caixa por data de liquidação.`,
+        prat:`Monte o fluxo de caixa por data de liquidação e reserve capital de giro para a defasagem até a confirmação do crédito.`,
+        base:`v360` },
+
+      { id:'SPL-07', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'intermediario',
+        contexto:`Na regra geral do novo modelo, o fornecedor não pagou a CBS de uma venda. O que acontece com o crédito do comprador?`,
+        afirmacao:null,
+        alts:[
+          { t:`Fica comprometido, pois o crédito é condicionado à extinção do débito da operação`, c:true },
+          { t:`Nada, o crédito é pelo destaque`, c:false },
+          { t:`O comprador recebe crédito em dobro`, c:false },
+          { t:`O crédito vai para o fornecedor`, c:false },
+        ],
+        exp:`O caput do art. 47 condiciona o crédito do adquirente à extinção dos débitos da operação. A inadimplência do fornecedor afeta o crédito do comprador.`,
+        prat:`Inclua regularidade fiscal na homologação de fornecedores relevantes.`,
+        base:`LC 214/2025, art. 47` },
+
+      { id:'AF-SPL-01', tipo:'afirmacao', tema:'spl', temaNome:'Split payment e créditos', nivel:'avancado',
+        contexto:`Em janeiro/2027, uma empresa recebe uma NF-e regularmente autorizada, com IBS e CBS destacados. Ainda não há informação de extinção do débito correspondente.`,
+        afirmacao:`Como o documento fiscal foi autorizado e os valores de IBS e CBS estão destacados, o adquirente já possui o crédito definitivamente apropriável.`,
+        alts:[
+          { t:`Imprecisa: pela regra geral o crédito depende da extinção do débito; em 2027 a regra de transição permite apropriar pelo destaque em DF-e idôneo enquanto os mecanismos não estiverem implementados, mas o crédito não é definitivo`, c:true },
+          { t:`Correta: autorização e destaque bastam e tornam o crédito definitivo em qualquer período`, c:false },
+          { t:`Incorreta: em 2027 o adquirente só pode se creditar depois que o fornecedor apresentar a guia de pagamento`, c:false },
+          { t:`Incorreta: créditos de IBS e CBS só podem ser apropriados a partir de 2033`, c:false },
+        ],
+        exp:`O art. 47 condiciona o crédito à extinção do débito. O art. 48 autoriza, na transição, o crédito pelo destaque correto em documento idôneo. Há debate sobre o momento em que essa dispensa termina.`,
+        prat:`A solução deve controlar o status de cada crédito (destacado, apropriado pela regra de transição, confirmado por extinção, glosado) em vez de um único saldo.`,
+        base:`LC 214/2025, arts. 47 e 48 · Piraci Oliveira` },
+
+      { id:'AF-SPL-02', tipo:'afirmacao', tema:'spl', temaNome:'Split payment e créditos', nivel:'intermediario',
+        contexto:`O time de produto define prioridades de conciliação financeira para 2027.`,
+        afirmacao:`Em 2027 o split payment vai reter IBS e CBS de todas as vendas no cartão, então a solução precisa conciliar as retenções desde janeiro.`,
+        alts:[
+          { t:`Incorreta: o split não começa em janeiro; a primeira fase, prevista para o segundo semestre, é facultativa, B2B e exclui vendas a pessoa física e cartões`, c:true },
+          { t:`Correta: cartões são o primeiro meio de pagamento do split`, c:false },
+          { t:`Correta, mas só para supermercados e farmácias`, c:false },
+          { t:`Incorreta: o split só começa em 2033`, c:false },
+        ],
+        exp:`O CGIBS confirmou que o split não funcionará em janeiro/2027. A primeira fase prevista exclui pessoa física e cartões de crédito, débito e voucher.`,
+        prat:`Planeje a conciliação de split para operações B2B por PIX e boleto, após o ato conjunto que fixar a fase.`,
+        base:`CGIBS · Contábeis · Jorge Gomes` },
+
+      /* ── IPI e Imposto Seletivo ── */
+      { id:'IPI-01', tipo:'direto', tema:'ipi', temaNome:'IPI e Imposto Seletivo', nivel:'basico',
+        contexto:`Uma indústria em São Paulo fabrica produto sem produção incentivada na Zona Franca de Manaus. O que acontece com o IPI em 2027?`,
+        afirmacao:null,
+        alts:[
+          { t:`A alíquota passa a zero, mas a EFD ICMS/IPI continua`, c:true },
+          { t:`O IPI é extinto e a EFD ICMS/IPI acaba`, c:false },
+          { t:`O IPI continua igual até 2033`, c:false },
+          { t:`O IPI vira IBS`, c:false },
+        ],
+        exp:`A partir de 2027 o IPI é zerado para produtos sem produção incentivada na ZFM. A EFD ICMS/IPI é mantida.`,
+        prat:`Cruze a lista de NCMs com a TIPI e com a produção incentivada na ZFM para confirmar o enquadramento.`,
+        base:`LC 214/2025 · Contmatic` },
+
+      { id:'IPI-02', tipo:'direto', tema:'ipi', temaNome:'IPI e Imposto Seletivo', nivel:'intermediario',
+        contexto:`Um cliente afirma que o IPI deixa de existir em 2027. Está correto?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, o IPI sobrevive de forma residual para proteger a Zona Franca de Manaus, regime preservado até 2073`, c:true },
+          { t:`Sim, é extinto em 2027`, c:false },
+          { t:`Sim, é extinto em 2033 com o ICMS`, c:false },
+          { t:`Não, continua para todos os produtos`, c:false },
+        ],
+        exp:`O IPI tem alíquota zerada para a maior parte dos produtos, mas continua existindo como instrumento extrafiscal ligado à ZFM.`,
+        prat:`Não remova o IPI do cadastro e do ERP. A alíquota muda, o campo continua.`,
+        base:`Contmatic · Conjur` },
+
+      { id:'IPI-03', tipo:'direto', tema:'ipi', temaNome:'IPI e Imposto Seletivo', nivel:'basico',
+        contexto:`Uma fábrica de refrigerantes pergunta qual tributo novo a afeta em 2027 além da CBS.`,
+        afirmacao:null,
+        alts:[
+          { t:`O Imposto Seletivo, que incide sobre bens prejudiciais à saúde, como bebidas açucaradas`, c:true },
+          { t:`O IPI, que sobe para compensar`, c:false },
+          { t:`Nenhum, só a CBS`, c:false },
+          { t:`O ICMS-ST nacional`, c:false },
+        ],
+        exp:`O Imposto Seletivo começa em 2027 sobre produção, extração, comercialização ou importação de bens prejudiciais à saúde ou ao meio ambiente.`,
+        prat:`Acompanhe a regulamentação das alíquotas do IS. A calibragem fina deve ficar mais clara a partir de 2028.`,
+        base:`Câmara dos Deputados · LC 214/2025` },
+
+      { id:'IPI-04', tipo:'direto', tema:'ipi', temaNome:'IPI e Imposto Seletivo', nivel:'avancado',
+        contexto:`Um produto ainda sujeito a IPI em 2027 também entra na lista do Imposto Seletivo. Os dois incidem juntos?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não, a Constituição veda a incidência cumulativa de IPI e Imposto Seletivo`, c:true },
+          { t:`Sim, somam-se`, c:false },
+          { t:`Sim, mas o IS é compensável com IPI`, c:false },
+          { t:`Só se o produto for importado`, c:false },
+        ],
+        exp:`O texto constitucional da reforma determina que o IPI não incide de forma cumulativa com o Imposto Seletivo.`,
+        prat:`Em casos de sobreposição, peça parecer antes de parametrizar o sistema.`,
+        base:`Contmatic · EC 132/2023` },
+
+      { id:'IPI-05', tipo:'direto', tema:'ipi', temaNome:'IPI e Imposto Seletivo', nivel:'avancado',
+        contexto:`Um produto industrializado na ZFM tem alíquota de 10% na TIPI. O que acontece com o IPI dos concorrentes fora da ZFM?`,
+        afirmacao:null,
+        alts:[
+          { t:`Continua sujeito a IPI, preservando o diferencial competitivo da ZFM`, c:true },
+          { t:`É zerado como os demais`, c:false },
+          { t:`Vira Imposto Seletivo`, c:false },
+          { t:`Passa a 6,5% para todos`, c:false },
+        ],
+        exp:`Produtos com alíquota igual ou superior a 6,5% ligados à produção incentivada na ZFM continuam sujeitos ao IPI.`,
+        prat:`Indústrias fora da ZFM devem verificar se têm concorrente incentivado em Manaus.`,
+        base:`Conjur · Contábeis` },
+
+      { id:'AF-IPI-01', tipo:'afirmacao', tema:'ipi', temaNome:'IPI e Imposto Seletivo', nivel:'intermediario',
+        contexto:`O time de cadastro quer simplificar a base de produtos para 2027.`,
+        afirmacao:`Com o IPI zerado em 2027, podemos remover os campos de IPI do cadastro de produtos.`,
+        alts:[
+          { t:`Incorreta: o IPI continua existindo de forma residual, alguns produtos seguem tributados por causa da ZFM e a EFD ICMS/IPI é mantida`, c:true },
+          { t:`Correta: o IPI é extinto em 2027`, c:false },
+          { t:`Correta, exceto para empresas instaladas em Manaus`, c:false },
+          { t:`Incorreta apenas para produtos importados`, c:false },
+        ],
+        exp:`O IPI tem alíquota zerada para a maior parte dos produtos, mas sobrevive como instrumento ligado à Zona Franca de Manaus.`,
+        prat:`Mantenha NCM e alíquota de IPI no cadastro e revise quando o Executivo publicar a lista de produtos mantidos.`,
+        base:`Contmatic · Conjur` },
+
+      /* ── DeRE e regimes específicos ── */
+      { id:'DER-01', tipo:'direto', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'basico',
+        contexto:`Qual destas atividades NÃO está entre as previstas para a Declaração de Regimes Específicos (DeRE)?`,
+        afirmacao:null,
+        alts:[
+          { t:`Comércio varejista de roupas`, c:true },
+          { t:`Administração de consórcio`, c:false },
+          { t:`Operadora de plano de saúde`, c:false },
+          { t:`Seguros e previdência`, c:false },
+        ],
+        exp:`A DeRE cobre instituições financeiras, planos de assistência à saúde, concursos de prognósticos, administração de consórcio, seguro e previdência.`,
+        prat:`Varejo segue a regra geral: documento fiscal mais apuração assistida.`,
+        base:`Receita Federal, Orientações 2026` },
+
+      { id:'DER-02', tipo:'direto', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'intermediario',
+        contexto:`Uma operadora de plano de saúde pergunta quando entrega os eventos periódicos mensais da DeRE pela primeira vez.`,
+        afirmacao:null,
+        alts:[
+          { t:`A partir de 15/11/2026, referente ao período de outubro/2026`, c:true },
+          { t:`Em 01/01/2027`, c:false },
+          { t:`Em 03/08/2026`, c:false },
+          { t:`Só quando o split começar`, c:false },
+        ],
+        exp:`Os eventos periódicos mensais da DeRE são exigidos a partir de 15/11/2026, com a primeira entrega referente a outubro/2026.`,
+        prat:`Valide a extração de dados de outubro ainda em outubro. Não é nota fiscal, é declaração.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      { id:'DER-03', tipo:'direto', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'avancado',
+        contexto:`Qual parte da DeRE entrou no lote de 01/10/2026?`,
+        afirmacao:null,
+        alts:[
+          { t:`Os eventos de tabela`, c:true },
+          { t:`Os eventos periódicos mensais`, c:false },
+          { t:`Todos os eventos`, c:false },
+          { t:`Nenhum, a DeRE só começa em 2027`, c:false },
+        ],
+        exp:`Os eventos de tabela da DeRE ficaram no lote de 01/10/2026. Os periódicos, em 15/11/2026, e os demais eventos, em 01/01/2027.`,
+        prat:`Trate a DeRE em três marcos no cronograma do cliente.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      { id:'AF-DER-01', tipo:'afirmacao', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'avancado',
+        contexto:`Um analista configura o calendário fiscal de uma operadora de plano de saúde.`,
+        afirmacao:`A apuração assistida da operadora segue o mesmo calendário das demais empresas, disponibilizada até o dia 15.`,
+        alts:[
+          { t:`Não necessariamente: o calendário do dia 15 foi definido para contribuintes não obrigados à DeRE; os regimes específicos têm regras e cronograma próprios`, c:true },
+          { t:`Correta: o calendário é único para todos os contribuintes`, c:false },
+          { t:`Correta a partir de 2028, quando a DeRE é extinta`, c:false },
+          { t:`Incorreta: operadoras de saúde não têm apuração de CBS`, c:false },
+        ],
+        exp:`A disponibilização até o dia 15 é descrita para contribuintes em geral não obrigados à DeRE. Regimes específicos seguem a DeRE e seus atos.`,
+        prat:`Parametrize o calendário por regime na solução, não um calendário único.`,
+        base:`Taxcel · Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      /* ── ICMS, ISS e convivência ── */
+      { id:'CON-01', tipo:'direto', tema:'con', temaNome:'ICMS, ISS e convivência', nivel:'basico',
+        contexto:`Uma indústria pergunta se ainda entrega a EFD ICMS/IPI em 2027.`,
+        afirmacao:null,
+        alts:[
+          { t:`Sim, a EFD ICMS/IPI é mantida e as obrigações de ICMS seguem até 2033`, c:true },
+          { t:`Não, todo o SPED Fiscal acaba em 2027`, c:false },
+          { t:`Não, é substituída pela DeRE`, c:false },
+          { t:`Só se tiver filial em outro estado`, c:false },
+        ],
+        exp:`Em 2027 só PIS e Cofins são extintos. As obrigações de ICMS e ISS seguem até a extinção desses impostos.`,
+        prat:`Não desative módulos de ICMS no ERP. A rotina estadual continua.`,
+        base:`Receita Federal · OFM` },
+
+      { id:'CON-02', tipo:'direto', tema:'con', temaNome:'ICMS, ISS e convivência', nivel:'basico',
+        contexto:`Quando ICMS e ISS começam a ser reduzidos?`,
+        afirmacao:null,
+        alts:[
+          { t:`Em 2029, de forma gradual até 2032, com extinção em 2033`, c:true },
+          { t:`Em 2027, junto com PIS/Cofins`, c:false },
+          { t:`Em 2026, no ano-teste`, c:false },
+          { t:`Só em 2033, de uma vez`, c:false },
+        ],
+        exp:`ICMS e ISS seguem normais em 2027 e 2028, caem gradualmente de 2029 a 2032 e acabam em 2033.`,
+        prat:`Planeje sistemas para convivência longa de dois modelos.`,
+        base:`LC 214/2025 · OFM` },
+
+      { id:'CON-03', tipo:'direto', tema:'con', temaNome:'ICMS, ISS e convivência', nivel:'basico',
+        contexto:`Qual é o maior custo operacional da transição para uma empresa do regime regular?`,
+        afirmacao:null,
+        alts:[
+          { t:`Operar dois modelos em paralelo: CBS/IBS no novo e ICMS/ISS no antigo, até 2032`, c:true },
+          { t:`A extinção da EFD Contribuições`, c:false },
+          { t:`A entrega da DeRE`, c:false },
+          { t:`A troca da NF-e por um documento novo`, c:false },
+        ],
+        exp:`Quase tudo que se diz sobre fim de obrigação em 2027 vale só para PIS/Cofins. ICMS e ISS convivem com IBS e CBS por seis anos.`,
+        prat:`Dimensione equipe e sistema para as duas rotinas, não para a troca de uma pela outra.`,
+        base:`Síntese do cronograma legal` },
+
+      { id:'CON-04', tipo:'direto', tema:'con', temaNome:'ICMS, ISS e convivência', nivel:'intermediario',
+        contexto:`Um prestador de serviços emite NFS-e em 2027. Quais tributos sobre consumo aparecem na nota?`,
+        afirmacao:null,
+        alts:[
+          { t:`ISS, IBS e CBS convivendo no mesmo documento`, c:true },
+          { t:`Só IBS e CBS, o ISS acabou`, c:false },
+          { t:`Só ISS, IBS/CBS só em 2033`, c:false },
+          { t:`ISS e PIS/Cofins, como hoje`, c:false },
+        ],
+        exp:`Em 2027 o ISS continua e a CBS substitui PIS/Cofins, com o IBS em teste. Todos aparecem na NFS-e.`,
+        prat:`Confira se o emissor calcula ISS e IBS/CBS sem conflito de base.`,
+        base:`LC 214/2025` },
+
+      { id:'AF-CON-01', tipo:'afirmacao', tema:'con', temaNome:'ICMS, ISS e convivência', nivel:'basico',
+        contexto:`Na revisão de licenças para 2027, um gestor propõe cortar custos.`,
+        afirmacao:`Com IBS e CBS em vigor, podemos desligar os módulos de ICMS e ISS da solução fiscal em 2027.`,
+        alts:[
+          { t:`Incorreta: ICMS e ISS seguem integrais em 2027 e 2028, caem de 2029 a 2032 e só acabam em 2033, com todas as obrigações até lá`, c:true },
+          { t:`Correta: IBS e CBS substituem ICMS e ISS em 2027`, c:false },
+          { t:`Correta para empresas do Lucro Real`, c:false },
+          { t:`Incorreta só para o ISS; o ICMS acaba em 2027`, c:false },
+        ],
+        exp:`Em 2027 só PIS e Cofins são extintos. As obrigações de ICMS e ISS seguem até a extinção desses impostos.`,
+        prat:`Posicione a solução para seis anos de convivência entre os dois modelos.`,
+        base:`LC 214/2025 · OFM` },
+    ];
+
+    /* ═══════════════════════════════════════════════
+       QUIZ ENGINE
+    ═══════════════════════════════════════════════ */
+    const LETRAS = ['A','B','C','D'];
+    const TEMAS_NOMES = {
+      doc:'Documentos fiscais', apu:'Apuração assistida', tra:'Transição PIS/Cofins',
+      sn:'Simples Nacional', spl:'Split payment e créditos', ipi:'IPI e Imposto Seletivo',
+      der:'DeRE e regimes específicos', con:'ICMS, ISS e convivência'
+    };
+
+    let estado = {
+      casos: [],
+      atual: 0,
+      respondeu: false,
+      respostas: [],
+      altOrdens: [], // shuffled order for current question
+      filtros: { tema:'', tipo:'', nivel:'' }
+    };
+
+    function embaralhar(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function filtrar() {
+      const { tema, tipo, nivel } = estado.filtros;
+      return CASOS.filter(c =>
+        (!tema || c.tema === tema) &&
+        (!tipo || c.tipo === tipo) &&
+        (!nivel || c.nivel === nivel)
+      );
+    }
+
+    function mostrar(id) {
+      ['qv-inicio','qv-rodada','qv-fim'].forEach(v => {
+        const el = document.getElementById(v);
+        if (el) el.hidden = (v !== id);
+      });
+    }
+
+    function comecar(casosSubset) {
+      estado.casos = embaralhar(casosSubset ?? filtrar());
+      estado.atual = 0;
+      estado.respondeu = false;
+      estado.respostas = [];
+      mostrar('qv-rodada');
+      renderQuestao();
+    }
+
+    function renderQuestao() {
+      const caso = estado.casos[estado.atual];
+      const total = estado.casos.length;
+      const idx = estado.atual;
+
+      // progress
+      const pct = (idx / total * 100).toFixed(1);
+      document.getElementById('qz-prog').style.width = pct + '%';
+      document.getElementById('qz-contador').textContent = `${idx + 1} / ${total}`;
+
+      // shuffle alternatives
+      const altsIdx = embaralhar([0,1,2,3]);
+      estado.altOrdens = altsIdx;
+
+      const isAfirmacao = caso.tipo === 'afirmacao';
+      const tipoLabel = isAfirmacao ? 'Análise de afirmação' : 'Caso direto';
+      const tipoClass = isAfirmacao ? 'qz-badge-tipo-afirmacao' : 'qz-badge-tipo-direto';
+      const nivelMap = { basico:'Básico', intermediario:'Intermediário', avancado:'Avançado' };
+
+      const altHtml = altsIdx.map((origIdx, letraIdx) => {
+        const alt = caso.alts[origIdx];
+        return `<button class="qz-alt" data-idx="${origIdx}" data-letra="${letraIdx}">
+          <span class="qz-alt-letra">${LETRAS[letraIdx]}</span>
+          <span>${alt.t}</span>
+        </button>`;
+      }).join('');
+
+      const afirmacaoHtml = isAfirmacao ? `<blockquote class="qz-afirmacao">"${caso.afirmacao}"</blockquote><p class="qz-pergunta">Qual alternativa apresenta a análise mais adequada?</p>` : '';
+
+      document.getElementById('qz-card-area').innerHTML = `
+        <div class="qz-card">
+          <div class="qz-card-meta">
+            <span class="qz-badge qz-badge-tema">${caso.temaNome}</span>
+            <span class="qz-badge ${tipoClass}">${tipoLabel}</span>
+            <span class="qz-badge qz-badge-nivel">${nivelMap[caso.nivel] || caso.nivel}</span>
+            <span class="qz-card-id">${caso.id}</span>
+          </div>
+          <p class="qz-contexto">${caso.contexto}</p>
+          ${afirmacaoHtml}
+          <div class="qz-alternativas" id="qz-alts">${altHtml}</div>
+          <div id="qz-feedback" style="display:none"></div>
+        </div>
+        <div class="qz-acao">
+          <button class="qz-btn-next" id="btn-next" style="display:none">
+            ${estado.atual + 1 >= total ? 'Ver resultado ›' : 'Próxima ›'}
+          </button>
+        </div>`;
+
+      // bind alt buttons
+      document.querySelectorAll('.qz-alt').forEach(btn => {
+        btn.addEventListener('click', () => responder(parseInt(btn.dataset.idx), parseInt(btn.dataset.letra)));
+      });
+      document.getElementById('btn-next')?.addEventListener('click', avancar);
+
+      estado.respondeu = false;
+    }
+
+    function responder(origIdx, letraIdx) {
+      if (estado.respondeu) return;
+      estado.respondeu = true;
+
+      const caso = estado.casos[estado.atual];
+      const acertou = caso.alts[origIdx].c;
+
+      // record
+      estado.respostas.push({ caso, acertou, origIdx });
+
+      // style buttons
+      document.querySelectorAll('.qz-alt').forEach(btn => {
+        btn.disabled = true;
+        const bOrigIdx = parseInt(btn.dataset.idx);
+        if (caso.alts[bOrigIdx].c) {
+          btn.classList.add('correta');
+        } else if (bOrigIdx === origIdx && !acertou) {
+          btn.classList.add('selecionada-errada');
+        } else {
+          btn.classList.add('errada');
+        }
+      });
+
+      // feedback
+      const fb = document.getElementById('qz-feedback');
+      if (fb) {
+        fb.style.display = '';
+        fb.className = 'qz-feedback ' + (acertou ? 'acertou' : 'errou');
+        fb.innerHTML = `
+          <div class="qz-feedback-titulo">${acertou ? '✓ Correto' : '✗ Incorreto'}</div>
+          <p>${caso.exp}</p>
+          <p><strong>Na prática:</strong> ${caso.prat}</p>
+          <p class="qz-base">Base: ${caso.base}</p>`;
+      }
+
+      // show next
+      const btnNext = document.getElementById('btn-next');
+      if (btnNext) btnNext.style.display = '';
+    }
+
+    function avancar() {
+      estado.atual++;
+      if (estado.atual >= estado.casos.length) {
+        renderResultado();
+        mostrar('qv-fim');
+      } else {
+        renderQuestao();
+      }
+    }
+
+    function renderResultado() {
+      const total = estado.respostas.length;
+      const acertos = estado.respostas.filter(r => r.acertou).length;
+      const pct = total > 0 ? Math.round(acertos / total * 100) : 0;
+      const pctClass = pct >= 75 ? 'bom' : pct >= 50 ? 'ok' : 'ruim';
+      const msgs = { bom:'Excelente domínio!', ok:'Bom progresso.', ruim:'Continue treinando.' };
+
+      // stats by theme
+      const temaStats = {};
+      estado.respostas.forEach(r => {
+        const k = r.caso.tema;
+        if (!temaStats[k]) temaStats[k] = { nome: r.caso.temaNome, acertos:0, total:0 };
+        temaStats[k].total++;
+        if (r.acertou) temaStats[k].acertos++;
+      });
+
+      const temasHtml = Object.entries(temaStats).map(([k, v]) => {
+        const tpct = Math.round(v.acertos / v.total * 100);
+        const cor = tpct >= 75 ? '#34d399' : tpct >= 50 ? '#fbbf24' : '#f87171';
+        return `<div class="qz-result-tema">
+          <span class="qz-result-tema-nome">${v.nome}</span>
+          <div class="qz-result-tema-bar-wrap"><div class="qz-result-tema-bar" style="width:${tpct}%;background:${cor}"></div></div>
+          <span class="qz-result-tema-score">${v.acertos}/${v.total}</span>
+        </div>`;
+      }).join('');
+
+      const erros = estado.respostas.filter(r => !r.acertou);
+
+      document.getElementById('qz-resultado-area').innerHTML = `
+        <div class="qz-result-hero">
+          <div class="qz-result-score">${acertos}<span> / ${total}</span></div>
+          <div class="qz-result-pct ${pctClass}">${pct}%</div>
+          <p class="qz-result-msg">${msgs[pctClass]}</p>
+        </div>
+        <div class="qz-result-temas">${temasHtml}</div>
+        <div class="qz-result-acoes">
+          <button class="qz-btn-novo" id="btn-novo-quiz">Novo quiz</button>
+          <button class="qz-btn-erros" id="btn-refazer-erros" ${erros.length === 0 ? 'disabled' : ''}>
+            Refazer erros (${erros.length})
+          </button>
+        </div>`;
+
+      document.getElementById('btn-novo-quiz')?.addEventListener('click', () => mostrar('qv-inicio'));
+      document.getElementById('btn-refazer-erros')?.addEventListener('click', () => {
+        if (erros.length > 0) comecar(erros.map(r => r.caso));
+      });
+    }
+
+    /* ── Keyboard shortcuts ── */
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('qv-rodada')?.hidden) return;
+
+      if (!estado.respondeu) {
+        const map = { '1':0, '2':1, '3':2, '4':3, 'a':0, 'b':1, 'c':2, 'd':3 };
+        const letraIdx = map[e.key.toLowerCase()];
+        if (letraIdx !== undefined && estado.altOrdens[letraIdx] !== undefined) {
+          responder(estado.altOrdens[letraIdx], letraIdx);
+          return;
+        }
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        avancar();
+      }
+    });
+
+    /* ── Filter chips ── */
+    function bindChips(groupId, key) {
+      document.getElementById(groupId)?.querySelectorAll('.qz-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById(groupId)?.querySelectorAll('.qz-chip').forEach(b => b.classList.remove('ativo'));
+          btn.classList.add('ativo');
+          estado.filtros[key] = btn.dataset.val;
+          atualizarPreview();
+        });
+      });
+    }
+
+    function atualizarPreview() {
+      const n = filtrar().length;
+      const el = document.getElementById('qz-preview');
+      if (el) el.textContent = `${n} caso${n !== 1 ? 's' : ''} selecionado${n !== 1 ? 's' : ''}`;
+    }
+
+    bindChips('chips-tema', 'tema');
+    bindChips('chips-tipo', 'tipo');
+    bindChips('chips-nivel', 'nivel');
+
+    document.getElementById('btn-comecar')?.addEventListener('click', () => comecar());
+    document.getElementById('btn-sair-quiz')?.addEventListener('click', () => mostrar('qv-inicio'));
+  </script>
+
+</Base>

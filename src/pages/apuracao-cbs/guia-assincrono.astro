@@ -1,0 +1,357 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  titulo="Guia API Assíncrona — APIs de Apuração CBS"
+  descricao="Fluxo comum, webhook, segurança e restrições das APIs assíncronas da Receita Federal para apuração de CBS."
+>
+  <nav class="breadcrumb">
+    <a href="/apuracao-cbs">APIs CBS</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Guia Assíncrono</span>
+  </nav>
+
+  <div class="pagina-header">
+    <div class="pagina-badge">Receita Federal · Documentação oficial</div>
+    <h1 class="pagina-h1">Guia API Assíncrona</h1>
+    <p class="pagina-subtitulo">
+      Fluxo comum, webhook, segurança e restrições das APIs assíncronas de Apuração CBS.
+    </p>
+  </div>
+
+  <div class="fonte">
+    <a class="fonte-titulo" href="https://docs.receitafederal.gov.br/apuracao-cbs/" target="_blank" rel="noopener">
+      docs.receitafederal.gov.br/apuracao-cbs/
+    </a>
+    <span class="fonte-meta">Versão 1.1 · set/2026 · Receita Federal do Brasil</span>
+  </div>
+
+  <section class="secao">
+    <h2>Pré-requisitos</h2>
+    <div class="grade-pre">
+      <div class="req-item">
+        <div class="req-num">01</div>
+        <div>
+          <strong>Credenciais válidas para o estabelecimento matriz</strong>
+          <p>Client Id e Client Secret obtidos junto à Receita Federal para o CNPJ raiz (8 dígitos).</p>
+        </div>
+      </div>
+      <div class="req-item">
+        <div class="req-num">02</div>
+        <div>
+          <strong>Token obtido via API de autenticação</strong>
+          <p>Token OAuth2 (Client Credentials) válido, incluído no header <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+        </div>
+      </div>
+      <div class="req-item">
+        <div class="req-num">03</div>
+        <div>
+          <strong>Webhook válido e acessível publicamente</strong>
+          <p>URL HTTPS de retorno que aceite requisições HEAD (validação) e POST (notificação de conclusão).</p>
+        </div>
+      </div>
+    </div>
+    <div class="fonte" style="margin-top: var(--e-4)">
+      <span class="fonte-meta">Documentação sobre credenciais:</span>
+      <a class="fonte-titulo" href="https://arquivos.receitafederal.gov.br" target="_blank" rel="noopener">
+        arquivos.receitafederal.gov.br
+      </a>
+      <span class="fonte-meta">Documentos &gt; Técnicos &gt; Receita Integra</span>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Fluxo assíncrono</h2>
+    <div class="fluxo-lista">
+      <div class="fluxo-etapa">
+        <div class="fluxo-num">1</div>
+        <div class="fluxo-corpo">
+          <strong>Cliente envia POST com <code>urlRetorno</code></strong>
+          <p>Requisição para o endpoint correspondente (débitos, créditos, pagamentos ou recolhimentos) com a URL do webhook no corpo.</p>
+        </div>
+      </div>
+      <div class="fluxo-etapa">
+        <div class="fluxo-num">2</div>
+        <div class="fluxo-corpo">
+          <strong>API valida webhook via HEAD</strong>
+          <p>A API faz uma requisição HEAD para o <code>urlRetorno</code>. Se o webhook estiver indisponível, a solicitação é cancelada.</p>
+        </div>
+      </div>
+      <div class="fluxo-etapa">
+        <div class="fluxo-num">3</div>
+        <div class="fluxo-corpo">
+          <strong>Sucesso (HTTP 201) retorna <code>tiqueteSolicitacao</code></strong>
+          <p>Resposta imediata com o tíquete identificador da solicitação assíncrona e o tempo estimado de processamento em segundos.</p>
+        </div>
+      </div>
+      <div class="fluxo-etapa">
+        <div class="fluxo-num">4</div>
+        <div class="fluxo-corpo">
+          <strong>Processamento assíncrono iniciado</strong>
+          <p>A Receita Federal processa a consulta de forma assíncrona. O tempo máximo de processamento é de 240 minutos.</p>
+        </div>
+      </div>
+      <div class="fluxo-etapa">
+        <div class="fluxo-num">5</div>
+        <div class="fluxo-corpo">
+          <strong>Conclusão dispara chamada ao webhook</strong>
+          <p>Ao final do processamento, a API notifica o cliente com POST para o <code>urlRetorno</code> informado.</p>
+        </div>
+      </div>
+      <div class="fluxo-etapa">
+        <div class="fluxo-num">6</div>
+        <div class="fluxo-corpo">
+          <strong>Payloads do webhook</strong>
+          <div class="payload-grid">
+            <div class="payload-card payload-sucesso">
+              <div class="payload-label">Sucesso</div>
+              <ul>
+                <li><code>tiqueteSolicitacao</code></li>
+                <li><code>urlAssinada</code></li>
+                <li><code>urlAssinadaExpiraEm</code></li>
+              </ul>
+            </div>
+            <div class="payload-card payload-erro">
+              <div class="payload-label">Erro</div>
+              <ul>
+                <li><code>codigoErro</code></li>
+                <li><code>mensagemErro</code></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="aviso" data-tipo="nota" style="margin-top: var(--e-6)">
+      <svg class="aviso-icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <div>
+        <strong>Limite temporal:</strong> o processamento assíncrono tem tempo máximo de <strong>240 minutos (4 horas)</strong>.
+        Solicitações que ultrapassarem esse limite serão encerradas com erro <code>APURACAO-408</code>.
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Recomendações de segurança</h2>
+    <div class="grade">
+      <div class="cartao-seg">
+        <div class="seg-num">1</div>
+        <h3>HTTPS obrigatório</h3>
+        <p>Usar exclusivamente HTTPS com validação TLS. Nunca expor endpoints de webhook via HTTP.</p>
+      </div>
+      <div class="cartao-seg">
+        <div class="seg-num">2</div>
+        <h3>Endpoint dedicado</h3>
+        <p>Criar rota separada para o webhook, sem funções administrativas expostas no mesmo caminho.</p>
+      </div>
+      <div class="cartao-seg">
+        <div class="seg-num">3</div>
+        <h3>Proteção da URL assinada</h3>
+        <p>Tratar a <code>urlAssinada</code> como segredo temporário (válida por 48h). Não registrar em logs nem no histórico do navegador.</p>
+      </div>
+      <div class="cartao-seg">
+        <div class="seg-num">4</div>
+        <h3>Validação de expiração</h3>
+        <p>Verificar o campo <code>urlAssinadaExpiraEm</code> antes de realizar o download do arquivo de resultado.</p>
+      </div>
+      <div class="cartao-seg">
+        <div class="seg-num">5</div>
+        <h3>Controle de disponibilidade</h3>
+        <p>Implementar limites de requisição e proteção contra repetição. Responder HTTP 2xx apenas após aceitar e processar com sucesso a notificação.</p>
+      </div>
+      <div class="cartao-seg">
+        <div class="seg-num">6</div>
+        <h3>Auditoria mascarada</h3>
+        <p>Registrar em logs: <code>tiqueteSolicitacao</code>, horário e resultado. Mascarar tokens, URLs assinadas e credenciais.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Autenticação OAuth2 (Client Credentials)</h2>
+    <div class="auth-flow">
+      <div class="auth-step">
+        <div class="auth-step-label">1. Enviar</div>
+        <div class="auth-step-body"><code>Client Id</code> + <code>Client Secret</code></div>
+      </div>
+      <div class="auth-arrow">→</div>
+      <div class="auth-step">
+        <div class="auth-step-label">2. Receber</div>
+        <div class="auth-step-body"><code>access_token</code></div>
+      </div>
+      <div class="auth-arrow">→</div>
+      <div class="auth-step">
+        <div class="auth-step-label">3. Usar</div>
+        <div class="auth-step-body"><code>Authorization: Bearer &lt;token&gt;</code></div>
+      </div>
+    </div>
+
+    <h3>Exemplo de chamada</h3>
+    <pre><code>curl --location --request POST \
+  'https://api.receitafederal.gov.br/apuracao-cbs/v2/&#123;endpoint&#125;/&#123;cnpj&#125;' \
+  --header "Authorization: Bearer $TOKEN" \
+  --header 'Content-Type: application/json' \
+  --data '&#123; "urlRetorno": "https://cliente.exemplo.com/webhooks/apuracao-cbs" &#125;'</code></pre>
+  </section>
+
+  <section class="secao">
+    <h2>Restrições</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Restrição</th>
+            <th>Limite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Chamadas ao endpoint de abertura</td>
+            <td><strong>4 por dia</strong></td>
+          </tr>
+          <tr>
+            <td>Disponibilidade do arquivo (URL assinada)</td>
+            <td><strong>48 horas</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .secao { margin: var(--e-12) 0; }
+  .secao h2 { margin-top: 0; }
+
+  /* Pré-requisitos */
+  .grade-pre { display: flex; flex-direction: column; gap: var(--e-4); margin-top: var(--e-6); }
+  .req-item {
+    display: flex;
+    gap: var(--e-4);
+    align-items: flex-start;
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    padding: var(--e-5) var(--e-6);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .req-num {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    font-weight: 700;
+    color: var(--azul-400);
+    background: rgba(59,130,246,.12);
+    border: 1px solid rgba(59,130,246,.22);
+    border-radius: 999px;
+    width: 2rem; height: 2rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .req-item strong { display: block; color: var(--tinta); margin-bottom: var(--e-1); }
+  .req-item p { margin: 0; font-size: var(--t-sm); color: var(--tinta-media); }
+
+  /* Fluxo */
+  .fluxo-lista { display: flex; flex-direction: column; gap: 0; margin-top: var(--e-6); position: relative; }
+  .fluxo-lista::before {
+    content: '';
+    position: absolute;
+    left: 1.1rem;
+    top: 2.5rem;
+    bottom: 1rem;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(59,130,246,.5), rgba(59,130,246,.1));
+    border-radius: 2px;
+  }
+  .fluxo-etapa {
+    display: flex;
+    gap: var(--e-5);
+    align-items: flex-start;
+    padding: var(--e-4) 0;
+    position: relative;
+  }
+  .fluxo-num {
+    font-family: var(--dado);
+    font-size: var(--t-sm);
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, var(--azul-500), var(--indigo-500, #6366f1));
+    width: 2.2rem; height: 2.2rem;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 16px rgba(59,130,246,.4);
+    position: relative;
+    z-index: 1;
+  }
+  .fluxo-corpo { flex: 1; padding-top: 0.3rem; }
+  .fluxo-corpo strong { display: block; color: var(--tinta); margin-bottom: var(--e-1); font-size: var(--t-base); }
+  .fluxo-corpo p { margin: 0; font-size: var(--t-sm); color: var(--tinta-media); line-height: 1.6; }
+
+  .payload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-3); margin-top: var(--e-3); }
+  @media (max-width: 480px) { .payload-grid { grid-template-columns: 1fr; } }
+  .payload-card {
+    border-radius: var(--r-lg);
+    padding: var(--e-4);
+    font-size: var(--t-sm);
+  }
+  .payload-sucesso { background: var(--confirmado-bg); border: 1px solid var(--confirmado-borda); }
+  .payload-erro    { background: var(--critico-bg);    border: 1px solid var(--critico-borda); }
+  .payload-label { font-family: var(--dado); font-size: var(--t-xs); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: var(--e-2); }
+  .payload-sucesso .payload-label { color: var(--confirmado); }
+  .payload-erro    .payload-label { color: var(--critico); }
+  .payload-card ul { margin: 0; padding-left: var(--e-4); color: var(--tinta-media); }
+  .payload-card li { margin-bottom: var(--e-1); }
+
+  /* Segurança */
+  .cartao-seg {
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    padding: var(--e-6);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+    position: relative;
+    overflow: hidden;
+  }
+  .seg-num {
+    font-family: var(--dado);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: rgba(59,130,246,.18);
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .cartao-seg h3 { font-size: var(--t-base); margin: 0; color: var(--tinta); }
+  .cartao-seg p { margin: 0; font-size: var(--t-sm); color: var(--tinta-media); line-height: 1.65; }
+
+  /* Auth */
+  .auth-flow {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    flex-wrap: wrap;
+    margin: var(--e-6) 0;
+    padding: var(--e-5) var(--e-6);
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .auth-step { display: flex; flex-direction: column; gap: var(--e-1); }
+  .auth-step-label { font-family: var(--dado); font-size: var(--t-xs); letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-fraca); }
+  .auth-step-body { font-size: var(--t-sm); color: var(--tinta); }
+  .auth-arrow { color: var(--azul-400); font-size: 1.25rem; font-weight: 700; }
+</style>

@@ -1,6 +1,6 @@
 ---
 titulo: "O que muda para sistemas de extração e apuração de NFs"
-publico: "Sistemas SAP e ERPs que extraem documentos fiscais e fazem apurações tributárias"
+publico: "SAP e ERPs com extração fiscal"
 resumo: "A Reforma cria novos campos obrigatórios nos XMLs de NF-e, NFS-e e CT-e, muda a estrutura da apuração e extingue PIS/COFINS. Há quatro ondas documentais entre agosto de 2026 e janeiro de 2027."
 marcos_relevantes:
   - 2026-08-03-obrigatoriedade-dfe

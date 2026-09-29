@@ -1,0 +1,147 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const fontes = [
+  {
+    id: 'spotify-01',
+    plataforma: 'Spotify',
+    embedUrl: 'https://open.spotify.com/embed/show/2aS4RALh7e66ZNcx7jU5ec?utm_source=generator&theme=0',
+    externalUrl: 'https://open.spotify.com/show/2aS4RALh7e66ZNcx7jU5ec',
+    cor: '#1DB954',
+    icone: 'spotify',
+  },
+  /* Para adicionar mais fontes, copie o bloco acima e preencha:
+     - plataforma: nome da plataforma (ex: 'YouTube', 'Google Podcasts')
+     - embedUrl: URL de embed (se disponível)
+     - externalUrl: link direto para ouvir
+     - cor: cor da plataforma
+     - icone: 'spotify' | 'youtube' | 'generic'
+  */
+];
+---
+
+<Base
+  titulo="Podcasts · Reforma Tributária"
+  descricao="Episódios selecionados sobre a Reforma Tributária do Consumo — CBS, IBS, split payment e todas as mudanças.">
+
+  <div class="pod-page">
+
+    <div class="pod-hero">
+      <div class="pod-hero-badge">Conteúdo em áudio</div>
+      <h1 class="pod-titulo">Podcasts</h1>
+      <p class="pod-sub">Episódios selecionados sobre a Reforma Tributária do Consumo.<br>Ouça diretamente aqui ou abra na plataforma de origem.</p>
+    </div>
+
+    <div class="pod-lista">
+      {fontes.map(fonte => (
+        <div class="pod-card">
+
+          <div class="pod-card-header">
+            <span class="pod-badge" style={`background:${fonte.cor}22; border-color:${fonte.cor}44; color:${fonte.cor}`}>
+              {fonte.icone === 'spotify' && (
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                </svg>
+              )}
+              {fonte.plataforma}
+            </span>
+            <a class="pod-link-externo" href={fonte.externalUrl} target="_blank" rel="noopener noreferrer">
+              Abrir no {fonte.plataforma}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            </a>
+          </div>
+
+          <div class="pod-embed-wrap">
+            <iframe
+              src={fonte.embedUrl}
+              width="100%"
+              height="352"
+              frameborder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              title={`Podcast ${fonte.plataforma} sobre Reforma Tributária`}
+            />
+          </div>
+
+        </div>
+      ))}
+    </div>
+
+    <div class="pod-aviso">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      Conteúdo de terceiros. Este site organiza referências públicas e não produz os episódios listados.
+    </div>
+
+  </div>
+
+  <style>
+    .pod-page { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+    .pod-hero { text-align:center; margin-bottom:2.5rem; }
+    .pod-hero-badge {
+      display:inline-block; padding:3px 10px; border-radius:20px;
+      font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      background:rgba(29,185,84,.1); border:1px solid rgba(29,185,84,.25);
+      color:#1DB954; margin-bottom:.75rem;
+    }
+    .pod-titulo { font-size:2.25rem; font-weight:700; margin:0 0 .5rem; line-height:1.2; }
+    .pod-sub { color:var(--tinta-media); font-size:.9rem; line-height:1.6; margin:0; }
+
+    .pod-lista { display:flex; flex-direction:column; gap:1.5rem; margin-bottom:2rem; }
+
+    .pod-card {
+      background:var(--superficie); border:1px solid var(--borda);
+      border-radius:14px; overflow:hidden;
+      box-shadow:var(--s-card);
+    }
+
+    .pod-card-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.9rem 1.1rem; border-bottom:1px solid var(--borda);
+      gap:.75rem;
+    }
+
+    .pod-badge {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:4px 10px; border-radius:20px;
+      font-size:.75rem; font-weight:700;
+      border:1px solid;
+    }
+    .pod-badge svg { width:13px; height:13px; flex-shrink:0; }
+
+    .pod-link-externo {
+      display:inline-flex; align-items:center; gap:.35rem;
+      font-size:.78rem; font-weight:500; color:var(--tinta-fraca);
+      text-decoration:none; padding:4px 10px; border-radius:8px;
+      border:1px solid var(--borda); background:var(--superficie);
+      transition:all .15s; white-space:nowrap;
+    }
+    .pod-link-externo:hover { color:var(--tinta); border-color:var(--borda-forte); }
+    .pod-link-externo svg { width:11px; height:11px; flex-shrink:0; }
+
+    .pod-embed-wrap { display:flex; }
+    .pod-embed-wrap iframe { display:block; border:none; }
+
+    .pod-aviso {
+      display:flex; align-items:flex-start; gap:.6rem;
+      padding:.75rem 1rem; border-radius:10px;
+      background:var(--superficie); border:1px solid var(--borda);
+      font-size:.78rem; color:var(--tinta-fraca); line-height:1.5;
+    }
+    .pod-aviso svg { width:14px; height:14px; flex-shrink:0; margin-top:.1rem; }
+
+    @media(max-width:600px) {
+      .pod-page { padding:1.25rem .9rem 4rem; }
+      .pod-titulo { font-size:1.75rem; }
+    }
+  </style>
+
+</Base>

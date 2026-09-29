@@ -1,0 +1,97 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  titulo="APIs de Apuração CBS"
+  descricao="Guias de integração, consultas assíncronas e estruturas de retorno. Documentação oficial das APIs da Receita Federal para consulta de débitos, créditos, pagamentos e recolhimentos de CBS."
+>
+  <div class="pagina-header">
+    <div class="pagina-badge">Receita Federal · Documentação oficial</div>
+    <h1 class="pagina-h1">APIs de Apuração CBS</h1>
+    <p class="pagina-subtitulo">
+      Guias de integração, consultas assíncronas e estruturas de retorno.
+      Documentação oficial das APIs da Receita Federal para consulta de débitos, créditos, pagamentos e recolhimentos de CBS.
+    </p>
+  </div>
+
+  <div class="fonte">
+    <a class="fonte-titulo" href="https://docs.receitafederal.gov.br/apuracao-cbs/" target="_blank" rel="noopener">
+      docs.receitafederal.gov.br/apuracao-cbs/
+    </a>
+    <span class="fonte-meta">Fonte oficial · Receita Federal do Brasil · Documentação técnica das APIs de Apuração CBS</span>
+  </div>
+
+  <div class="aviso" data-tipo="nota">
+    <svg class="aviso-icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    <div>
+      Esta documentação reproduz o conteúdo oficial da Receita Federal (versão 1.1, set/2026).
+      Sempre verifique a fonte original antes de implementar.
+    </div>
+  </div>
+
+  <section class="secao">
+    <h2>Endpoints disponíveis</h2>
+    <div class="grade">
+      <a class="cartao" href="/apuracao-cbs/guia-assincrono">
+        <div class="cartao-tipo">Guia</div>
+        <div class="cartao-titulo">Guia API Assíncrona</div>
+        <div class="cartao-desc">Fluxo comum, webhook, segurança e restrições das APIs assíncronas</div>
+      </a>
+      <a class="cartao" href="/apuracao-cbs/debitos">
+        <div class="cartao-tipo">Endpoint</div>
+        <div class="cartao-titulo">Débitos CBS</div>
+        <div class="cartao-desc">Débitos de CBS incluídos ou atualizados desde a última consulta</div>
+      </a>
+      <a class="cartao" href="/apuracao-cbs/creditos">
+        <div class="cartao-tipo">Endpoint</div>
+        <div class="cartao-titulo">Créditos CBS</div>
+        <div class="cartao-desc">Créditos de CBS incluídos ou atualizados desde a última consulta</div>
+      </a>
+      <a class="cartao" href="/apuracao-cbs/pagamentos">
+        <div class="cartao-tipo">Endpoint</div>
+        <div class="cartao-titulo">Pagamentos CBS</div>
+        <div class="cartao-desc">Pagamentos que extinguem débitos: próprio, RAD e split payment</div>
+      </a>
+      <a class="cartao" href="/apuracao-cbs/recolhimentos">
+        <div class="cartao-tipo">Endpoint</div>
+        <div class="cartao-titulo">Recolhimentos CBS</div>
+        <div class="cartao-desc">Recolhimentos na condição de adquirente (RAD e split payment)</div>
+      </a>
+      <a class="cartao" href="/apuracao-cbs/situacao">
+        <div class="cartao-tipo">Utilitário</div>
+        <div class="cartao-titulo">Situação da Solicitação</div>
+        <div class="cartao-desc">Verifica o status do processamento de uma solicitação assíncrona</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Conceitos relacionados</h2>
+    <div class="grade">
+      <a class="cartao" href="/conceitos/cbs">
+        <div class="cartao-tipo">Conceito</div>
+        <div class="cartao-titulo">CBS</div>
+        <div class="cartao-desc">Contribuição sobre Bens e Serviços — substitui PIS e Cofins</div>
+      </a>
+      <a class="cartao" href="/conceitos/split-payment">
+        <div class="cartao-tipo">Conceito</div>
+        <div class="cartao-titulo">Split payment</div>
+        <div class="cartao-desc">Separação automática de IBS/CBS no momento do pagamento</div>
+      </a>
+      <a class="cartao" href="/conceitos/apuracao-ibs-cbs">
+        <div class="cartao-tipo">Conceito</div>
+        <div class="cartao-titulo">Apuração IBS/CBS</div>
+        <div class="cartao-desc">Como funciona a apuração de IBS e CBS — débitos, créditos, DPS e DIBS</div>
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .secao { margin: var(--e-12) 0; }
+  .secao h2 { margin-top: 0; }
+</style>

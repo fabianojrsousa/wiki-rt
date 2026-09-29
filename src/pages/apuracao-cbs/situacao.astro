@@ -1,0 +1,217 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  titulo="Situação da Solicitação — APIs de Apuração CBS"
+  descricao="Consulta o status do processamento de uma solicitação assíncrona via tiqueteSolicitacao."
+>
+  <nav class="breadcrumb">
+    <a href="/apuracao-cbs">APIs CBS</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Situação da Solicitação</span>
+  </nav>
+
+  <div class="pagina-header">
+    <div class="pagina-badge">Receita Federal · Documentação oficial</div>
+    <h1 class="pagina-h1">Situação da Solicitação</h1>
+    <p class="pagina-subtitulo">
+      Consulta a situação do processamento de uma solicitação assíncrona via <code>tiqueteSolicitacao</code>.
+    </p>
+  </div>
+
+  <div class="fonte">
+    <a class="fonte-titulo" href="https://docs.receitafederal.gov.br/apuracao-cbs/" target="_blank" rel="noopener">
+      docs.receitafederal.gov.br/apuracao-cbs/
+    </a>
+    <span class="fonte-meta">Versão 1.1 · set/2026 · Receita Federal do Brasil</span>
+  </div>
+
+  <section class="secao">
+    <h2>Endpoints</h2>
+    <div class="endpoint-lista">
+      <div class="endpoint-item">
+        <span class="ep-method ep-get">GET</span>
+        <code class="ep-url">https://api.receitafederal.gov.br/apuracao-cbs-prr/v2/situacao/&#123;tiqueteSolicitacao&#125;</code>
+        <span class="ep-env">produção restrita</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="ep-method ep-get">GET</span>
+        <code class="ep-url">https://api.receitafederal.gov.br/apuracao-cbs/v2/situacao/&#123;tiqueteSolicitacao&#125;</code>
+        <span class="ep-env">produção</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Exemplo de chamada</h2>
+    <pre><code>curl --location --request GET \
+  'https://api.receitafederal.gov.br/apuracao-cbs-prr/v2/situacao/&#123;tiqueteSolicitacao&#125;' \
+  --header 'Authorization: Bearer &lt;access_token&gt;' \
+  --header 'Accept: application/json'</code></pre>
+  </section>
+
+  <section class="secao">
+    <h2>Campos de retorno</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Formato</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>estado</code></td>
+            <td>String</td>
+            <td><code>PENDENTE</code>, <code>EM_PROCESSAMENTO</code>, <code>CONCLUIDA</code> ou <code>ERRO</code></td>
+          </tr>
+          <tr>
+            <td><code>urlAssinada</code></td>
+            <td>String</td>
+            <td>URL pré-assinada — disponível quando <code>estado = CONCLUIDA</code></td>
+          </tr>
+          <tr>
+            <td><code>urlAssinadaExpiraEm</code></td>
+            <td>datetime</td>
+            <td>Data/hora de expiração — disponível quando <code>estado = CONCLUIDA</code></td>
+          </tr>
+          <tr>
+            <td><code>codigoErro</code></td>
+            <td>String</td>
+            <td>Código técnico do erro — disponível quando <code>estado = ERRO</code></td>
+          </tr>
+          <tr>
+            <td><code>mensagemErro</code></td>
+            <td>String</td>
+            <td>Descrição legível do erro — disponível quando <code>estado = ERRO</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Estados possíveis</h2>
+    <div class="grade">
+      <div class="estado-card estado-pendente">
+        <div class="estado-badge">PENDENTE</div>
+        <p>Na fila, aguardando início do processamento.</p>
+      </div>
+      <div class="estado-card estado-processando">
+        <div class="estado-badge">EM_PROCESSAMENTO</div>
+        <p>Em processamento. Tempo máximo: <strong>240 minutos</strong>.</p>
+      </div>
+      <div class="estado-card estado-concluida">
+        <div class="estado-badge">CONCLUIDA</div>
+        <p>Processamento concluído. Campo <code>urlAssinada</code> disponível por <strong>48 horas</strong>.</p>
+      </div>
+      <div class="estado-card estado-erro">
+        <div class="estado-badge">ERRO</div>
+        <p>Falha no processamento. Consultar <code>codigoErro</code> e <code>mensagemErro</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Exemplos de resposta</h2>
+    <h3 class="resp-titulo resp-ok">HTTP 200 — Solicitação concluída</h3>
+    <pre><code>&#123;
+  "estado": "CONCLUIDA",
+  "urlAssinada": "https://api.receitafederal.gov.br/...",
+  "urlAssinadaExpiraEm": "2026-08-26T14:30:00Z"
+&#125;</code></pre>
+
+    <h3 class="resp-titulo resp-err" style="margin-top: var(--e-6)">HTTP 400/401/404/500 — Erro</h3>
+    <pre><code>&#123;
+  "estado": "ERRO",
+  "codigoErro": "APURACAO-408",
+  "mensagemErro": "Tempo limite de processamento excedido (240 minutos)."
+&#125;</code></pre>
+  </section>
+</Base>
+
+<style>
+  .secao { margin: var(--e-12) 0; }
+  .secao h2 { margin-top: 0; }
+  .secao h3 { margin-top: var(--e-6); }
+
+  .endpoint-lista { display: flex; flex-direction: column; gap: var(--e-3); margin-top: var(--e-4); }
+  .endpoint-item {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    padding: var(--e-3) var(--e-5);
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    flex-wrap: wrap;
+    gap: var(--e-2);
+  }
+  .ep-method {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    font-weight: 800;
+    letter-spacing: .1em;
+    color: var(--azul-300);
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
+    border-radius: var(--r-sm);
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+  .ep-get {
+    color: var(--confirmado);
+    background: var(--confirmado-bg);
+    border-color: var(--confirmado-borda);
+  }
+  .ep-url { font-size: var(--t-sm); flex: 1; word-break: break-all; }
+  .ep-env {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    color: var(--tinta-fraca);
+    background: var(--superficie-2);
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Estados */
+  .estado-card {
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    padding: var(--e-5) var(--e-6);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3);
+  }
+  .estado-badge {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    font-weight: 800;
+    letter-spacing: .08em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    width: fit-content;
+  }
+  .estado-card p { margin: 0; font-size: var(--t-sm); color: var(--tinta-media); line-height: 1.6; }
+
+  .estado-pendente .estado-badge   { background: var(--previsto-bg);   color: var(--previsto);   border: 1px solid var(--previsto-borda); }
+  .estado-processando .estado-badge { background: rgba(59,130,246,.12); color: var(--azul-300);   border: 1px solid rgba(59,130,246,.3); }
+  .estado-concluida .estado-badge  { background: var(--confirmado-bg); color: var(--confirmado); border: 1px solid var(--confirmado-borda); }
+  .estado-erro .estado-badge       { background: var(--critico-bg);    color: var(--critico);    border: 1px solid var(--critico-borda); }
+
+  .resp-titulo { font-size: var(--t-sm); font-family: var(--dado); }
+  .resp-ok  { color: var(--confirmado); }
+  .resp-err { color: var(--critico); }
+</style>

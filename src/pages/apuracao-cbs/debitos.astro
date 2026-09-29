@@ -1,0 +1,301 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  titulo="Débitos CBS — APIs de Apuração CBS"
+  descricao="Consulta débitos de CBS incluídos ou atualizados desde a última consulta. Estrutura de retorno, campos e exemplos."
+>
+  <nav class="breadcrumb">
+    <a href="/apuracao-cbs">APIs CBS</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Débitos</span>
+  </nav>
+
+  <div class="pagina-header">
+    <div class="pagina-badge">Receita Federal · Documentação oficial</div>
+    <h1 class="pagina-h1">Débitos CBS</h1>
+    <p class="pagina-subtitulo">
+      Retorna débitos de CBS incluídos ou atualizados entre a data da consulta e a da última consulta anterior.
+      Janela máxima: 8 dias. Primeira consulta: desde o 1º dia do mês corrente.
+    </p>
+  </div>
+
+  <div class="fonte">
+    <a class="fonte-titulo" href="https://docs.receitafederal.gov.br/apuracao-cbs/" target="_blank" rel="noopener">
+      docs.receitafederal.gov.br/apuracao-cbs/
+    </a>
+    <span class="fonte-meta">Versão 1.0 (03/09/2026) · Versão 1.1 (17/09/2026 — correção dados e exemplos)</span>
+  </div>
+
+  <section class="secao">
+    <h2>Endpoints</h2>
+    <div class="endpoint-lista">
+      <div class="endpoint-item">
+        <span class="ep-method">POST</span>
+        <code class="ep-url">https://api.receitafederal.gov.br/apuracao-cbs-prr/v2/debitos/&#123;cnpj&#125;</code>
+        <span class="ep-env">produção restrita</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="ep-method">POST</span>
+        <code class="ep-url">https://api.receitafederal.gov.br/apuracao-cbs/v2/debitos/&#123;cnpj&#125;</code>
+        <span class="ep-env">produção</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Parâmetros de entrada</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>cnpj</code></td>
+            <td><span class="tipo-badge">String (8)</span></td>
+            <td>CNPJ base (8 dígitos) informado no path da URL</td>
+          </tr>
+          <tr>
+            <td><code>Authorization</code> <span class="campo-local">header</span></td>
+            <td><span class="tipo-badge">String</span></td>
+            <td>Token de autenticação no formato <code>Bearer &lt;token&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>urlRetorno</code> <span class="campo-local">body</span></td>
+            <td><span class="tipo-badge">String</span></td>
+            <td>URL HTTPS do webhook para notificação de conclusão</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Exemplo de chamada</h2>
+    <pre><code>curl --location --request POST \
+  'https://api.receitafederal.gov.br/apuracao-cbs-prr/v2/debitos/&#123;cnpj&#125;' \
+  --header "Authorization: Bearer $TOKEN" \
+  --header 'Content-Type: application/json' \
+  --data '&#123; "urlRetorno": "https://cliente.exemplo.com/webhooks/apuracao-cbs" &#125;'</code></pre>
+  </section>
+
+  <section class="secao">
+    <h2>Respostas da API</h2>
+    <div class="resp-grid">
+      <div>
+        <h3 class="resp-titulo resp-ok">HTTP 201 — Sucesso</h3>
+        <pre><code>&#123;
+  "tiqueteSolicitacao": "692b7b25-44cb-4415-8625-2b9522dd7933.B5E08D55",
+  "tEASegundos": "120"
+&#125;</code></pre>
+      </div>
+      <div>
+        <h3 class="resp-titulo resp-err">HTTP 400/401/404/500 — Erro</h3>
+        <pre><code>&#123;
+  "codigoErro": "APURACAO-001",
+  "mensagemErro": "Parâmetros inválidos para processamento da solicitação."
+&#125;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Estrutura do JSON de retorno</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Nível</th>
+            <th>Cardinalidade</th>
+            <th>Formato</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>tiqueteSolicitacao</code></td><td>1</td><td>1:1</td><td>string</td><td>Tíquete da solicitação</td></tr>
+          <tr><td><code>ni</code></td><td>1</td><td>1:1</td><td>string (8)</td><td>NI do contribuinte</td></tr>
+          <tr><td><code>niConsumidor</code></td><td>1</td><td>1:1</td><td>string</td><td>NI do consumidor</td></tr>
+          <tr><td><code>geradoEm</code></td><td>1</td><td>1:1</td><td>datetime</td><td>Data/hora de geração</td></tr>
+          <tr><td><code>apuracao</code></td><td>1</td><td>1:N</td><td>object</td><td>Grupo de apurações</td></tr>
+          <tr><td><code>apuracao[].pa</code></td><td>2</td><td>1:1</td><td>date (mm/aaaa)</td><td>Período de apuração</td></tr>
+          <tr><td><code>apuracao[].debitos</code></td><td>2</td><td>1:N</td><td>object</td><td>Grupo de débitos</td></tr>
+          <tr><td><code>apuracao[].debitos[].origem</code></td><td>3</td><td>1:1</td><td>integer</td><td>Origem do débito</td></tr>
+          <tr><td><code>apuracao[].debitos[].documento</code></td><td>3</td><td>1:1</td><td>integer</td><td>Tipo de documento</td></tr>
+          <tr><td><code>apuracao[].debitos[].chave</code></td><td>3</td><td>1:1</td><td>string (50)</td><td>Chave fiscal</td></tr>
+          <tr><td><code>apuracao[].debitos[].emissao</code></td><td>3</td><td>1:1</td><td>datetime</td><td>Data/hora emissão</td></tr>
+          <tr><td><code>apuracao[].debitos[].registro</code></td><td>3</td><td>1:1</td><td>datetime</td><td>Data/hora registro</td></tr>
+          <tr><td><code>apuracao[].debitos[].atualizacao</code></td><td>3</td><td>1:1</td><td>datetime</td><td>Data/hora última atualização</td></tr>
+          <tr><td><code>apuracao[].debitos[].cbs</code></td><td>3</td><td>3:7</td><td>object</td><td>Grupo de valores CBS</td></tr>
+          <tr><td><code>apuracao[].debitos[].cbs.excedente</code></td><td>4</td><td>0:1</td><td>number (18,2)</td><td>Valor excedente</td></tr>
+          <tr><td><code>apuracao[].debitos[].cbs.apurado</code></td><td>4</td><td>1:1</td><td>number (18,2)</td><td>Valor apurado</td></tr>
+          <tr><td><code>apuracao[].debitos[].cbs.inexigivel</code></td><td>4</td><td>0:1</td><td>number (18,2)</td><td>Valor inexigível</td></tr>
+          <tr><td><code>apuracao[].debitos[].cbs.suspenso</code></td><td>4</td><td>0:1</td><td>number (18,2)</td><td>Valor suspenso</td></tr>
+          <tr><td><code>apuracao[].debitos[].cbs.extinto</code></td><td>4</td><td>0:1</td><td>number (18,2)</td><td>Valor extinto</td></tr>
+          <tr><td><code>apuracao[].debitos[].cbs.saldoDevedor</code></td><td>4</td><td>1:1</td><td>number (18,2)</td><td>Saldo devedor</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Códigos de Origem do Débito</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr><th>Código</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>0</code></td><td>NORMAL</td></tr>
+          <tr><td><code>20</code></td><td>DEVOLUCAO_POR_PCONT</td></tr>
+          <tr><td><code>21</code></td><td>DEVOLUCAO_POR_RAD</td></tr>
+          <tr><td><code>22</code></td><td>DEVOLUCAO_POR_CREDITO</td></tr>
+          <tr><td><code>30</code></td><td>CANCELAMENTO_CREDITO</td></tr>
+          <tr><td><code>31</code></td><td>CANCELAMENTO_RAD</td></tr>
+          <tr><td><code>32</code></td><td>CANCELAMENTO_PCONT</td></tr>
+          <tr><td><code>50</code></td><td>PERECIMENTO_TRANSPORTE_FOB</td></tr>
+          <tr><td><code>51</code></td><td>PERECIMENTO_TRANSPORTE_CIF</td></tr>
+          <tr><td><code>52</code></td><td>DEVOLUCAO_PERECIMENTO_TRANSPORTE_CIF_POR_PCONT</td></tr>
+          <tr><td><code>53</code></td><td>DEVOLUCAO_PERECIMENTO_TRANSPORTE_CIF_POR_RAD</td></tr>
+          <tr><td><code>54</code></td><td>DEVOLUCAO_PERECIMENTO_TRANSPORTE_CIF_POR_CREDITO</td></tr>
+          <tr><td><code>55</code></td><td>NOTA_CREDITO_MULTA_JUROS</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Tipos de Documento</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr><th>Código</th><th>Tipo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>55</code></td><td>NF-e (Nota Fiscal Eletrônica)</td></tr>
+          <tr><td><code>57</code></td><td>CT-e (Conhecimento de Transporte Eletrônico)</td></tr>
+          <tr><td><code>62</code></td><td>NFCOM (Nota Fiscal Fatura de Serviços de Comunicação)</td></tr>
+          <tr><td><code>63</code></td><td>BP-e (Bilhete de Passagem Eletrônico)</td></tr>
+          <tr><td><code>64</code></td><td>GTV-e (Guia de Transporte de Valores Eletrônica)</td></tr>
+          <tr><td><code>65</code></td><td>NFC-e (Nota Fiscal de Consumidor Eletrônica)</td></tr>
+          <tr><td><code>66</code></td><td>NF3-e (Nota Fiscal de Energia Elétrica Eletrônica)</td></tr>
+          <tr><td><code>67</code></td><td>CT-e OS (CT-e para Outros Serviços)</td></tr>
+          <tr><td><code>91</code></td><td>NFS-e (Nota Fiscal de Serviço Eletrônica)</td></tr>
+          <tr><td><code>92</code></td><td>NFS-e Via (Exploração de Vias)</td></tr>
+          <tr><td><code>93</code></td><td>BP-e TM (Transporte Metropolitano)</td></tr>
+          <tr><td><code>94</code></td><td>DERE (Declaração de Regimes Específicos)</td></tr>
+          <tr><td><code>97</code></td><td>CT-e Simplificado</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Exemplo completo de resposta JSON</h2>
+    <pre><code>&#123;
+  "tiqueteSolicitacao": "692b7b25-44cb-4415-8625-2b9522dd7933.B5E08D55",
+  "ni": "00409834",
+  "niConsumidor": "20182807000131",
+  "geradoEm": "2026-08-19T21:08:32Z",
+  "apuracao": [
+    &#123;
+      "pa": "06/2026",
+      "debitos": [
+        &#123;
+          "origem": 0,
+          "documento": 55,
+          "chave": "36662749229766700825725366193706115810782882",
+          "emissao": "2026-06-03T04:53:58Z",
+          "registro": "2026-08-13T21:19:16.190202Z",
+          "atualizacao": "2026-08-13T21:19:16.190202Z",
+          "cbs": &#123;
+            "apurado": 80,
+            "excedente": 0,
+            "inexigivel": 0,
+            "suspenso": 0,
+            "extinto": 0,
+            "saldoDevedor": 80
+          &#125;
+        &#125;
+      ]
+    &#125;
+  ]
+&#125;</code></pre>
+  </section>
+</Base>
+
+<style>
+  .secao { margin: var(--e-12) 0; }
+  .secao h2 { margin-top: 0; }
+
+  .endpoint-lista { display: flex; flex-direction: column; gap: var(--e-3); margin-top: var(--e-4); }
+  .endpoint-item {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    padding: var(--e-3) var(--e-5);
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    flex-wrap: wrap;
+    gap: var(--e-2);
+  }
+  .ep-method {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    font-weight: 800;
+    letter-spacing: .1em;
+    color: var(--azul-300);
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
+    border-radius: var(--r-sm);
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+  .ep-url { font-size: var(--t-sm); flex: 1; word-break: break-all; }
+  .ep-env {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    color: var(--tinta-fraca);
+    background: var(--superficie-2);
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tipo-badge {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    color: var(--tinta-media);
+    background: var(--superficie-2);
+    border: 1px solid var(--borda);
+    border-radius: var(--r-sm);
+    padding: 1px 6px;
+    white-space: nowrap;
+  }
+  .campo-local {
+    font-family: var(--dado);
+    font-size: 0.65rem;
+    color: var(--tinta-fraca);
+    background: rgba(59,130,246,.08);
+    border: 1px solid rgba(59,130,246,.2);
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-left: var(--e-1);
+  }
+
+  .resp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr)); gap: var(--e-4); }
+  .resp-titulo { font-size: var(--t-sm); font-family: var(--dado); margin: 0 0 var(--e-2); }
+  .resp-ok  { color: var(--confirmado); }
+  .resp-err { color: var(--critico); }
+</style>

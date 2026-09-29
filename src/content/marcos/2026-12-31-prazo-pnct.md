@@ -7,11 +7,13 @@ afeta: ["Regime regular"]
 base_normativa: ["ato-conjunto-rfb-cgibs-5-2026"]
 confirmado: true
 fontes:
-  - titulo: "Receita e CGIBS regulamentam programa de conformidade para adaptação à reforma"
-    url: "https://www.mooremsll.com.br/noticias-tributarias-20-08-2026/"
-    orgao: "Compilação de notícias tributárias"
-    acessado_em: 2026-08-29
-verificado_em: 2026-08-29
+  - titulo: "Receita Federal e CGIBS regulamentam Programa Nacional de Conformidade Tributária para apoiar adaptação à Reforma Tributária no ano de 2026"
+    url: "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/receita-federal-e-cgibs-regulamentam-programa-nacional-de-conformidade-tributaria-para-apoiar-adaptacao-a-reforma-tributaria-no-ano-de-2026"
+    orgao: "Receita Federal do Brasil"
+    acessado_em: 2026-09-25
+verificado_em: 2026-09-25
 ---
 
-Data-limite para que os contribuintes corrijam as inconsistências apontadas pela administração tributária, uma das condições de permanência no Programa Nacional de Conformidade Tributária de 2026.
+Data-limite para que os contribuintes corrijam **todas** as inconsistências apontadas pela Receita Federal e pelo CGIBS nos documentos fiscais. É uma das condições de permanência no [Programa Nacional de Conformidade Tributária (PNCT) de 2026](/normas/ato-conjunto-rfb-cgibs-5-2026), instituído pelo Ato Conjunto RFB/CGIBS nº 5/2026.
+
+O descumprimento desse prazo retira o contribuinte dos benefícios do programa — principalmente a possibilidade de extinção das penalidades mediante autorregularização.

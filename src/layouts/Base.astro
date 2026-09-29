@@ -65,7 +65,9 @@ import '../styles/global.css';
             <li><a href="/situacoes"       aria-current={atual('/situacoes')}>O que muda no SAP</a></li>
             <li><a href="/conceitos"       aria-current={atual('/conceitos')}>Conceitos</a></li>
             <li><a href="/normas"          aria-current={atual('/normas')}>Normas</a></li>
-            <li><a href="/glossario"       aria-current={atual('/glossario')}>Glossário</a></li>
+            <li><a href="/apuracao-cbs"       aria-current={atual('/apuracao-cbs')}>API's</a></li>
+            <li><a href="/contabilizacao"   aria-current={atual('/contabilizacao')}>Contabilização</a></li>
+            <li><a href="/obrigacoes-2027"  aria-current={atual('/obrigacoes-2027')}>Novas Obrigações</a></li>
           </ul>
         </nav>
 
@@ -77,6 +79,33 @@ import '../styles/global.css';
             </svg>
             Buscar <kbd>Ctrl K</kbd>
           </button>
+
+          <div class="nav-ferramentas">
+            <a class="btn-ferramenta" href="/quiz" aria-current={atual('/quiz')} title="Quiz — Reforma na Prática">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span class="btn-ferramenta-label">Quiz</span>
+            </a>
+            <a class="btn-ferramenta" href="/podcasts" aria-current={atual('/podcasts')} title="Podcasts sobre a Reforma">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+              </svg>
+              <span class="btn-ferramenta-label">Podcasts</span>
+            </a>
+            <a class="btn-ferramenta" href="/glossario" aria-current={atual('/glossario')} title="Glossário">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+              <span class="btn-ferramenta-label">Glossário</span>
+            </a>
+          </div>
 
           <button class="btn-icone" id="btn-tema" aria-label="Alternar tema" title="Tema claro/escuro">
             <svg id="icone-lua" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -122,6 +151,24 @@ import '../styles/global.css';
 
       </div>
     </header>
+
+    <!-- ── Menu mobile (fora do header para escapar do backdrop-filter containing block) ── -->
+    <div class="menu-mobile" id="menu-mobile" aria-label="Menu de navegação">
+      <ul class="menu-mobile-lista">
+        <li><a href="/"               aria-current={rota === '/' ? 'page' : undefined}>Início</a></li>
+        <li><a href="/sap"            aria-current={atual('/sap')} class="menu-mobile-destaque">Guia SAP</a></li>
+        <li><a href="/linha-do-tempo" aria-current={atual('/linha-do-tempo')}>Linha do tempo</a></li>
+        <li><a href="/situacoes"      aria-current={atual('/situacoes')}>O que muda no SAP</a></li>
+        <li><a href="/conceitos"      aria-current={atual('/conceitos')}>Conceitos</a></li>
+        <li><a href="/normas"         aria-current={atual('/normas')}>Normas</a></li>
+        <li><a href="/apuracao-cbs"    aria-current={atual('/apuracao-cbs')}>API's</a></li>
+        <li><a href="/contabilizacao"  aria-current={atual('/contabilizacao')}>Contabilização</a></li>
+        <li><a href="/obrigacoes-2027" aria-current={atual('/obrigacoes-2027')}>Novas Obrigações</a></li>
+        <li><a href="/quiz"            aria-current={atual('/quiz')}>Quiz</a></li>
+        <li><a href="/podcasts"        aria-current={atual('/podcasts')}>Podcasts</a></li>
+        <li><a href="/glossario"       aria-current={atual('/glossario')}>Glossário</a></li>
+      </ul>
+    </div>
 
     <!-- ── Modal de busca ── -->
     <div class="modal-overlay" id="modal-busca" role="dialog" aria-modal="true" aria-label="Busca rápida">
@@ -170,50 +217,60 @@ import '../styles/global.css';
       <ul class="nav-inferior-lista">
         <li>
           <a class="nav-inf-item" href="/" aria-current={rota === '/' ? 'page' : undefined}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
+            <span class="nav-inf-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </span>
             <span>Início</span>
           </a>
         </li>
         <li>
           <a class="nav-inf-item nav-inf-destaque" href="/sap" aria-current={atual('/sap')}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-            </svg>
+            <span class="nav-inf-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+            </span>
             <span>Guia SAP</span>
           </a>
         </li>
         <li>
           <a class="nav-inf-item" href="/linha-do-tempo" aria-current={atual('/linha-do-tempo')}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
+            <span class="nav-inf-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </span>
             <span>Timeline</span>
           </a>
         </li>
         <li>
           <a class="nav-inf-item" href="/normas" aria-current={atual('/normas')}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
-            </svg>
+            <span class="nav-inf-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </span>
             <span>Normas</span>
           </a>
         </li>
         <li>
           <button class="nav-inf-item" id="btn-busca-nav-inf" aria-label="Abrir busca">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
+            <span class="nav-inf-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+            </span>
             <span>Buscar</span>
           </button>
         </li>
@@ -247,25 +304,26 @@ import '../styles/global.css';
 
       // ── Menu mobile ──
       const btnMenu    = document.getElementById('btn-menu')!;
-      const navWrapper = document.getElementById('nav-wrapper')!;
+      const menuMobile = document.getElementById('menu-mobile')!;
       const iMenu      = document.getElementById('icone-menu')!;
       const iFechar    = document.getElementById('icone-fechar')!;
 
+      function fecharMenuMobile() {
+        menuMobile.classList.remove('aberto');
+        btnMenu.setAttribute('aria-expanded', 'false');
+        iMenu.style.display   = '';
+        iFechar.style.display = 'none';
+      }
+
       btnMenu.addEventListener('click', () => {
-        const aberto = navWrapper.classList.toggle('aberto');
+        const aberto = menuMobile.classList.toggle('aberto');
         btnMenu.setAttribute('aria-expanded', String(aberto));
         iMenu.style.display   = aberto ? 'none' : '';
         iFechar.style.display = aberto ? ''     : 'none';
       });
 
-      // Fecha menu ao clicar em um link
-      navWrapper.querySelectorAll('a').forEach((a) => {
-        a.addEventListener('click', () => {
-          navWrapper.classList.remove('aberto');
-          btnMenu.setAttribute('aria-expanded', 'false');
-          iMenu.style.display   = '';
-          iFechar.style.display = 'none';
-        });
+      menuMobile.querySelectorAll('a').forEach((a) => {
+        a.addEventListener('click', fecharMenuMobile);
       });
 
       // ── Barra de progresso de leitura ──
@@ -311,6 +369,17 @@ import '../styles/global.css';
         { titulo: 'Simples Nacional',                  url: '/situacoes/simples-nacional',       desc: 'O que muda para ME e EPP' },
         { titulo: '1ª onda NF-e (03/08/2026)',         url: '/marcos/2026-08-03-obrigatoriedade-dfe', desc: 'Campos IBS/CBS obrigatórios — regime regular' },
         { titulo: 'CBS em vigor (01/01/2027)',         url: '/marcos/2027-01-01-cbs-em-vigor',   desc: 'CBS cobrada — PIS/Cofins extintos' },
+        { titulo: 'API CBS — Visão Geral',             url: '/apuracao-cbs',                     desc: 'APIs da Receita Federal para apuração de CBS' },
+        { titulo: 'API CBS — Guia Assíncrono',         url: '/apuracao-cbs/guia-assincrono',     desc: 'Fluxo, webhook, segurança e restrições das APIs assíncronas' },
+        { titulo: 'API CBS — Débitos',                 url: '/apuracao-cbs/debitos',             desc: 'Consultar débitos de CBS incluídos ou atualizados' },
+        { titulo: 'API CBS — Créditos',                url: '/apuracao-cbs/creditos',            desc: 'Consultar créditos de CBS incluídos ou atualizados' },
+        { titulo: 'API CBS — Pagamentos',              url: '/apuracao-cbs/pagamentos',          desc: 'Pagamentos próprios, RAD e split payment' },
+        { titulo: 'API CBS — Recolhimentos',           url: '/apuracao-cbs/recolhimentos',       desc: 'Recolhimentos na condição de adquirente' },
+        { titulo: 'API CBS — Situação da Solicitação', url: '/apuracao-cbs/situacao',            desc: 'Verificar status de processamento de solicitação assíncrona' },
+        { titulo: 'Contabilização IBS e CBS',          url: '/contabilizacao',                   desc: 'Lançamentos contábeis de venda, compra, apuração e mapa mental' },
+        { titulo: 'Novas Obrigações 2027',             url: '/obrigacoes-2027',                   desc: 'O que acaba, o que fica e o que é criado nas obrigações acessórias da reforma' },
+        { titulo: 'Quiz — Reforma na Prática',        url: '/quiz',                               desc: '70 casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e mais' },
+        { titulo: 'Podcasts sobre a Reforma',          url: '/podcasts',                            desc: 'Episódios selecionados sobre a Reforma Tributária do Consumo' },
       ];
 
       function renderResultados(q: string) {
@@ -347,7 +416,10 @@ import '../styles/global.css';
 
       document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); abrirBusca(); }
-        if (e.key === 'Escape' && modal.classList.contains('ativo')) fecharBusca();
+        if (e.key === 'Escape') {
+          if (modal.classList.contains('ativo')) fecharBusca();
+          else if (menuMobile.classList.contains('aberto')) fecharMenuMobile();
+        }
       });
 
       // Navegação por teclado nos resultados

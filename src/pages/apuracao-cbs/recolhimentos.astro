@@ -1,0 +1,232 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  titulo="Recolhimentos CBS — APIs de Apuração CBS"
+  descricao="Consulta recolhimentos de CBS na condição de adquirente: RAD e split payment."
+>
+  <nav class="breadcrumb">
+    <a href="/apuracao-cbs">APIs CBS</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Recolhimentos</span>
+  </nav>
+
+  <div class="pagina-header">
+    <div class="pagina-badge">Receita Federal · Documentação oficial</div>
+    <h1 class="pagina-h1">Recolhimentos CBS</h1>
+    <p class="pagina-subtitulo">
+      Consulta recolhimentos de CBS na condição de adquirente:
+      RAD (Recolhimento pelo Adquirente) e split payment.
+    </p>
+  </div>
+
+  <div class="fonte">
+    <a class="fonte-titulo" href="https://docs.receitafederal.gov.br/apuracao-cbs/" target="_blank" rel="noopener">
+      docs.receitafederal.gov.br/apuracao-cbs/
+    </a>
+    <span class="fonte-meta">Versão 1.1 · set/2026 · Receita Federal do Brasil</span>
+  </div>
+
+  <div class="aviso" data-tipo="nota">
+    <svg class="aviso-icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    <div>
+      <strong>Diferença em relação a Pagamentos:</strong> neste endpoint o campo identificador é
+      <code>niFornecedor</code> (em vez de <code>niAdquirente</code>), pois a perspectiva é do adquirente
+      pagando a CBS pelo fornecedor.
+    </div>
+  </div>
+
+  <section class="secao">
+    <h2>Endpoints</h2>
+    <div class="endpoint-lista">
+      <div class="endpoint-item">
+        <span class="ep-method">POST</span>
+        <code class="ep-url">https://api.receitafederal.gov.br/apuracao-cbs-prr/v2/recolhimentos/&#123;cnpj&#125;</code>
+        <span class="ep-env">produção restrita</span>
+      </div>
+      <div class="endpoint-item">
+        <span class="ep-method">POST</span>
+        <code class="ep-url">https://api.receitafederal.gov.br/apuracao-cbs/v2/recolhimentos/&#123;cnpj&#125;</code>
+        <span class="ep-env">produção</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Exemplo de chamada</h2>
+    <pre><code>curl --location --request POST \
+  'https://api.receitafederal.gov.br/apuracao-cbs-prr/v2/recolhimentos/&#123;cnpj&#125;' \
+  --header "Authorization: Bearer $TOKEN" \
+  --header 'Content-Type: application/json' \
+  --data '&#123; "urlRetorno": "https://cliente.exemplo.com/webhooks/apuracao-cbs" &#125;'</code></pre>
+  </section>
+
+  <section class="secao">
+    <h2>Estrutura do JSON de retorno</h2>
+    <div class="estrutura-arvore">
+      <div class="nivel-grupo">
+        <div class="nivel-label">Nível raiz</div>
+        <div class="nivel-campos">
+          <code>tiqueteSolicitacao</code>
+          <code>ni</code>
+          <code>niConsumidor</code>
+          <code>geradoEm</code>
+          <code>apuracao[]</code>
+        </div>
+      </div>
+      <div class="nivel-grupo nivel-2">
+        <div class="nivel-label">Nível apuracao</div>
+        <div class="nivel-campos">
+          <code>dataArrecadacao</code>
+          <code>pagamentos[]</code>
+        </div>
+      </div>
+      <div class="nivel-grupo nivel-3">
+        <div class="nivel-label">Nível pagamento</div>
+        <div class="nivel-campos">
+          <code>numeroDARF</code>
+          <code>tipo</code>
+          <code>composicao[]</code>
+        </div>
+      </div>
+      <div class="nivel-grupo nivel-4">
+        <div class="nivel-label">Nível composição</div>
+        <div class="nivel-campos">
+          <code>sequencial</code>
+          <code>pa</code>
+          <code>vencimento</code>
+          <code class="campo-destaque">niFornecedor</code>
+          <code>chaveDFE</code>
+          <code>principal</code>
+          <code>multa</code>
+          <code>juros</code>
+          <code>total</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2>Exemplo completo de resposta JSON</h2>
+    <pre><code>&#123;
+  "tiqueteSolicitacao": "&lt;tiqueteSolicitacao&gt;",
+  "ni": "12345678",
+  "niConsumidor": "12345678",
+  "geradoEm": "2026-08-27T19:03:44Z",
+  "apuracao": [
+    &#123;
+      "dataArrecadacao": "2026-08-27T19:03:44.525Z",
+      "pagamentos": [
+        &#123;
+          "numeroDARF": "",
+          "tipo": 0,
+          "composicao": [
+            &#123;
+              "sequencial": 0,
+              "pa": "08/2026",
+              "vencimento": "2026-08-27T19:03:44.525Z",
+              "niFornecedor": "",
+              "chaveDFE": "",
+              "principal": 0,
+              "multa": 0,
+              "juros": 0,
+              "total": 0
+            &#125;
+          ]
+        &#125;
+      ]
+    &#125;
+  ]
+&#125;</code></pre>
+  </section>
+</Base>
+
+<style>
+  .secao { margin: var(--e-12) 0; }
+  .secao h2 { margin-top: 0; }
+
+  .endpoint-lista { display: flex; flex-direction: column; gap: var(--e-3); margin-top: var(--e-4); }
+  .endpoint-item {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    padding: var(--e-3) var(--e-5);
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    flex-wrap: wrap;
+    gap: var(--e-2);
+  }
+  .ep-method {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    font-weight: 800;
+    letter-spacing: .1em;
+    color: var(--azul-300);
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
+    border-radius: var(--r-sm);
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+  .ep-url { font-size: var(--t-sm); flex: 1; word-break: break-all; }
+  .ep-env {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    color: var(--tinta-fraca);
+    background: var(--superficie-2);
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .estrutura-arvore {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: var(--e-4);
+  }
+  .nivel-grupo {
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    padding: var(--e-4) var(--e-5);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    margin-bottom: var(--e-2);
+  }
+  .nivel-2 { margin-left: var(--e-6); border-left: 3px solid rgba(59,130,246,.3); }
+  .nivel-3 { margin-left: calc(var(--e-6) * 2); border-left: 3px solid rgba(99,102,241,.3); }
+  .nivel-4 { margin-left: calc(var(--e-6) * 3); border-left: 3px solid rgba(34,211,238,.25); }
+  .nivel-label {
+    font-family: var(--dado);
+    font-size: var(--t-xs);
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--tinta-fraca);
+    margin-bottom: var(--e-3);
+  }
+  .nivel-campos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2);
+    align-items: center;
+  }
+  .nivel-campos code { font-size: var(--t-sm); color: var(--azul-300); }
+  .campo-destaque {
+    color: var(--confirmado) !important;
+    background: var(--confirmado-bg) !important;
+    border-color: var(--confirmado-borda) !important;
+  }
+</style>
