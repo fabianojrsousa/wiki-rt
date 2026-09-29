@@ -1684,6 +1684,27 @@ tr:last-child td { border-bottom: 0; }
 .acesso-tile:hover .acesso-tile-seta { color: var(--azul-400); transform: translateX(2px); }
 
 
+/* ── Ferramentas no header (Quiz · Podcasts · Glossário) ── */
+.nav-ferramentas {
+  display: flex; align-items: center;
+  gap: 2px;
+  border-left: 1px solid rgba(255,255,255,.1);
+  padding-left: 8px;
+  margin-left: 4px;
+}
+.btn-ferramenta {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 9px; border-radius: 6px;
+  font-size: .73rem; font-weight: 500; letter-spacing: .01em;
+  color: rgba(255,255,255,.5);
+  text-decoration: none; white-space: nowrap;
+  transition: color .15s, background .15s;
+}
+.btn-ferramenta svg { width: 12px; height: 12px; flex-shrink: 0; }
+.btn-ferramenta:hover { color: #fff; background: rgba(255,255,255,.08); }
+.btn-ferramenta[aria-current="page"] { color: var(--azul-400); }
+@media (max-width: 1024px) { .nav-ferramentas { display: none; } }
+
 /* ── Acessibilidade ── */
 .sr-only {
   position: absolute; width: 1px; height: 1px;
