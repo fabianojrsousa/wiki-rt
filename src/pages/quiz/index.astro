@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 ---
 
-<Base titulo="Quiz · Reforma na Prática" descricao="78 casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e Simples Nacional. Treine para a Reforma Tributária.">
+<Base titulo="Quiz · Reforma na Prática" descricao="116 casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e Simples Nacional. Treine para a Reforma Tributária.">
 
   <div class="qz-page" id="quiz-app">
 
@@ -11,7 +11,7 @@ import Base from '../../layouts/Base.astro';
       <div class="qz-hero">
         <div class="qz-hero-badge">Reforma na Prática</div>
         <h1 class="qz-titulo">Quiz</h1>
-        <p class="qz-sub">78 casos práticos para treinar. Filtre por tema, nível e tipo.<br>Teclas <kbd>1</kbd>–<kbd>4</kbd> respondem · <kbd>Enter</kbd> avança.</p>
+        <p class="qz-sub">116 casos práticos para treinar. Filtre por tema, nível e tipo.<br>Teclas <kbd>1</kbd>–<kbd>4</kbd> respondem · <kbd>Enter</kbd> avança.</p>
       </div>
 
       <div class="qz-filtros">
@@ -24,14 +24,16 @@ import Base from '../../layouts/Base.astro';
           </div>
           <div class="qz-chips" id="chips-tema">
             <button class="qz-chip ativo" data-val="">Todos</button>
-            <button class="qz-chip" data-val="doc">Documentos fiscais <em>12</em></button>
+            <button class="qz-chip" data-val="doc">Documentos fiscais <em>16</em></button>
             <button class="qz-chip" data-val="apu">Apuração assistida <em>12</em></button>
             <button class="qz-chip" data-val="tra">Transição PIS/Cofins <em>16</em></button>
             <button class="qz-chip" data-val="sn">Simples Nacional <em>12</em></button>
-            <button class="qz-chip" data-val="spl">Split payment <em>10</em></button>
-            <button class="qz-chip" data-val="ipi">IPI e IS <em>6</em></button>
-            <button class="qz-chip" data-val="der">DeRE <em>4</em></button>
-            <button class="qz-chip" data-val="con">ICMS/ISS <em>6</em></button>
+            <button class="qz-chip" data-val="spl">Split payment <em>11</em></button>
+            <button class="qz-chip" data-val="ipi">IPI e IS <em>8</em></button>
+            <button class="qz-chip" data-val="der">DeRE <em>12</em></button>
+            <button class="qz-chip" data-val="con">ICMS/ISS <em>7</em></button>
+            <button class="qz-chip" data-val="cred">Créditos e base <em>13</em></button>
+            <button class="qz-chip" data-val="trc">Transporte de cargas <em>9</em></button>
           </div>
         </div>
 
@@ -66,7 +68,7 @@ import Base from '../../layouts/Base.astro';
       </div>
 
       <div class="qz-start-area">
-        <span id="qz-preview" class="qz-preview">78 casos selecionados</span>
+        <span id="qz-preview" class="qz-preview">116 casos selecionados</span>
         <button class="qz-btn-start" id="btn-comecar">Começar quiz ›</button>
       </div>
     </div>
@@ -414,7 +416,7 @@ import Base from '../../layouts/Base.astro';
 
   <script>
     /* ═══════════════════════════════════════════════
-       BANCO DE CASOS — 78 questões
+       BANCO DE CASOS — 116 questões
     ═══════════════════════════════════════════════ */
     const CASOS = [
       /* ── Documentos fiscais ── */
@@ -1444,6 +1446,507 @@ import Base from '../../layouts/Base.astro';
         exp:`A EC 132/2023 reduz ICMS e ISS em 10% ao ano de 2029 a 2032 (90%, 80%, 70%, 60%) e os extingue em 2033.`,
         prat:`Projete preços e margens de 2029 em diante com as duas cargas combinadas, ano a ano.`,
         base:`EC 132/2023, ADCT art. 128 · LC 214/2025` },
+
+      /* ── Documentos fiscais · extras ── */
+      { id:'POD-09', tipo:'afirmacao', tema:'doc', temaNome:'Documentos fiscais', nivel:'intermediario',
+        contexto:`O episódio comentou a flexibilização de regras de validação dos documentos fiscais eletrônicos.`,
+        afirmacao:`"Se a Sefaz flexibilizou a validação, os campos de IBS e CBS deixaram de ser obrigatórios em 2026."`,
+        alts:[
+          { t:`Incorreta: a flexibilização só evita rejeições; o dever de informar continua e condiciona a dispensa de recolhimento de 2026`, c:true },
+          { t:`Correta: sem rejeição, não há obrigação`, c:false },
+          { t:`Correta só para a NFC-e`, c:false },
+          { t:`Incorreta: a flexibilização aumentou as multas por campo vazio`, c:false },
+        ],
+        exp:`Regra de validação desativada ou em alerta não revoga a obrigação prevista na legislação e nas notas técnicas. A dispensa de recolhimento do ano-teste depende do cumprimento das obrigações acessórias.`,
+        prat:`Mantenha validação própria dos campos de IBS/CBS no emissor, independente do autorizador.`,
+        base:`Orientações RFB/CGIBS 2026 · LC 214/2025` },
+
+      { id:'COM-03', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'basico',
+        contexto:`Um supermercado do regime regular vende arroz, feijão, carne bovina e refrigerante. Como ficam IBS e CBS nesses itens?`,
+        afirmacao:null,
+        alts:[
+          { t:`Arroz, feijão e carne com alíquota zero; refrigerante com alíquota padrão e IS`, c:true },
+          { t:`Todos com redução de 60%, porque alimentos e bebidas vendidos no varejo têm o mesmo tratamento`, c:false },
+          { t:`Todos com alíquota zero`, c:false },
+          { t:`Arroz e feijão com alíquota zero; carne e refrigerante com redução de 60% das alíquotas`, c:false },
+        ],
+        exp:`A Cesta Básica Nacional (Anexo I da LC 214) tem alíquota zero e inclui arroz, feijão e carnes. Bebidas açucaradas sofrem incidência do Imposto Seletivo.`,
+        prat:`Classifique cada NCM do cadastro pelo anexo correto. A redução depende do produto, não do tipo de loja.`,
+        base:`LC 214/2025, Anexo I · Contábeis · IOB` },
+
+      { id:'COM-04', tipo:'direto', tema:'doc', temaNome:'Documentos fiscais', nivel:'intermediario',
+        contexto:`Uma loja virtual de São Paulo vende um notebook a um consumidor de Recife (PE), com entrega no endereço dele. Qual IBS se aplica?`,
+        afirmacao:null,
+        alts:[
+          { t:`O IBS de Pernambuco e de Recife, local da entrega`, c:true },
+          { t:`O IBS de São Paulo`, c:false },
+          { t:`Uma média entre as alíquotas de São Paulo e Pernambuco, como no antigo diferencial de alíquota`, c:false },
+          { t:`O IBS do estado por onde a mercadoria passou mais tempo durante o transporte até o cliente`, c:false },
+        ],
+        exp:`Para bens móveis materiais, o local da operação é o da entrega ou disponibilização ao destinatário (art. 11, I). O IBS segue o destino.`,
+        prat:`O cadastro de clientes precisa ter o município de entrega correto; é ele que define a alíquota de IBS.`,
+        base:`LC 214/2025, art. 11 · Escola Superior ESN` },
+
+      { id:'TRC-07', tipo:'afirmacao', tema:'doc', temaNome:'Documentos fiscais', nivel:'intermediario',
+        contexto:`Um blog de logística publicado no início de 2026 dizia que o CT-e sem IBS/CBS seria rejeitado a partir de 05/01/2026.`,
+        afirmacao:`"O CT-e passou a exigir os campos de IBS e CBS em janeiro de 2026, conforme o blog."`,
+        alts:[
+          { t:`Desatualizada: o Ato Conjunto nº 4/2026 fixou 03/08/2026 para o CT-e`, c:true },
+          { t:`Correta: janeiro de 2026`, c:false },
+          { t:`Desatualizada: o CT-e só vai exigir os campos de IBS e CBS a partir de janeiro de 2027`, c:false },
+          { t:`Correta, mas só para transportadoras do Simples Nacional; as demais começam em outubro de 2026`, c:false },
+        ],
+        exp:`O cronograma foi revisto em julho de 2026. NF-e, NFC-e e os principais documentos de transporte passaram a exigir IBS e CBS em 03/08/2026.`,
+        prat:`Treine a equipe com a fonte oficial e registre a data de cada norma usada no material.`,
+        base:`Ato Conjunto RFB/CGIBS nº 4/2026 · Felsberg` },
+
+      /* ── Split payment · extra ── */
+      { id:'COM-07', tipo:'direto', tema:'spl', temaNome:'Split payment e créditos', nivel:'intermediario',
+        contexto:`Um marketplace estrangeiro intermedeia vendas de vendedores estrangeiros a consumidores brasileiros. O que a LC 214 exige da plataforma?`,
+        afirmacao:null,
+        alts:[
+          { t:`Inscrição no regime regular, com responsabilidade pelo tributo`, c:true },
+          { t:`Nada: lei brasileira não alcança`, c:false },
+          { t:`Apenas a emissão de um recibo simplificado por venda, sem inscrição em cadastro no Brasil`, c:false },
+          { t:`O recolhimento do ICMS do estado de destino da mercadoria, e não de IBS e CBS sobre a operação`, c:false },
+        ],
+        exp:`A plataforma digital, inclusive domiciliada no exterior, deve se inscrever no regime regular. Se não se inscrever, o IBS e a CBS podem ser retidos na operação de câmbio. As plataformas entram no cronograma de documentos em 01/12/2026.`,
+        prat:`Revise contratos com marketplaces: quem emite o documento e quem recolhe muda o seu custo e o seu crédito.`,
+        base:`LC 214/2025 · Ato Conjunto RFB/CGIBS nº 4/2026` },
+
+      /* ── IPI e Imposto Seletivo · extras ── */
+      { id:'IND-08', tipo:'direto', tema:'ipi', temaNome:'IPI e Imposto Seletivo', nivel:'avancado',
+        contexto:`Uma indústria de São Paulo compra componentes de fabricante incentivado da Zona Franca de Manaus. Como fica o crédito de CBS dessa compra?`,
+        afirmacao:null,
+        alts:[
+          { t:`Crédito presumido de CBS: 6% com IPI zerado, 2% nos demais`, c:true },
+          { t:`Crédito integral pela alíquota cheia da CBS destacada na nota do fornecedor da Zona Franca`, c:false },
+          { t:`Nenhum crédito: venda isenta`, c:false },
+          { t:`Crédito presumido fixo de 9,25%, o mesmo percentual usado para o estoque de abertura`, c:false },
+        ],
+        exp:`Para preservar o diferencial da ZFM, a LC 214 concede ao adquirente crédito presumido de CBS de 6% quando o IPI do produto foi zerado e de 2% nos demais casos.`,
+        prat:`Identifique fornecedores da ZFM no cadastro e aplique a regra de crédito presumido em vez do destaque.`,
+        base:`LC 214/2025 · Câmara dos Deputados · Conjur` },
+
+      { id:'IND-09', tipo:'direto', tema:'ipi', temaNome:'IPI e Imposto Seletivo', nivel:'intermediario',
+        contexto:`Uma mineradora de ferro pergunta qual o teto do Imposto Seletivo na extração de minério de ferro, petróleo e gás natural.`,
+        afirmacao:null,
+        alts:[
+          { t:`0,25%, abaixo do teto constitucional de 1%`, c:true },
+          { t:`1%, o teto constitucional`, c:false },
+          { t:`Zero, porque minério, petróleo e gás são insumos industriais fora do alcance do imposto`, c:false },
+          { t:`A mesma alíquota do IPI prevista na TIPI vigente em 31/12/2023 para esses produtos`, c:false },
+        ],
+        exp:`A LC 214 limitou em 0,25% a alíquota do Imposto Seletivo sobre minério de ferro, óleos brutos de petróleo e gás natural. A Constituição permite até 1% na extração.`,
+        prat:`Inclua o IS na projeção de custo da extração e acompanhe a lei ordinária que fixará a alíquota efetiva.`,
+        base:`LC 214/2025 · Mattos Filho` },
+
+      /* ── DeRE e regimes específicos · extras ── */
+      { id:'POD-01', tipo:'direto', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'intermediario',
+        contexto:`Um restaurante do regime regular vende uma conta de R$ 230: R$ 150 de pratos preparados, R$ 50 de vinho e R$ 30 de gorjeta repassada ao garçom. Como fica a tributação?`,
+        afirmacao:null,
+        alts:[
+          { t:`Pratos com IBS/CBS reduzidos em 40%, vinho na alíquota cheia e gorjeta (até 15% do fornecimento) fora da base`, c:true },
+          { t:`Toda a conta com redução de 40%, inclusive o vinho e a gorjeta`, c:false },
+          { t:`Toda a conta na alíquota cheia, porque o regime específico só vale para o Simples`, c:false },
+          { t:`Pratos e vinho com redução de 40% e gorjeta tributada integralmente`, c:false },
+        ],
+        exp:`O regime de bares e restaurantes reduz em 40% as alíquotas sobre alimentação preparada no estabelecimento. Bebidas alcoólicas ficam fora da redução, e gorjetas repassadas ao empregado, até 15% do fornecimento, saem da base.`,
+        prat:`Parametrize o PDV para separar itens preparados, bebidas alcoólicas e gorjeta em grupos tributários distintos.`,
+        base:`LC 214/2025, arts. 273 a 275 · Maran Gehlen` },
+
+      { id:'POD-02', tipo:'afirmacao', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'intermediario',
+        contexto:`Uma empresa do Lucro Real paga almoços de clientes em restaurantes.`,
+        afirmacao:`"Como o restaurante destaca IBS e CBS na nota, a empresa pode se creditar desses valores normalmente."`,
+        alts:[
+          { t:`Incorreta: no regime de bares e restaurantes é vedada a apropriação de crédito pelo adquirente`, c:true },
+          { t:`Correta: todo IBS/CBS destacado gera crédito no regime regular`, c:false },
+          { t:`Correta, desde que o pagamento seja feito por PIX da conta da empresa`, c:false },
+          { t:`Incorreta só para o IBS; o crédito de CBS é permitido`, c:false },
+        ],
+        exp:`A LC 214 veda ao adquirente o crédito de IBS e CBS nos fornecimentos do regime de bares e restaurantes. O restaurante, por sua vez, pode tomar créditos nas suas compras tributadas.`,
+        prat:`Marque na solução as notas de restaurante como sem direito a crédito para evitar apropriação indevida.`,
+        base:`LC 214/2025, art. 276 · Rota da Jurisprudência` },
+
+      { id:'POD-03', tipo:'direto', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'avancado',
+        contexto:`Uma cozinha industrial fornece refeições a uma fábrica por contrato e também vende refrigerantes industrializados no balcão. Esses fornecimentos entram na redução de 40%?`,
+        afirmacao:null,
+        alts:[
+          { t:`Não: fornecimento de alimentação a pessoa jurídica sob contrato e produtos comprados de terceiros sem preparo no estabelecimento seguem o regime regular`, c:true },
+          { t:`Sim, todo fornecimento de restaurante tem redução de 40%`, c:false },
+          { t:`Só a venda de refrigerantes entra na redução`, c:false },
+          { t:`Só o contrato com a fábrica entra na redução`, c:false },
+        ],
+        exp:`A LC 214 exclui do regime específico o fornecimento de alimentação para pessoa jurídica sob contrato e os produtos adquiridos de terceiros não submetidos a preparo no estabelecimento.`,
+        prat:`Separe no cadastro os contratos corporativos e os itens de revenda para não aplicar a redução por engano.`,
+        base:`LC 214/2025, art. 273, § 2º · Maran Gehlen` },
+
+      { id:'POD-04', tipo:'afirmacao', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'intermediario',
+        contexto:`Uma agência vende um pacote de R$ 10.000, dos quais R$ 8.500 são repassados a hotel e companhia aérea, com documentos que vinculam cada repasse ao fornecedor.`,
+        afirmacao:`"Vamos pagar IBS e CBS sobre os R$ 10.000, porque é o valor que o cliente pagou à agência."`,
+        alts:[
+          { t:`Incorreta: a base é o valor da operação deduzido dos repasses documentados aos fornecedores, ou seja, a receita própria da agência`, c:true },
+          { t:`Correta: a agência tributa o valor total do pacote`, c:false },
+          { t:`Correta, mas a agência pode pedir restituição dos repasses no fim do ano`, c:false },
+          { t:`Incorreta: agências de turismo não são contribuintes de IBS e CBS`, c:false },
+        ],
+        exp:`O regime de agências de turismo tributa comissões, taxas e margem, deduzindo os valores repassados aos fornecedores intermediados. Sem documentação do repasse, a dedução fica em risco.`,
+        prat:`Garanta que o sistema vincule cada repasse ao documento do fornecedor correspondente.`,
+        base:`LC 214/2025, arts. 288 a 290 · Jornal Contábil` },
+
+      { id:'POD-05', tipo:'direto', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'avancado',
+        contexto:`Uma empresa do regime regular compra passagens para funcionários: ônibus interestadual e voo de aviação regional. Em qual caso ela pode se creditar de IBS e CBS?`,
+        afirmacao:null,
+        alts:[
+          { t:`Apenas no voo de aviação regional; no ônibus interestadual o crédito do adquirente é vedado`, c:true },
+          { t:`Nos dois casos, pela alíquota cheia`, c:false },
+          { t:`Apenas no ônibus interestadual`, c:false },
+          { t:`Em nenhum dos dois, pois passagens nunca geram crédito`, c:false },
+        ],
+        exp:`Os dois têm redução de 40% nas alíquotas. No transporte coletivo rodoviário intermunicipal e interestadual, ferroviário e hidroviário é vedada a transferência de crédito ao adquirente. Na aviação regional, o crédito é permitido.`,
+        prat:`Configure regras de crédito por modal na solução, não por tipo de documento.`,
+        base:`LC 214/2025, arts. 284 a 287 · Martinelli Advogados` },
+
+      { id:'POD-06', tipo:'direto', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'avancado',
+        contexto:`Uma Sociedade Anônima do Futebol no Regime de Tributação Específica do Futebol pergunta como passa a recolher IBS e CBS.`,
+        afirmacao:null,
+        alts:[
+          { t:`Em pagamento mensal unificado sobre as receitas do mês, junto com IRPJ, CSLL e contribuições, com parcelas próprias de CBS e IBS`, c:true },
+          { t:`Pelo regime regular, com apuração assistida separada dos demais tributos`, c:false },
+          { t:`Não recolhe IBS e CBS, pois a TEF é imune`, c:false },
+          { t:`Só recolhe IBS e CBS sobre a venda de ingressos`, c:false },
+        ],
+        exp:`A LC 214 incluiu CBS e IBS no recolhimento mensal unificado da TEF, com base nas receitas mensais, incluindo cessão de direitos desportivos. O total informado pelo mercado é de 8,5%, com 1,5% de CBS e 3% de IBS.`,
+        prat:`Para clientes SAF, confirme os percentuais no texto da lei antes de parametrizar e trate a cessão de atletas como receita da base.`,
+        base:`LC 214/2025, arts. 292 a 296 · NetCPA` },
+
+      { id:'POD-07', tipo:'afirmacao', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'intermediario',
+        contexto:`Uma cooperativa quer aplicar a alíquota zero de IBS e CBS nas operações com seus associados a partir de janeiro de 2027.`,
+        afirmacao:`"A alíquota zero das cooperativas é automática para qualquer operação da cooperativa."`,
+        alts:[
+          { t:`Incorreta: depende da opção pelo regime específico, feita no ano anterior, e vale para operações definidas na lei, como associado para cooperativa e cooperativa para associado`, c:true },
+          { t:`Correta: toda operação de cooperativa tem alíquota zero`, c:false },
+          { t:`Correta, desde que a cooperativa seja do Simples Nacional`, c:false },
+          { t:`Incorreta: cooperativas não podem ter alíquota zero`, c:false },
+        ],
+        exp:`Os arts. 271 e 272 da LC 214 preveem regime opcional, com alíquota zero em operações específicas entre cooperativa e associados e entre cooperativas do mesmo sistema, e regras de transferência de créditos.`,
+        prat:`Confirme se a opção foi exercida no prazo e parametrize a alíquota zero só nas operações previstas.`,
+        base:`LC 214/2025, arts. 271 e 272 · Econet` },
+
+      { id:'POD-08', tipo:'direto', tema:'der', temaNome:'DeRE e regimes específicos', nivel:'avancado',
+        contexto:`Um produtor associado, contribuinte do regime regular, entrega sua produção à cooperativa com alíquota zero. O que acontece com os créditos das compras de insumos usados nessa produção?`,
+        afirmacao:null,
+        alts:[
+          { t:`Podem ser transferidos à cooperativa, limitados aos insumos ligados ao que foi fornecido`, c:true },
+          { t:`São perdidos, porque a saída tem alíquota zero`, c:false },
+          { t:`Viram ressarcimento automático em 60 dias para o associado`, c:false },
+          { t:`Podem ser transferidos à cooperativa sem nenhum limite`, c:false },
+        ],
+        exp:`No regime específico, o associado do regime regular pode transferir à cooperativa os créditos das operações antecedentes vinculadas ao bem ou serviço fornecido com alíquota zero.`,
+        prat:`Controle na solução a vinculação entre insumos e entregas à cooperativa para sustentar a transferência.`,
+        base:`LC 214/2025, art. 272 · Econet` },
+
+      /* ── ICMS, ISS e convivência · extra ── */
+      { id:'COM-02', tipo:'afirmacao', tema:'con', temaNome:'ICMS, ISS e convivência', nivel:'intermediario',
+        contexto:`Uma distribuidora de bebidas e autopeças revisa o fluxo fiscal para 2027.`,
+        afirmacao:`"Com a reforma, a substituição tributária acaba em 2027 e podemos desligar o cálculo de ST."`,
+        alts:[
+          { t:`Incorreta: IBS e CBS não têm ST, mas o ICMS-ST segue até 2032`, c:true },
+          { t:`Correta: toda ST acaba em 2027`, c:false },
+          { t:`Correta só para autopeças; bebidas mantêm substituição tributária de IBS e CBS a partir de 2027`, c:false },
+          { t:`Incorreta: IBS e CBS também serão cobrados por substituição tributária nas mesmas cadeias do ICMS-ST`, c:false },
+        ],
+        exp:`O novo modelo não cumulativo dispensa a ST para IBS e CBS, e só combustíveis têm regime monofásico. O ICMS, com sua ST, segue até a extinção em 2033.`,
+        prat:`Mantenha as rotinas de ICMS-ST e planeje o controle de estoque por data de entrada para a fase de 2029 a 2032.`,
+        base:`LC 214/2025 · EC 132/2023 · Synchro` },
+
+      /* ── Créditos e base de cálculo ── */
+      { id:'IND-01', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'basico',
+        contexto:`Uma metalúrgica do regime regular lista as despesas do mês, todas com nota fiscal e IBS/CBS destacados: energia elétrica, aluguel do galpão, consultoria de engenharia e vinhos para a festa de fim de ano da diretoria. O que gera crédito?`,
+        afirmacao:null,
+        alts:[
+          { t:`Energia, aluguel e consultoria; os vinhos da festa são uso pessoal`, c:true },
+          { t:`Só a energia elétrica, por ser o único insumo essencial ao processo produtivo da metalúrgica`, c:false },
+          { t:`Todos os itens, porque o crédito amplo aceita qualquer despesa documentada com os tributos destacados`, c:false },
+          { t:`Nenhum item, porque no novo modelo apenas matérias-primas e embalagens dão direito a crédito`, c:false },
+        ],
+        exp:`No crédito amplo, qualquer aquisição com IBS/CBS destacado e extinto gera crédito, exceto as de uso ou consumo pessoal. Bebidas alcoólicas estão na lista de presunção de uso pessoal do art. 57.`,
+        prat:`Troque a lógica de insumo essencial do PIS/Cofins por uma lista de exceções. Parametrize o art. 57 no cadastro de itens.`,
+        base:`LC 214/2025, arts. 47 e 57 · Coimbra Chaves · Jettax` },
+
+      { id:'IND-02', tipo:'afirmacao', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'intermediario',
+        contexto:`A indústria compra uma máquina em março/2027 com CBS destacada. O cliente, acostumado ao CIAP do ICMS, pergunta como fica o crédito de CBS.`,
+        afirmacao:`"O crédito de CBS da máquina vai ser apropriado em 48 parcelas, como no CIAP."`,
+        alts:[
+          { t:`Incorreta: o crédito de CBS é integral na aquisição; o ICMS segue no CIAP`, c:true },
+          { t:`Correta: a LC 214 manteve a apropriação em 48 meses para todos os tributos, inclusive IBS e CBS`, c:false },
+          { t:`Correta apenas para máquinas acima de R$ 1 milhão; abaixo desse valor o crédito é integral no mês`, c:false },
+          { t:`Incorreta: ativo imobilizado não gera crédito`, c:false },
+        ],
+        exp:`No novo modelo, o crédito sobre bens do ativo imobilizado é apropriado de forma integral, sem parcelamento pela depreciação. O ICMS continua existindo até 2032 com as regras atuais.`,
+        prat:`Separe na solução o controle de crédito de ativo: CBS e IBS integrais, ICMS no CIAP.`,
+        base:`LC 214/2025 · Jettax · Afixcode` },
+
+      { id:'IND-03', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'basico',
+        contexto:`O RH da fábrica compra uniformes, EPIs, refeições servidas no refeitório e cestas de Natal com espumante para os funcionários. Quais compras mantêm o crédito de IBS e CBS?`,
+        afirmacao:null,
+        alts:[
+          { t:`Uniformes, EPIs e refeições no refeitório; a cesta com espumante não`, c:true },
+          { t:`Todas as compras, porque qualquer bem destinado a empregados é custo da atividade produtiva`, c:false },
+          { t:`Nenhuma, porque todo fornecimento a empregados é presumido de uso ou consumo pessoal`, c:false },
+          { t:`Só os EPIs, exigidos por norma`, c:false },
+        ],
+        exp:`O art. 57 presume uso pessoal nos fornecimentos a empregados, mas o § 3º excetua itens usados preponderantemente na atividade, como uniformes, equipamentos de proteção e alimentação no estabelecimento. Bebida alcoólica segue presumida de uso pessoal.`,
+        prat:`Crie centros de custo específicos para benefícios a empregados e classifique cada tipo pelo art. 57.`,
+        base:`LC 214/2025, art. 57, § 3º · Coimbra Chaves` },
+
+      { id:'IND-04', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'intermediario',
+        contexto:`Um incêndio destrói R$ 200 mil de matéria-prima em estoque, comprada com crédito de IBS e CBS. O que a empresa precisa fazer com esses créditos?`,
+        afirmacao:null,
+        alts:[
+          { t:`Estornar os créditos dos bens destruídos`, c:true },
+          { t:`Manter os créditos`, c:false },
+          { t:`Pedir ressarcimento em dinheiro dos créditos, como compensação pela perda sofrida`, c:false },
+          { t:`Transferir os créditos para a seguradora que pagar a indenização do sinistro`, c:false },
+        ],
+        exp:`O art. 47, § 6º, manda estornar o crédito quando o bem perece, se deteriora ou é objeto de roubo, furto ou extravio. Para ativo imobilizado, o estorno é proporcional à vida útil restante. Há debate sobre perdas técnicas do processo produtivo.`,
+        prat:`Integre o registro de sinistros e baixas de estoque ao estorno automático na solução fiscal.`,
+        base:`LC 214/2025, art. 47, §§ 6º e 7º · Simtax` },
+
+      { id:'IND-05', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'intermediario',
+        contexto:`Uma indústria de autopeças exporta 70% da produção diretamente. O que acontece com IBS e CBS nas exportações e com os créditos das compras?`,
+        afirmacao:null,
+        alts:[
+          { t:`Exportação imune, com manutenção dos créditos das compras`, c:true },
+          { t:`Exportação tributada, sem créditos`, c:false },
+          { t:`A exportação é tributada normalmente e o importador estrangeiro recebe o crédito correspondente`, c:false },
+          { t:`A exportação tem redução de 60% nas alíquotas e os créditos são mantidos só na proporção tributada`, c:false },
+        ],
+        exp:`Os arts. 80 a 82 da LC 214 garantem imunidade às exportações com manutenção e aproveitamento dos créditos das aquisições.`,
+        prat:`Projete o saldo credor acumulado da exportação e o fluxo de ressarcimento no planejamento de caixa.`,
+        base:`LC 214/2025, arts. 80 a 82 · Contábeis` },
+
+      { id:'IND-06', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'avancado',
+        contexto:`A indústria vende a uma comercial exportadora habilitada, que vai embarcar a mercadoria. Como fica a venda da indústria?`,
+        afirmacao:null,
+        alts:[
+          { t:`Suspensão de IBS e CBS, com 180 dias para exportar`, c:true },
+          { t:`Tributada normalmente pela indústria; a exportadora pede o ressarcimento depois do embarque`, c:false },
+          { t:`Imune na hora, sem prazo`, c:false },
+          { t:`Tributada com alíquota zero, e a indústria perde os créditos das compras vinculadas`, c:false },
+        ],
+        exp:`Na exportação indireta, a venda à comercial exportadora que cumpre os requisitos ocorre com suspensão. A exportação precisa acontecer em 180 dias; sem isso, a suspensão não se converte e os tributos passam a ser exigidos.`,
+        prat:`Controle na solução o prazo de 180 dias por nota e exija evidência do embarque da exportadora.`,
+        base:`LC 214/2025, art. 82 · Contábeis · Barbieri` },
+
+      { id:'IND-07', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'avancado',
+        contexto:`Uma exportadora com saldo credor de CBS pede ressarcimento. Qual é o prazo máximo de análise pela regra geral da LC 214?`,
+        afirmacao:null,
+        alts:[
+          { t:`30, 60 ou 180 dias, conforme o perfil do contribuinte`, c:true },
+          { t:`60 dias para todos`, c:false },
+          { t:`360 dias, porque o ressarcimento só é pago depois de concluída a revisão fiscal do pedido`, c:false },
+          { t:`Não há prazo legal; o ressarcimento depende de fiscalização prévia, sem data para terminar`, c:false },
+        ],
+        exp:`O art. 39 fixa prazos conforme o perfil. Vencido o prazo sem resposta, o crédito deve ser ressarcido em até 15 dias, com correção pela Selic. Confira no regulamento se há regra de transição para os primeiros anos.`,
+        prat:`Avalie a adesão ao programa de conformidade: ele reduz o prazo de ressarcimento e o custo de capital.`,
+        base:`LC 214/2025, arts. 39 e 40 · Pallotta Martins · ReformaTributaria.com` },
+
+      { id:'IND-10', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'avancado',
+        contexto:`Um laticínio compra leite de produtores pessoa física com receita anual abaixo de R$ 3,6 milhões, que não optaram pelo regime regular. O laticínio tem crédito?`,
+        afirmacao:null,
+        alts:[
+          { t:`Sim, crédito presumido com percentuais definidos a cada ano`, c:true },
+          { t:`Não, nunca há crédito`, c:false },
+          { t:`Sim, crédito integral pela alíquota de referência, como se o produtor fosse do regime regular`, c:false },
+          { t:`Sim, crédito presumido fixo de 9,25% sobre o valor pago, previsto diretamente na lei`, c:false },
+        ],
+        exp:`A LC 214 permite ao adquirente do regime regular apropriar crédito presumido nas compras de produtor rural não contribuinte. Os percentuais são fixados anualmente pelo Ministério da Fazenda e pelo Comitê Gestor e podem variar por produto.`,
+        prat:`A nota de entrada precisa indicar o valor pago, o crédito presumido e o valor líquido. Confira se o emissor já tem esses campos.`,
+        base:`LC 214/2025 · APET` },
+
+      { id:'IND-11', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'basico',
+        contexto:`No exemplo, cada elo recolhe só a diferença entre o tributo da venda e o da compra. Qual é a carga total da cadeia sobre o preço final de R$ 2.000?<br><br><strong>Tributo recolhido por elo da cadeia (alíquota ilustrativa de 10%):</strong><br>• Indústria vende por R$ 1.000 → R$ 100<br>• Atacado vende por R$ 1.500 → R$ 50<br>• Varejo vende por R$ 2.000 → R$ 50<br>• <strong>Total recolhido: R$ 200</strong><br><em>Cada elo recolhe o débito da venda menos o crédito da compra.</em>`,
+        afirmacao:null,
+        alts:[
+          { t:`R$ 200, ou seja, 10% do preço final, sem efeito cascata`, c:true },
+          { t:`R$ 450, a soma dos 10% sobre cada venda`, c:false },
+          { t:`R$ 100, porque só a indústria recolhe`, c:false },
+          { t:`R$ 350, somando o débito do varejo ao da indústria e do atacado`, c:false },
+        ],
+        exp:`Com crédito amplo, cada elo paga sobre o valor que agregou: 100 + 50 + 50 = 200, igual a 10% do preço final. Sem créditos, a soma seria 450.`,
+        prat:`Use o exemplo para explicar ao cliente por que o fornecedor fora do regime regular encarece a compra.`,
+        base:`LC 214/2025, art. 47 · princípio da não cumulatividade` },
+
+      { id:'COM-01', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'basico',
+        contexto:`Um atacadista vende a prazo: mercadoria de R$ 10.000, desconto incondicional de R$ 500 na nota, frete de R$ 300 cobrado do cliente e juros de R$ 200 pelo parcelamento. O que compõe a base de IBS e CBS?`,
+        afirmacao:null,
+        alts:[
+          { t:`Mercadoria, frete e juros entram; o desconto sai`, c:true },
+          { t:`Só o valor da mercadoria, porque frete e juros são receitas financeiras fora da base do tributo`, c:false },
+          { t:`Todos os valores, inclusive o desconto incondicional, que só reduz o valor a receber do cliente`, c:false },
+          { t:`Mercadoria e frete entram; juros de parcelamento nunca integram a base de IBS e CBS`, c:false },
+        ],
+        exp:`O art. 12 inclui na base acréscimos como juros, encargos e frete cobrado pelo fornecedor, e exclui descontos incondicionais e o próprio IBS/CBS. De 2027 a 2032, o ICMS e o ISS embutidos também saem da base.`,
+        prat:`Confira se o ERP leva juros de venda a prazo para a base, e não só o valor da mercadoria.`,
+        base:`LC 214/2025, art. 12 · Buscador NCM` },
+
+      { id:'COM-05', tipo:'afirmacao', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'basico',
+        contexto:`Um balanço de loja identifica o furto de R$ 15 mil em mercadorias compradas com crédito de IBS e CBS.`,
+        afirmacao:`"Furto é prejuízo da loja; o crédito da compra continua valendo."`,
+        alts:[
+          { t:`Incorreta: o crédito das mercadorias furtadas deve ser estornado`, c:true },
+          { t:`Correta: o crédito é mantido em qualquer perda`, c:false },
+          { t:`Correta, desde que haja boletim de ocorrência`, c:false },
+          { t:`Incorreta: além do estorno, a loja paga o tributo sobre o preço de venda`, c:false },
+        ],
+        exp:`O art. 47, § 6º, exige o estorno do crédito quando o bem é objeto de roubo, furto ou extravio, ou perece e se deteriora.`,
+        prat:`Ligue a rotina de inventário e quebra ao estorno de crédito na solução fiscal.`,
+        base:`LC 214/2025, art. 47, § 6º · Simtax` },
+
+      { id:'COM-06', tipo:'direto', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'intermediario',
+        contexto:`O sócio de uma loja de eletrônicos leva para casa uma TV do estoque, sem pagar. Como tratar o crédito de IBS e CBS da compra dessa TV?`,
+        afirmacao:null,
+        alts:[
+          { t:`Uso pessoal presumido: o crédito da TV não pode ser mantido`, c:true },
+          { t:`O crédito é mantido`, c:false },
+          { t:`O crédito é mantido e a loja registra a saída como amostra grátis, sem nenhum efeito fiscal`, c:false },
+          { t:`Não há efeito fiscal, porque o sócio é dono do estoque e pode dispor dos bens livremente`, c:false },
+        ],
+        exp:`O art. 57, II, presume uso ou consumo pessoal no fornecimento sem remuneração ou abaixo do valor de mercado a sócios, administradores e empregados, o que veda o crédito.`,
+        prat:`Crie um tipo de saída específico para retiradas de sócios, com estorno automático do crédito.`,
+        base:`LC 214/2025, art. 57, II · Coimbra Chaves` },
+
+      { id:'COM-08', tipo:'afirmacao', tema:'cred', temaNome:'Créditos e base de cálculo', nivel:'intermediario',
+        contexto:`Um atacadista revisa a tabela de preços para 2027.`,
+        afirmacao:`"Como IBS e CBS são destacados por fora, basta manter o preço atual e somar os tributos novos por cima."`,
+        alts:[
+          { t:`Incorreta: é preciso tirar PIS e Cofins, recalcular o custo líquido e só então somar CBS e IBS`, c:true },
+          { t:`Correta: basta somar por cima`, c:false },
+          { t:`Correta, mas apenas para clientes do Simples Nacional, que não aproveitam créditos de IBS e CBS`, c:false },
+          { t:`Incorreta: IBS e CBS continuam embutidos no preço, como acontece hoje com o ICMS`, c:false },
+        ],
+        exp:`Com cálculo por fora e crédito amplo, a formação de preço muda. Somar os novos tributos ao preço que já contém PIS e Cofins gera dupla carga comercial e perda de competitividade.`,
+        prat:`Reconstrua as tabelas de 2027 a partir do custo líquido de créditos, sem PIS/Cofins, e simule por cliente.`,
+        base:`LC 214/2025, art. 12 · Valor Final` },
+
+      /* ── Transporte de cargas ── */
+      { id:'TRC-01', tipo:'direto', tema:'trc', temaNome:'Transporte de cargas', nivel:'basico',
+        contexto:`Uma transportadora de cargas pergunta se o frete terá redução de alíquota, como o transporte coletivo de passageiros.`,
+        afirmacao:null,
+        alts:[
+          { t:`Não: carga segue a alíquota padrão; os 40% valem para passageiros`, c:true },
+          { t:`Sim, redução de 40% para todo tipo de transporte, de carga ou de passageiros, municipal ou interestadual`, c:false },
+          { t:`Sim, redução de 60%, porque o transporte de cargas é classificado como serviço essencial na lei`, c:false },
+          { t:`Não, mas o frete terá alíquota zero em 2027 e 2028, durante o período de transição`, c:false },
+        ],
+        exp:`O transporte de cargas não está entre as operações com redução de alíquota. O efeito da carga se compensa pelo crédito integral do tomador do regime regular.`,
+        prat:`Explique aos embarcadores que o frete tributado vira crédito: o custo líquido depende do regime do tomador.`,
+        base:`LC 214/2025 · TranspNet · Fretebras` },
+
+      { id:'TRC-02', tipo:'direto', tema:'trc', temaNome:'Transporte de cargas', nivel:'basico',
+        contexto:`Uma transportadora de Campinas leva uma carga de Campinas para Belo Horizonte (MG). Qual é o local da operação para IBS?`,
+        afirmacao:null,
+        alts:[
+          { t:`Belo Horizonte, local da entrega indicado no documento`, c:true },
+          { t:`Campinas, a origem`, c:false },
+          { t:`O município de início do transporte, como vale para o transporte coletivo de passageiros`, c:false },
+          { t:`O município onde o tomador do serviço tem sede, qualquer que seja o destino da carga`, c:false },
+        ],
+        exp:`No transporte de carga, o local da operação é o da entrega ou disponibilização do bem ao destinatário indicado no documento fiscal (art. 11, VII). No transporte de passageiros, vale o local de início.`,
+        prat:`O CT-e precisa ter o município de entrega correto; é ele que define a alíquota de IBS aplicada.`,
+        base:`LC 214/2025, art. 11, VII · Escola Superior ESN` },
+
+      { id:'TRC-03', tipo:'direto', tema:'trc', temaNome:'Transporte de cargas', nivel:'intermediario',
+        contexto:`Uma indústria vende em condição CIF: contrata a transportadora do regime regular e cobra o frete do cliente na nota. Como ficam IBS e CBS?`,
+        afirmacao:null,
+        alts:[
+          { t:`A indústria credita o CT-e e inclui o frete na base da NF-e`, c:true },
+          { t:`A indústria não pode se creditar do CT-e, porque o frete é repassado integralmente ao cliente na nota`, c:false },
+          { t:`O cliente se credita diretamente do CT-e, e a NF-e de venda sai sem o valor do frete na base`, c:false },
+          { t:`Frete fica fora de toda base`, c:false },
+        ],
+        exp:`Quem contrata e paga o frete toma o crédito do CT-e. O frete cobrado pelo fornecedor integra a base da venda (art. 12), e o comprador credita o total destacado na nota.`,
+        prat:`Parametrize o tratamento por modalidade de frete (CIF ou FOB) no ERP e no TMS.`,
+        base:`LC 214/2025, arts. 12 e 47` },
+
+      { id:'TRC-04', tipo:'direto', tema:'trc', temaNome:'Transporte de cargas', nivel:'basico',
+        contexto:`Quais despesas da transportadora geram crédito de IBS e CBS, desde que documentadas com os tributos destacados?`,
+        afirmacao:null,
+        alts:[
+          { t:`Diesel, pneus, peças, manutenção, pedágio, seguro, caminhões e software`, c:true },
+          { t:`Só o diesel, porque é o único insumo essencial à prestação do serviço de transporte de carga`, c:false },
+          { t:`Só os caminhões e reboques, porque são bens do ativo imobilizado ligados diretamente à atividade`, c:false },
+          { t:`Nenhuma delas, porque o transporte de carga ficou fora do regime de crédito amplo da reforma`, c:false },
+        ],
+        exp:`No crédito amplo, os gastos da operação de transporte geram crédito, inclusive o ativo imobilizado de forma integral. A exceção são os itens de uso ou consumo pessoal.`,
+        prat:`Exija dos fornecedores documentos com IBS/CBS destacados, inclusive nas praças de pedágio e nos postos.`,
+        base:`LC 214/2025, art. 47 · TranspNet · Fretebras` },
+
+      { id:'TRC-05', tipo:'afirmacao', tema:'trc', temaNome:'Transporte de cargas', nivel:'intermediario',
+        contexto:`Uma transportadora do regime regular subcontrata caminhoneiros autônomos pessoa física, não contribuintes de IBS/CBS.`,
+        afirmacao:`"Como o autônomo não é contribuinte e não destaca IBS e CBS, esse frete não gera crédito nenhum para a transportadora."`,
+        alts:[
+          { t:`Incorreta: contratar TAC não contribuinte gera crédito presumido (art. 169)`, c:true },
+          { t:`Correta: sem destaque de IBS e CBS no documento do autônomo, não existe nenhum crédito para quem contrata`, c:false },
+          { t:`Correta, e a transportadora ainda passa a ser obrigada a recolher o IBS devido pelo autônomo`, c:false },
+          { t:`Incorreta: o autônomo pessoa física passa a ser obrigado a destacar IBS e CBS a partir de 2027`, c:false },
+        ],
+        exp:`A LC 214 prevê crédito presumido para quem contrata transportador autônomo de carga não contribuinte. O cálculo usa um coeficiente divulgado anualmente, e o crédito só abate débitos do mesmo tributo, sem ressarcimento.`,
+        prat:`Documente contrato, pagamento e o frete separado da mercadoria. Acompanhe a publicação anual do coeficiente.`,
+        base:`LC 214/2025, art. 169 · Elscon` },
+
+      { id:'TRC-06', tipo:'direto', tema:'trc', temaNome:'Transporte de cargas', nivel:'avancado',
+        contexto:`Uma indústria quer usar o crédito presumido do art. 169 ao contratar um caminhoneiro autônomo. Qual condição é essencial?`,
+        afirmacao:null,
+        alts:[
+          { t:`Contratar e pagar o frete diretamente, separado da mercadoria, com comprovação`, c:true },
+          { t:`Estar no Simples Nacional, porque o crédito presumido foi criado para pequenas empresas contratantes`, c:false },
+          { t:`Exigir que o autônomo destaque IBS e CBS no recibo de pagamento do frete contratado`, c:false },
+          { t:`Apenas classificar a operação como FOB na nota fiscal de venda da mercadoria transportada`, c:false },
+        ],
+        exp:`O crédito presumido exige contratante do regime regular, TAC não contribuinte (pessoa física ou MEI), contratação direta, frete separado e comprovação documental. A cláusula CIF ou FOB, sozinha, não define o direito.`,
+        prat:`Audite em 2026 os contratos com autônomos e a forma de pagamento do frete.`,
+        base:`LC 214/2025, art. 169 · Elscon` },
+
+      { id:'TRC-08', tipo:'direto', tema:'trc', temaNome:'Transporte de cargas', nivel:'intermediario',
+        contexto:`Uma indústria compara duas transportadoras com o mesmo preço de frete: uma do regime regular e outra do Simples Nacional que manteve IBS e CBS no DAS. Qual gera mais crédito?`,
+        afirmacao:null,
+        alts:[
+          { t:`A do regime regular; na do Simples, o crédito se limita ao devido no DAS`, c:true },
+          { t:`As duas geram o mesmo crédito, calculado sobre o valor do frete pela alíquota de referência`, c:false },
+          { t:`A do Simples, porque tem alíquota menor e ainda transfere o crédito integral ao tomador`, c:false },
+          { t:`Nenhuma, porque o frete contratado pelo embarcador não gera crédito de IBS e CBS`, c:false },
+        ],
+        exp:`Pelo art. 47, § 9º, o crédito do adquirente em compras de optante do Simples que ficou no DAS é limitado ao valor devido no regime simplificado.`,
+        prat:`Compare fretes pelo custo líquido de créditos, e não pelo preço de tabela.`,
+        base:`LC 214/2025, art. 47, § 9º` },
+
+      { id:'TRC-09', tipo:'direto', tema:'trc', temaNome:'Transporte de cargas', nivel:'basico',
+        contexto:`Pela linha do tempo, quais tributos sobre consumo incidem sobre um frete interestadual em 2030?<br><br><strong>O frete na transição:</strong><br>• 03/08/2026 → CT-e com IBS e CBS destacados (ano-teste)<br>• 01/01/2027 → <strong>CBS cheia; PIS e Cofins extintos</strong><br>• 2027 e 2028 → ICMS sobre o frete integral<br>• 2029 a 2032 → ICMS reduz 10 pontos por ano<br>• 2033 → <strong>Fim do ICMS; IBS integral</strong>`,
+        afirmacao:null,
+        alts:[
+          { t:`CBS, IBS e ICMS a 80% da alíquota atual`, c:true },
+          { t:`Só CBS e IBS, porque o ICMS sobre o frete deixou de existir junto com o PIS e a Cofins em 2027`, c:false },
+          { t:`CBS, IBS, PIS, Cofins e ICMS integral, já que a transição só termina de fato em 2033`, c:false },
+          { t:`Só o ICMS, porque o IBS e a CBS sobre o frete só passam a ser cobrados a partir de 2033`, c:false },
+        ],
+        exp:`De 2029 a 2032 o ICMS cai 10 pontos por ano (90%, 80%, 70%, 60%). Em 2030 convivem CBS, IBS e ICMS a 80%.`,
+        prat:`O TMS precisa calcular ICMS e IBS/CBS juntos até 2032.`,
+        base:`EC 132/2023 · LC 214/2025` },
+
+      { id:'TRC-10', tipo:'direto', tema:'trc', temaNome:'Transporte de cargas', nivel:'intermediario',
+        contexto:`No fluxo, a transportadora não recolheu o IBS e a CBS do CT-e. Na regra geral do novo modelo, qual o risco para a indústria?<br><br><strong>Créditos no frete CIF (todos no regime regular):</strong><br>1. <strong>Transportadora emite CT-e:</strong> IBS e CBS destacados<br>2. <strong>Indústria contrata e paga:</strong> Credita o IBS/CBS do CT-e<br>3. <strong>NF-e de venda:</strong> Frete cobrado entra na base<br>4. <strong>Cliente do regime regular:</strong> Credita o total destacado<br>5. ⚠ <strong>Pagamento do frete não liquidado:</strong> Risco para o crédito na regra geral`,
+        afirmacao:null,
+        alts:[
+          { t:`O crédito do CT-e fica em risco, pois depende da extinção do débito`, c:true },
+          { t:`Nenhum risco, porque o crédito está garantido pelo destaque no CT-e em qualquer situação ou período`, c:false },
+          { t:`O cliente final perde o crédito da NF-e de venda, mas a indústria mantém o seu integralmente`, c:false },
+          { t:`A indústria passa a responder pelo ICMS do frete que a transportadora deixou de recolher`, c:false },
+        ],
+        exp:`A regra geral condiciona o crédito à extinção do débito (art. 47). Na transição, o art. 48 permite crédito pelo destaque, mas isso não afasta o risco depois que os mecanismos de pagamento estiverem implantados.`,
+        prat:`Inclua regularidade fiscal na homologação de transportadoras e acompanhe o status de liquidação dos CT-e.`,
+        base:`LC 214/2025, arts. 47 e 48` },
     ];
 
     /* ═══════════════════════════════════════════════
@@ -1453,7 +1956,8 @@ import Base from '../../layouts/Base.astro';
     const TEMAS_NOMES = {
       doc:'Documentos fiscais', apu:'Apuração assistida', tra:'Transição PIS/Cofins',
       sn:'Simples Nacional', spl:'Split payment e créditos', ipi:'IPI e Imposto Seletivo',
-      der:'DeRE e regimes específicos', con:'ICMS, ISS e convivência'
+      der:'DeRE e regimes específicos', con:'ICMS, ISS e convivência',
+      cred:'Créditos e base de cálculo', trc:'Transporte de cargas'
     };
 
     let estado = {
