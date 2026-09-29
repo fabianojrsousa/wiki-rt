@@ -120,57 +120,6 @@ function badgeClass(criticidade: string) {
         </div>
 
         <div class="hero-direita">
-          <nav class="hero-ferramentas" aria-label="Ferramentas de apoio">
-            <a href="/quiz" class="hf-item">
-              <div class="hf-icon hf-icon-azul">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                  <line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-              </div>
-              <div class="hf-body">
-                <span class="hf-nome">Quiz</span>
-                <span class="hf-desc">Teste seus conhecimentos na prática</span>
-              </div>
-              <svg class="hf-seta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-            <a href="/podcasts" class="hf-item">
-              <div class="hf-icon hf-icon-verde">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                  <line x1="12" y1="19" x2="12" y2="23"/>
-                  <line x1="8" y1="23" x2="16" y2="23"/>
-                </svg>
-              </div>
-              <div class="hf-body">
-                <span class="hf-nome">Podcasts</span>
-                <span class="hf-desc">Episódios sobre a Reforma Tributária</span>
-              </div>
-              <svg class="hf-seta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-            <a href="/glossario" class="hf-item">
-              <div class="hf-icon hf-icon-ciano">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                </svg>
-              </div>
-              <div class="hf-body">
-                <span class="hf-nome">Glossário</span>
-                <span class="hf-desc">Termos e definições da Reforma</span>
-              </div>
-              <svg class="hf-seta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-          </nav>
-
           <div class="ilustracao-wrapper" aria-hidden="true">
             <svg class="ilustracao" viewBox="0 0 360 270" xmlns="http://www.w3.org/2000/svg">
               <defs>
@@ -463,6 +412,24 @@ function badgeClass(criticidade: string) {
     <!-- ═══════════════ SIDEBAR ═══════════════ -->
     <aside class="sidebar-inicio" aria-label="Painel lateral">
 
+      <!-- 0. Ferramentas (acima do calendário) -->
+      <div class="sidebar-card">
+        <nav class="hero-links" aria-label="Ferramentas">
+          <a href="/quiz" class="hero-link hero-link-quiz">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span><strong>Quiz</strong><em>Teste seus conhecimentos na prática</em></span>
+          </a>
+          <a href="/podcasts" class="hero-link hero-link-pod">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            <span><strong>Podcasts</strong><em>Episódios sobre a Reforma Tributária</em></span>
+          </a>
+          <a href="/glossario" class="hero-link hero-link-glos">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span><strong>Glossário</strong><em>Termos e definições da Reforma</em></span>
+          </a>
+        </nav>
+      </div>
+
       <!-- 1. Calendário de atualizações -->
       <div class="sidebar-card">
         <div class="sc-header">
@@ -669,12 +636,14 @@ function badgeClass(criticidade: string) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--e-8);
-    align-items: center;
-    padding: var(--e-10) 0 var(--e-8);
+    align-items: start;
+    padding: 0 0 var(--e-8);
   }
+  .hero-esquerda { padding-top: var(--e-10); }
   @media (max-width: 820px) {
     .hero { grid-template-columns: 1fr; padding: var(--e-6) 0 var(--e-6); gap: var(--e-5); }
     .hero-direita { display: none; }
+    .hero-esquerda { padding-top: var(--e-6); }
   }
 
   .hero-badge {
@@ -777,40 +746,23 @@ function badgeClass(criticidade: string) {
     transform: translateY(-2px);
   }
 
-  /* ── HERO FERRAMENTAS ── */
-  .hero-direita { display: flex; flex-direction: column; justify-content: center; gap: 1.25rem; }
+  /* ── HERO DIREITA ── */
+  .hero-direita { display: flex; flex-direction: column; gap: .75rem; padding-top: var(--e-5); }
 
-  .hero-ferramentas {
-    background: rgba(255,255,255,.025);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 14px;
-    overflow: hidden;
+  .hero-links { display: flex; flex-direction: column; gap: 0; }
+  .hero-link {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .55rem .4rem; border-radius: 8px;
+    text-decoration: none; transition: background .15s;
   }
-  .hf-item {
-    display: flex;
-    align-items: center;
-    gap: .9rem;
-    padding: .95rem 1.1rem;
-    text-decoration: none;
-    color: var(--tinta);
-    transition: background .15s;
-    border-top: 1px solid rgba(255,255,255,.06);
-  }
-  .hf-item:first-child { border-top: none; }
-  .hf-item:hover { background: rgba(255,255,255,.05); }
-  .hf-icon {
-    width: 36px; height: 36px; border-radius: 9px;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .hf-icon svg { width: 16px; height: 16px; }
-  .hf-icon-azul  { background: rgba(59,130,246,.14); border: 1px solid rgba(59,130,246,.22); color: var(--azul-400); }
-  .hf-icon-verde { background: rgba(34,197,94,.12);  border: 1px solid rgba(34,197,94,.2);  color: var(--verde-400); }
-  .hf-icon-ciano { background: rgba(34,211,238,.1);  border: 1px solid rgba(34,211,238,.18); color: var(--ciano-400); }
-  .hf-body { flex: 1; min-width: 0; }
-  .hf-nome { display: block; font-size: .88rem; font-weight: 600; color: var(--tinta); }
-  .hf-desc { display: block; font-size: .73rem; color: var(--tinta-fraca); margin-top: 1px; }
-  .hf-seta { width: 14px; height: 14px; flex-shrink: 0; color: var(--tinta-fraca); transition: transform .15s, color .15s; }
-  .hf-item:hover .hf-seta { transform: translateX(3px); color: var(--azul-400); }
+  .hero-link:hover { background: rgba(255,255,255,.04); }
+  .hero-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .hero-link-quiz svg { color: var(--azul-400); }
+  .hero-link-pod  svg { color: var(--verde-400); }
+  .hero-link-glos svg { color: var(--ciano-400); }
+  .hero-link span { display: flex; flex-direction: column; gap: 1px; }
+  .hero-link strong { font-size: .83rem; font-weight: 600; color: var(--tinta); }
+  .hero-link em { font-style: normal; font-size: .7rem; color: var(--tinta-fraca); }
 
   /* ── ILUSTRAÇÃO ── */
   .ilustracao-wrapper { width: 100%; }
