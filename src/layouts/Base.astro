@@ -6,6 +6,7 @@ const imagemUrl = new URL(imagem, Astro.site).href;
 const descricaoPadrao = 'Referência da Reforma Tributária do Consumo: IBS, CBS, normas, prazos, apuração assistida e APIs, com fonte oficial.';
 const rota = Astro.url.pathname;
 const atual = (p: string) => (rota === p || rota.startsWith(p + '/') ? 'page' : undefined);
+const radarOpacity = rota === '/' ? 0.9 : 0.4;
 const tituloCompleto = titulo === 'Radar RT' ? 'Radar RT' : `${titulo} — Radar RT`;
 import '../styles/global.css';
 ---
@@ -62,7 +63,7 @@ import '../styles/global.css';
 
     <!-- ── Grade de radar (fundo global) ── -->
     <div class="radar-fundo" aria-hidden="true">
-      <svg class="radar-fundo-svg" viewBox="-500 -500 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="radar-fundo-svg" viewBox="-500 -500 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg" style={`opacity:${radarOpacity}`}>
         <circle r="140" stroke="rgba(96,165,250,.10)" stroke-width="1"/>
         <circle r="240" stroke="rgba(96,165,250,.07)" stroke-width="1"/>
         <circle r="340" stroke="rgba(96,165,250,.05)" stroke-width="1"/>

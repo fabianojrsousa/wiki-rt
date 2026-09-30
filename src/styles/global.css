@@ -206,7 +206,6 @@ body {
   height: clamp(700px, 90vw, 1100px);
   flex-shrink: 0;
   margin-top: -6vh;
-  opacity: .9;
 }
 .radar-fundo-blip {
   animation: radar-fundo-blip 6s ease-in-out infinite;
