@@ -7,6 +7,35 @@ import Base from '../../layouts/Base.astro';
   descricao="Como funciona a apuração assistida do IBS (IPA – CGIBS) e da CBS (ROC – Receita Federal), com APIs públicas, consultas incrementais e cronograma de disponibilização."
 >
 
+  <!-- ══ Navegação rápida ══ -->
+  <nav class="aa-nav-rapida" aria-label="Ir para seção">
+    <a href="#sec-arquitetura">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+      Arquitetura
+    </a>
+    <span class="aa-nav-div" aria-hidden="true"></span>
+    <a href="#aa-diagrama">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="3" cy="8" r="2"/><path d="M5 8h3l2-3h3M8 8l2 3h3"/><circle cx="13" cy="5" r="1.5"/><circle cx="13" cy="11" r="1.5"/></svg>
+      Diagrama IPA/ROC
+    </a>
+    <a href="#fig-arquitetura">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 11l4-4 3 3 3-4 4 5"/><circle cx="5" cy="7" r="1.2" fill="currentColor" stroke="none"/></svg>
+      Fluxo IPA e ROC
+    </a>
+    <span class="aa-nav-div" aria-hidden="true"></span>
+    <a href="#sec-ipa">IPA</a>
+    <a href="#sec-roc">ROC</a>
+    <span class="aa-nav-div" aria-hidden="true"></span>
+    <a href="#sec-puc">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v4l3 2-3 2v4"/><path d="M4 5H2v6h2M12 5h2v6h-2"/></svg>
+      PUC
+    </a>
+    <a href="#fig-puc">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 11l4-4 3 3 3-4 4 5"/><circle cx="5" cy="7" r="1.2" fill="currentColor" stroke="none"/></svg>
+      Fluxo PUC
+    </a>
+  </nav>
+
   <!-- ══ Hero ══ -->
   <div class="aa-hero">
     <div class="aa-hero-badge">CGIBS · Receita Federal · 2026</div>
@@ -17,8 +46,21 @@ import Base from '../../layouts/Base.astro';
     </p>
   </div>
 
+  <figure class="aa-figura aa-figura-hero">
+    <img
+      src="/apuracao-assistida-hero.jpg"
+      alt="Apuração Assistida: visão geral do processo entre fisco e contribuinte"
+      class="aa-figura-img"
+      loading="eager"
+      decoding="async"
+    />
+    <figcaption class="aa-figura-legenda">
+      A integração com a Apuração Assistida permite que as informações apuradas sejam disponibilizadas ao contribuinte e consumidas diretamente por seus sistemas, por meio das APIs disponibilizadas. O processo é dividido em duas etapas: a primeira ocorre no ambiente da Apuração Assistida e a segunda no sistema do contribuinte. Cada etapa é composta por passos sequenciais, descritos a seguir e ilustrados no fluxo abaixo.
+    </figcaption>
+  </figure>
+
   <!-- ══ Arquitetura: duas engenharias em paralelo ══ -->
-  <section class="aa-secao">
+  <section class="aa-secao" id="sec-arquitetura">
     <div class="aa-secao-label">Arquitetura</div>
     <h2 class="aa-secao-titulo">Conformidade por Design</h2>
     <p class="aa-secao-desc">
@@ -26,43 +68,83 @@ import Base from '../../layouts/Base.astro';
     </p>
 
     <!-- Diagrama de duas trilhas -->
-    <div class="aa-diagrama">
-      <div class="aa-diagrama-origem">
-        <div class="aa-diagrama-origem-icone">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <div class="aa-diagrama" id="aa-diagrama">
+
+      <!-- Fundo decorativo: grade de pontos -->
+      <div class="aa-diag-fundo" aria-hidden="true"></div>
+
+      <!-- Nó origem: DF-e -->
+      <div class="aa-diag-origem">
+        <div class="aa-origem-anel aa-origem-anel-1" aria-hidden="true"></div>
+        <div class="aa-origem-anel aa-origem-anel-2" aria-hidden="true"></div>
+        <div class="aa-origem-icone">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         </div>
-        <div class="aa-diagrama-origem-label">DF-e emitido</div>
-        <div class="aa-diagrama-origem-desc">NF-e, NFC-e, CT-e, NFS-e com IBS e CBS destacados + NSU</div>
+        <div class="aa-origem-titulo">DF-e emitido</div>
+        <div class="aa-origem-pills">
+          <span>NF-e</span><span>NFC-e</span><span>CT-e</span><span>NFS-e</span>
+        </div>
+        <div class="aa-origem-nsu">
+          <span class="aa-nsu-tag">NSU</span>
+          <span>único por transação</span>
+        </div>
       </div>
 
-      <div class="aa-diagrama-seta" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <!-- Conector SVG com bifurcação + partículas animadas -->
+      <div class="aa-diag-conector" aria-hidden="true">
+        <svg class="aa-fork-svg" viewBox="0 0 80 100" preserveAspectRatio="none">
+          <!-- Haste principal -->
+          <line x1="0" y1="50" x2="35" y2="50" class="aa-fork-stem"/>
+          <!-- Barra vertical de bifurcação -->
+          <line x1="35" y1="22" x2="35" y2="78" class="aa-fork-vbar"/>
+          <!-- Ramo IPA (topo) -->
+          <line x1="35" y1="22" x2="80" y2="22" class="aa-fork-ibs"/>
+          <!-- Ramo ROC (fundo) -->
+          <line x1="35" y1="78" x2="80" y2="78" class="aa-fork-cbs"/>
+          <!-- Círculos nas junções -->
+          <circle cx="35" cy="50" r="3"   class="aa-fork-junc"/>
+          <circle cx="35" cy="22" r="2.5" class="aa-fork-junc-ibs"/>
+          <circle cx="35" cy="78" r="2.5" class="aa-fork-junc-cbs"/>
+        </svg>
+        <span class="aa-fork-part aa-fork-part-ibs"></span>
+        <span class="aa-fork-part aa-fork-part-cbs"></span>
       </div>
 
-      <div class="aa-diagrama-trilhas">
+      <!-- Trilhas: IPA + ROC -->
+      <div class="aa-diag-trilhas">
         <div class="aa-trilha aa-trilha-ibs">
-          <div class="aa-trilha-topo">
+          <div class="aa-trilha-brilho" aria-hidden="true"></div>
+          <div class="aa-trilha-header">
             <span class="aa-trilha-sigla">IPA</span>
-            <span class="aa-trilha-nome">Informações para Apuração</span>
+            <div class="aa-trilha-texts">
+              <span class="aa-trilha-nome">Informações para Apuração</span>
+              <span class="aa-trilha-sub">Apuração do <strong>IBS</strong></span>
+            </div>
           </div>
-          <div class="aa-trilha-sub">Apuração do <strong>IBS</strong></div>
-          <div class="aa-trilha-gestor">Gerido pelo CGIBS</div>
+          <div class="aa-trilha-rodape">
+            <span class="aa-trilha-org">CGIBS · Comitê Gestor do IBS</span>
+          </div>
         </div>
 
         <div class="aa-trilha aa-trilha-cbs">
-          <div class="aa-trilha-topo">
+          <div class="aa-trilha-brilho" aria-hidden="true"></div>
+          <div class="aa-trilha-header">
             <span class="aa-trilha-sigla">ROC</span>
-            <span class="aa-trilha-nome">Registro de Operações Comerciais</span>
+            <div class="aa-trilha-texts">
+              <span class="aa-trilha-nome">Registro de Operações Comerciais</span>
+              <span class="aa-trilha-sub">Apuração da <strong>CBS</strong></span>
+            </div>
           </div>
-          <div class="aa-trilha-sub">Apuração da <strong>CBS</strong></div>
-          <div class="aa-trilha-gestor">Gerido pela Receita Federal</div>
+          <div class="aa-trilha-rodape">
+            <span class="aa-trilha-org">Receita Federal do Brasil</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ══ Imagem de arquitetura ══ -->
-  <figure class="aa-figura">
+  <figure class="aa-figura" id="fig-arquitetura">
     <img
       src="/apuracao-assistida-arquitetura.jpg"
       alt="Fluxo IPA e ROC: DFes distribuídos por NSU para duas trilhas — CGIBS IBS (DFes → IPA → Kafka → Apuração IBS) e Receita Federal CBS (DFes → ROC → Kafka → Apuração CBS) — convergindo no Portal da Reforma"
@@ -76,7 +158,7 @@ import Base from '../../layouts/Base.astro';
   </figure>
 
   <!-- ══ IPA — IBS ══ -->
-  <section class="aa-secao">
+  <section class="aa-secao" id="sec-ipa">
     <div class="aa-secao-label aa-label-ibs">CGIBS · MOC API v1.10 · Set/2026</div>
     <h2 class="aa-secao-titulo">IPA — Apuração do IBS</h2>
     <p class="aa-secao-desc">
@@ -167,7 +249,7 @@ import Base from '../../layouts/Base.astro';
   </section>
 
   <!-- ══ ROC — CBS ══ -->
-  <section class="aa-secao">
+  <section class="aa-secao" id="sec-roc">
     <div class="aa-secao-label aa-label-cbs">Receita Federal · Out–Nov 2026</div>
     <h2 class="aa-secao-titulo">ROC — Apuração da CBS</h2>
     <p class="aa-secao-desc">
@@ -324,8 +406,198 @@ import Base from '../../layouts/Base.astro';
     </div>
   </section>
 
+  <!-- ══ PUC: créditos PIS/Cofins na CBS ══ -->
+  <section class="aa-secao" id="sec-puc">
+    <div class="aa-secao-label aa-label-cbs">LC 214/2025 · Decreto 12.955/2026</div>
+    <h2 class="aa-secao-titulo">PUC: como usar os créditos de PIS/Cofins na CBS</h2>
+
+    <!-- Fluxo PUC -->
+    <figure class="aa-figura" id="fig-puc">
+      <img
+        src="/apuracao-assistida-puc.jpg"
+        alt="PUC: fluxo de utilização de créditos de PIS/Cofins na CBS"
+        class="aa-figura-img"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+
+    <!-- O que é -->
+    <div class="aa-card">
+      <div class="aa-card-topo aa-card-topo-cbs"></div>
+      <div class="aa-card-corpo">
+        <h3 class="aa-card-h3">O que é</h3>
+        <p class="aa-card-desc">
+          O <strong>PUC (Pedido de Utilização de Crédito)</strong> é o procedimento criado pela Receita Federal para que as empresas usem os saldos credores de PIS e Cofins — acumulados até a extinção dessas contribuições — para abater débitos da nova CBS. O pedido é feito no <strong>PER/DCOMP Web</strong> e tem base na LC 214/2025 (arts. 378 a 383) e no art. 602 do Decreto nº 12.955/2026, que regulamenta a CBS.
+        </p>
+        <div class="aa-destaque">
+          A lei preservou esses créditos. O ponto crítico não está no formulário, e sim na escrituração: o sistema só enxerga o que estiver registrado.
+        </div>
+      </div>
+    </div>
+
+    <!-- Origem dos saldos -->
+    <div class="aa-card">
+      <div class="aa-card-topo aa-card-topo-cbs"></div>
+      <div class="aa-card-corpo">
+        <h3 class="aa-card-h3">Origem dos saldos: dezembro de 2026 é a fotografia</h3>
+        <p class="aa-card-desc">
+          O PUC lê os registros <strong>1100 (PIS)</strong> e <strong>1500 (Cofins)</strong> da EFD-Contribuições referente a <strong>dezembro de 2026</strong>. Essa competência fixa o saldo disponível, incluindo créditos presumidos.
+        </p>
+        <div class="aa-alerta">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Crédito legítimo que não foi apropriado até lá, por falta de revisão, erro de classificação ou insumo não considerado, não aparece no pedido. Corrigir depois da virada é mais difícil e mais caro do que apropriar agora, no regime atual.
+        </div>
+      </div>
+    </div>
+
+    <!-- Dois caminhos -->
+    <div class="aa-grid-2">
+      <div class="aa-card">
+        <div class="aa-card-topo aa-card-topo-cbs"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">Caminho 1: compensação com a CBS (via PUC)</h3>
+          <ul class="aa-lista aa-lista-num">
+            <li><strong>PER/DCOMP Web</strong> — saldos pré-preenchidos pela integração com a EFD-Contribuições</li>
+            <li><strong>Validação</strong> — a Receita confere os valores e aplica análise de risco (ações de conformidade previstas para o 2º sem/2026)</li>
+            <li><strong>Envio trimestral</strong> — um PUC por trimestre para cada contribuição (PIS e Cofins separados)</li>
+            <li><strong>Apuração assistida da CBS</strong> — valores validados seguem automaticamente para compensação</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="aa-card">
+        <div class="aa-card-topo aa-card-topo-cbs"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">Caminho 2: sem PUC (regras atuais)</h3>
+          <p class="aa-card-desc">Quem preferir ressarcimento em dinheiro ou compensação com outros tributos federais não usa o PUC. Valem os requisitos vigentes:</p>
+          <ul class="aa-lista">
+            <li>Art. 74 da Lei nº 9.430/1996</li>
+            <li>Arts. 49 a 52 da IN RFB nº 2.055/2021</li>
+          </ul>
+          <div class="aa-alerta" style="margin-top:.85rem">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            A Reforma não dá liquidez a saldo que hoje não tem. Só é ressarcível o crédito que já possui essa característica.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estoques e impacto no caixa -->
+    <div class="aa-grid-2">
+      <div class="aa-card">
+        <div class="aa-card-topo aa-card-topo-cbs"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">Regra específica para estoques</h3>
+          <p class="aa-card-desc">O crédito presumido de CBS sobre estoques deve ser:</p>
+          <ul class="aa-lista">
+            <li>Apurado até o <strong>último dia de junho de 2027</strong></li>
+            <li>Usado em <strong>12 parcelas mensais iguais</strong></li>
+            <li>Somente contra a CBS (sem ressarcimento)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="aa-card">
+        <div class="aa-card-topo aa-card-topo-cbs"></div>
+        <div class="aa-card-corpo">
+          <h3 class="aa-card-h3">Impacto no caixa de 2027</h3>
+          <p class="aa-card-desc">
+            Com a CBS em cobrança a partir de 2027 e o split payment separando o tributo na liquidação, um estoque de créditos bem apurado funciona como <strong>amortecedor de liquidez</strong>. Quanto mais débito de CBS o saldo antigo absorver nos primeiros meses, menor a pressão sobre o capital de giro.
+          </p>
+          <div class="aa-destaque">
+            Crédito perdido por falha de escrituração vira CBS paga em dinheiro.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultado -->
+    <div class="aa-card">
+      <div class="aa-card-topo aa-card-topo-cbs"></div>
+      <div class="aa-card-corpo">
+        <h3 class="aa-card-h3">Resultado: crédito preservado</h3>
+        <p class="aa-card-desc">
+          Os dois caminhos levam ao mesmo objetivo: não perder crédito na transição. A condição é única para ambos: <strong>saldos apropriados e escriturados na EFD-Contribuições até 31/12/2026</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="aa-card">
+      <div class="aa-card-topo" style="background: linear-gradient(90deg, #8b5cf6 0%, rgba(139,92,246,.3) 100%);"></div>
+      <div class="aa-card-corpo">
+        <h3 class="aa-card-h3">Checklist de preparação</h3>
+        <ul class="aa-checklist">
+          <li>Revisar a apropriação de créditos ao longo de 2026</li>
+          <li>Conferir a consistência dos registros 1100 e 1500</li>
+          <li>Revisar a classificação dos insumos</li>
+          <li>Separar o saldo ressarcível do que só compensa com a CBS</li>
+          <li>Decidir o caminho (PUC ou vias tradicionais) por tipo de crédito</li>
+          <li>Montar o calendário trimestral de envio</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <style>
+    /* ── Navegação rápida (âncoras) ── */
+    .aa-nav-rapida {
+      position: fixed;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: .1rem;
+      padding: .6rem .45rem;
+      background: rgba(10,16,48,.92);
+      border: 1px solid rgba(99,102,241,.32);
+      border-radius: 14px;
+      z-index: 90;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 24px rgba(0,0,0,.45), 0 0 0 1px rgba(99,102,241,.08);
+    }
+
+    .aa-nav-rapida a {
+      display: flex; align-items: center; gap: .38rem;
+      padding: .38rem .65rem;
+      border-radius: 8px;
+      font-size: .72rem; font-weight: 600; white-space: nowrap;
+      color: var(--tinta-media);
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+    }
+    .aa-nav-rapida a svg {
+      width: 12px; height: 12px; flex-shrink: 0;
+    }
+    .aa-nav-rapida a:hover {
+      background: rgba(99,102,241,.18);
+      border-color: rgba(99,102,241,.32);
+      color: #c4b5fd;
+    }
+    .aa-nav-div {
+      width: 100%; height: 1px;
+      background: rgba(255,255,255,.1);
+      flex-shrink: 0; margin: .2rem 0;
+    }
+
+    @media (max-width: 1100px) {
+      .aa-nav-rapida { display: none; }
+    }
+
     /* ── Figura / imagem de arquitetura ── */
+    .aa-figura-hero .aa-figura-legenda {
+      font-size: .88rem;
+      color: var(--tinta-media);
+      line-height: 1.72;
+      padding: 1rem 1.25rem;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+
     .aa-figura {
       margin: 0 0 2.5rem;
       border-radius: 14px;
@@ -394,84 +666,221 @@ import Base from '../../layouts/Base.astro';
       max-width: 720px;
     }
 
-    /* ── Diagrama de arquitetura ── */
+    /* ── Diagrama de arquitetura — redesenhado ── */
     .aa-diagrama {
       display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      background: rgba(8,15,42,.5);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 16px;
-      padding: 1.5rem;
-      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 1.5rem;
+      background:
+        radial-gradient(ellipse 55% 70% at 15% 50%, rgba(59,130,246,.09) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 80% at 85% 50%, rgba(6,182,212,.09) 0%, transparent 65%),
+        rgba(5,10,32,.75);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
     }
-    .aa-diagrama-origem {
-      display: flex; flex-direction: column; align-items: center; gap: .4rem;
-      min-width: 120px; text-align: center;
-    }
-    .aa-diagrama-origem-icone {
-      width: 48px; height: 48px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(59,130,246,.12);
-      border: 1px solid rgba(59,130,246,.3);
-      border-radius: 12px;
-      color: var(--azul-400);
-    }
-    .aa-diagrama-origem-icone svg { width: 22px; height: 22px; }
-    .aa-diagrama-origem-label {
-      font-size: .8rem; font-weight: 700; color: var(--tinta);
-    }
-    .aa-diagrama-origem-desc {
-      font-size: .7rem; color: var(--tinta-fraca); line-height: 1.4;
-    }
-    .aa-diagrama-seta {
-      color: var(--tinta-fraca); flex-shrink: 0;
-    }
-    .aa-diagrama-seta svg { width: 20px; height: 20px; }
 
-    .aa-diagrama-trilhas {
-      display: flex; flex-direction: column; gap: .75rem; flex: 1; min-width: 260px;
+    /* Grade de pontos no fundo */
+    .aa-diag-fundo {
+      position: absolute; inset: 0; pointer-events: none; border-radius: 20px;
+      background-image: radial-gradient(circle, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 22px 22px;
     }
+
+    /* ── Nó DF-e ── */
+    .aa-diag-origem {
+      display: flex; flex-direction: column; align-items: center;
+      gap: .5rem; text-align: center; z-index: 1; position: relative;
+      min-width: 148px;
+    }
+
+    /* Anéis de radar pulsando */
+    .aa-origem-anel {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(99,102,241,.4);
+      pointer-events: none;
+    }
+    .aa-origem-anel-1 { width: 84px;  height: 84px;  animation: aa-radar 2.8s ease-out infinite; }
+    .aa-origem-anel-2 { width: 116px; height: 116px; animation: aa-radar 2.8s ease-out .9s infinite; }
+
+    @keyframes aa-radar {
+      0%   { opacity: .75; transform: scale(.45); }
+      100% { opacity: 0;   transform: scale(1.2); }
+    }
+
+    /* Ícone circular */
+    .aa-origem-icone {
+      width: 64px; height: 64px; z-index: 2; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 40% 35%, rgba(139,92,246,.3), rgba(59,130,246,.15));
+      border: 1px solid rgba(99,102,241,.45);
+      border-radius: 18px;
+      box-shadow: 0 0 24px rgba(99,102,241,.25), inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    .aa-origem-icone svg { width: 30px; height: 30px; color: #c4b5fd; }
+
+    .aa-origem-titulo {
+      font-size: .92rem; font-weight: 700; color: var(--tinta); margin-top: .55rem;
+    }
+
+    /* Pills dos tipos de documento */
+    .aa-origem-pills {
+      display: flex; flex-wrap: wrap; gap: .25rem; justify-content: center;
+    }
+    .aa-origem-pills span {
+      font-size: .6rem; font-weight: 700; letter-spacing: .04em;
+      padding: 2px 7px; border-radius: 10px;
+      background: rgba(99,102,241,.1);
+      border: 1px solid rgba(99,102,241,.22);
+      color: #a5b4fc;
+    }
+
+    /* Badge NSU */
+    .aa-origem-nsu {
+      display: flex; align-items: center; gap: .35rem;
+      font-size: .68rem; color: var(--tinta-fraca); margin-top: .1rem;
+    }
+    .aa-nsu-tag {
+      font-family: var(--dado); font-size: .6rem; font-weight: 700;
+      padding: 1px 6px; border-radius: 4px;
+      background: rgba(251,191,36,.12);
+      border: 1px solid rgba(251,191,36,.28);
+      color: #fbbf24;
+    }
+
+    /* ── Conector SVG com bifurcação ── */
+    .aa-diag-conector {
+      position: relative; width: 80px; flex-shrink: 0;
+    }
+    .aa-fork-svg {
+      width: 100%; height: 100%;
+      position: absolute; top: 0; left: 0;
+      overflow: visible;
+    }
+
+    .aa-fork-stem  { stroke: rgba(99,102,241,.55); stroke-width: 1.5; stroke-dasharray: 5 3; animation: aa-dash 1.4s linear infinite; }
+    .aa-fork-vbar  { stroke: rgba(148,163,184,.25); stroke-width: 1.5; }
+    .aa-fork-ibs   { stroke: rgba(59,130,246,.7);  stroke-width: 1.5; stroke-dasharray: 5 3; animation: aa-dash 1.4s linear infinite; }
+    .aa-fork-cbs   { stroke: rgba(6,182,212,.7);   stroke-width: 1.5; stroke-dasharray: 5 3; animation: aa-dash 1.4s linear infinite .15s; }
+    .aa-fork-junc     { fill: rgba(99,102,241,.75); }
+    .aa-fork-junc-ibs { fill: rgba(59,130,246,.95); filter: drop-shadow(0 0 3px rgba(59,130,246,.8)); }
+    .aa-fork-junc-cbs { fill: rgba(6,182,212,.95);  filter: drop-shadow(0 0 3px rgba(6,182,212,.8)); }
+
+    @keyframes aa-dash { from { stroke-dashoffset: 16; } to { stroke-dashoffset: 0; } }
+
+    /* Partículas viajando pelo conector */
+    .aa-fork-part {
+      position: absolute; width: 6px; height: 6px;
+      border-radius: 50%; pointer-events: none; z-index: 3;
+    }
+    .aa-fork-part-ibs {
+      background: #60a5fa;
+      box-shadow: 0 0 8px rgba(59,130,246,.95);
+      animation: aa-part-ibs 2.6s ease-in-out infinite;
+    }
+    .aa-fork-part-cbs {
+      background: #22d3ee;
+      box-shadow: 0 0 8px rgba(6,182,212,.95);
+      animation: aa-part-cbs 2.6s ease-in-out 1.3s infinite;
+    }
+
+    @keyframes aa-part-ibs {
+      0%   { top: calc(50% - 3px); left: -3px;              opacity: 0; }
+      8%   { top: calc(50% - 3px); left: -3px;              opacity: 1; }
+      38%  { top: calc(50% - 3px); left: calc(44% - 3px);              }
+      58%  { top: calc(22% - 3px); left: calc(44% - 3px);              }
+      88%  { top: calc(22% - 3px); left: calc(100% - 3px);  opacity: 1; }
+      100% { top: calc(22% - 3px); left: calc(100% - 3px);  opacity: 0; }
+    }
+    @keyframes aa-part-cbs {
+      0%   { top: calc(50% - 3px); left: -3px;              opacity: 0; }
+      8%   { top: calc(50% - 3px); left: -3px;              opacity: 1; }
+      38%  { top: calc(50% - 3px); left: calc(44% - 3px);              }
+      58%  { top: calc(78% - 3px); left: calc(44% - 3px);              }
+      88%  { top: calc(78% - 3px); left: calc(100% - 3px);  opacity: 1; }
+      100% { top: calc(78% - 3px); left: calc(100% - 3px);  opacity: 0; }
+    }
+
+    /* ── Cards IPA / ROC redesenhados ── */
+    .aa-diag-trilhas {
+      flex: 1; display: flex; flex-direction: column; gap: .85rem; min-width: 260px; z-index: 1;
+    }
+
     .aa-trilha {
-      border-radius: 12px;
-      padding: .9rem 1.1rem;
+      border-radius: 14px; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; flex: 1;
       border: 1px solid;
-      display: flex; flex-direction: column; gap: .25rem;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .aa-trilha:hover { transform: translateX(4px); }
+
+    /* Barra de acento no topo via ::before */
+    .aa-trilha::before {
+      content: ''; display: block; height: 3px; width: 100%; flex-shrink: 0;
     }
     .aa-trilha-ibs {
-      background: rgba(59,130,246,.08);
-      border-color: rgba(59,130,246,.3);
+      background: linear-gradient(135deg, rgba(59,130,246,.12) 0%, rgba(5,10,32,.8) 60%);
+      border-color: rgba(59,130,246,.38);
+    }
+    .aa-trilha-ibs::before {
+      background: linear-gradient(90deg, #3b82f6 0%, rgba(34,211,238,.55) 100%);
     }
     .aa-trilha-cbs {
-      background: rgba(6,182,212,.08);
-      border-color: rgba(6,182,212,.3);
+      background: linear-gradient(135deg, rgba(6,182,212,.12) 0%, rgba(5,10,32,.8) 60%);
+      border-color: rgba(6,182,212,.38);
     }
-    .aa-trilha-topo {
-      display: flex; align-items: center; gap: .6rem;
+    .aa-trilha-cbs::before {
+      background: linear-gradient(90deg, #06b6d4 0%, rgba(34,211,238,.55) 100%);
+    }
+
+    /* Glow radial no canto esquerdo */
+    .aa-trilha-brilho {
+      position: absolute; inset: 0; pointer-events: none; border-radius: 14px;
+    }
+    .aa-trilha-ibs .aa-trilha-brilho {
+      background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(59,130,246,.18) 0%, transparent 70%);
+    }
+    .aa-trilha-cbs .aa-trilha-brilho {
+      background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(6,182,212,.18) 0%, transparent 70%);
+    }
+
+    /* Header: sigla + textos */
+    .aa-trilha-header {
+      display: flex; align-items: center; gap: .9rem;
+      padding: .95rem 1.2rem .5rem; position: relative; z-index: 1;
     }
     .aa-trilha-sigla {
-      font-family: var(--dado); font-size: .75rem; font-weight: 700;
-      padding: 1px 8px; border-radius: 6px;
+      font-family: var(--dado); font-size: .85rem; font-weight: 800;
+      width: 46px; height: 46px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px;
     }
     .aa-trilha-ibs .aa-trilha-sigla {
-      background: rgba(59,130,246,.18); color: var(--azul-400);
-      border: 1px solid rgba(59,130,246,.3);
+      background: rgba(59,130,246,.2); border: 1px solid rgba(59,130,246,.45);
+      color: #93c5fd; box-shadow: 0 0 14px rgba(59,130,246,.3);
     }
     .aa-trilha-cbs .aa-trilha-sigla {
-      background: rgba(6,182,212,.18); color: var(--ciano-400);
-      border: 1px solid rgba(6,182,212,.3);
+      background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.45);
+      color: #67e8f9; box-shadow: 0 0 14px rgba(6,182,212,.3);
     }
+    .aa-trilha-texts { display: flex; flex-direction: column; gap: .2rem; }
     .aa-trilha-nome {
-      font-size: .78rem; color: var(--tinta); font-weight: 500;
+      font-size: .85rem; font-weight: 600; color: var(--tinta); line-height: 1.3;
     }
-    .aa-trilha-sub {
-      font-size: .82rem; color: var(--tinta-media);
+    .aa-trilha-sub { font-size: .8rem; color: var(--tinta-media); }
+    .aa-trilha-ibs .aa-trilha-sub strong { color: #93c5fd; }
+    .aa-trilha-cbs .aa-trilha-sub strong { color: #67e8f9; }
+
+    /* Rodapé */
+    .aa-trilha-rodape {
+      padding: .45rem 1.2rem .95rem; position: relative; z-index: 1;
     }
-    .aa-trilha-ibs .aa-trilha-sub strong { color: var(--azul-400); }
-    .aa-trilha-cbs .aa-trilha-sub strong { color: var(--ciano-400); }
-    .aa-trilha-gestor {
-      font-size: .68rem; color: var(--tinta-fraca); font-family: var(--dado);
-      text-transform: uppercase; letter-spacing: .07em;
+    .aa-trilha-org {
+      font-size: .64rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .09em; color: var(--tinta-fraca);
     }
 
     /* ── Cards ── */
@@ -604,6 +1013,62 @@ import Base from '../../layouts/Base.astro';
       font-size: .875rem; font-weight: 600; color: var(--tinta); margin-bottom: .4rem;
     }
 
+    /* ── Destaque e alerta ── */
+    .aa-destaque {
+      background: rgba(6,182,212,.08);
+      border-left: 3px solid var(--ciano-400);
+      border-radius: 0 8px 8px 0;
+      padding: .7rem .95rem;
+      font-size: .875rem; color: var(--tinta-media); line-height: 1.6;
+      margin-top: .75rem;
+    }
+    .aa-alerta {
+      display: flex; gap: .6rem; align-items: flex-start;
+      background: rgba(251,191,36,.07);
+      border: 1px solid rgba(251,191,36,.25);
+      border-radius: 8px; padding: .7rem .9rem;
+      margin-top: .75rem;
+      font-size: .82rem; color: var(--tinta-media); line-height: 1.55;
+    }
+    .aa-alerta svg {
+      width: 14px; height: 14px; flex-shrink: 0;
+      margin-top: 2px; color: var(--ambar-400);
+    }
+
+    /* Checklist */
+    .aa-checklist {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: .45rem;
+    }
+    .aa-checklist li {
+      font-size: .875rem; color: var(--tinta-media); line-height: 1.5;
+      padding-left: 1.5rem; position: relative;
+    }
+    .aa-checklist li::before {
+      content: '☐';
+      position: absolute; left: 0;
+      color: #8b5cf6; font-size: .85rem;
+    }
+
+    /* Lista numerada */
+    .aa-lista-num {
+      counter-reset: aa-num;
+    }
+    .aa-lista-num li { padding-left: 1.6rem; }
+    .aa-lista-num li::before {
+      content: counter(aa-num);
+      counter-increment: aa-num;
+      position: absolute; left: 0;
+      width: 1.1rem; height: 1.1rem;
+      background: rgba(6,182,212,.15);
+      border: 1px solid rgba(6,182,212,.3);
+      border-radius: 50%;
+      font-size: .65rem; font-weight: 700;
+      color: var(--ciano-400);
+      display: flex; align-items: center; justify-content: center;
+      top: .1rem;
+    }
+
     /* ── Nota ── */
     .aa-nota {
       display: flex; gap: .6rem; align-items: flex-start;
@@ -618,12 +1083,68 @@ import Base from '../../layouts/Base.astro';
       margin-top: 2px; color: var(--indigo-400);
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 600px) {
       .aa-titulo { font-size: 2rem; }
-      .aa-diagrama { flex-direction: column; }
-      .aa-diagrama-seta { transform: rotate(90deg); }
+      .aa-diagrama { flex-direction: column; gap: 1.25rem; padding: 1.5rem 1.25rem; }
+      .aa-diag-conector { width: 100%; height: 48px; }
+      .aa-fork-svg { transform: rotate(90deg) scaleX(-1); transform-origin: center; }
+      .aa-fork-part-ibs, .aa-fork-part-cbs { display: none; }
+      .aa-diag-origem { min-width: unset; }
+      .aa-diag-trilhas { min-width: unset; }
       .aa-cron-item { flex-direction: column; gap: .5rem; }
       .aa-cron-data { min-width: unset; width: fit-content; }
+    }
+
+    /* ── Animações do diagrama ── */
+    @keyframes aa-slide-esq {
+      from { opacity: 0; transform: translateX(-28px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes aa-fade-entra {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes aa-slide-dir {
+      from { opacity: 0; transform: translateX(24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes aa-seta-pulse {
+      0%, 100% { opacity: .45; }
+      50%       { opacity: 1; }
+    }
+    @keyframes aa-glow-ibs {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+      50%       { box-shadow: 0 0 14px 2px rgba(59,130,246,.22); }
+    }
+    @keyframes aa-glow-cbs {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(6,182,212,0); }
+      50%       { box-shadow: 0 0 14px 2px rgba(6,182,212,.22); }
+    }
+
+    .aa-diag-origem {
+      animation: aa-slide-esq .55s cubic-bezier(.22,1,.36,1) .1s both;
+    }
+    .aa-diag-conector {
+      animation: aa-fade-entra .4s ease .52s both;
+    }
+    .aa-trilha-ibs {
+      animation:
+        aa-slide-dir .5s cubic-bezier(.22,1,.36,1) .65s both,
+        aa-glow-ibs 3.5s ease-in-out 1.5s infinite;
+    }
+    .aa-trilha-cbs {
+      animation:
+        aa-slide-dir .5s cubic-bezier(.22,1,.36,1) .88s both,
+        aa-glow-cbs 3.5s ease-in-out 1.8s infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .aa-diag-origem,
+      .aa-diag-conector,
+      .aa-fork-stem, .aa-fork-ibs, .aa-fork-cbs,
+      .aa-fork-part, .aa-origem-anel,
+      .aa-trilha-ibs,
+      .aa-trilha-cbs { animation: none; }
     }
   </style>
 </Base>
