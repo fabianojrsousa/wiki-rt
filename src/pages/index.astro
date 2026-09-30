@@ -154,18 +154,19 @@ function badgeClass(criticidade: string) {
               <text x="89" y="96" font-family="monospace" font-size="6.5" fill="#60a5fa" opacity=".75">const campos = extractXML(nfe);</text>
               <text x="89" y="107" font-family="monospace" font-size="6.5" fill="#818cf8" opacity=".75">const ibs = campos.vIBS;</text>
               <text x="89" y="118" font-family="monospace" font-size="6.5" fill="#818cf8" opacity=".75">const cbs = campos.vCBS;</text>
+              <rect class="cursor-ilust" x="190" y="112" width="4.5" height="7" rx="1" fill="#22d3ee" opacity=".7"/>
               <!-- Progress bar na tela -->
               <rect x="89" y="131" width="182" height="5" rx="2.5" fill="rgba(255,255,255,.07)"/>
-              <rect x="89" y="131" width="71" height="5" rx="2.5" fill="url(#gradBarra)" filter="url(#brilho)"/>
-              <text x="89" y="145" font-family="monospace" font-size="6" fill="#94a3b8" opacity=".7">Transição: {progressoPct}% concluído</text>
+              <rect id="prog-fill" x="89" y="131" width="71" height="5" rx="2.5" fill="url(#gradBarra)" filter="url(#brilho)"/>
+              <text id="prog-txt" x="89" y="145" font-family="monospace" font-size="6" fill="#94a3b8" opacity=".7">Transição: {progressoPct}% concluído</text>
               <line x1="89" y1="154" x2="269" y2="154" stroke="rgba(96,165,250,.12)" stroke-width="1"/>
               <rect x="89" y="159" width="45" height="4.5" rx="2" fill="rgba(34,211,238,.2)"/>
               <rect x="139" y="159" width="65" height="4.5" rx="2" fill="rgba(96,165,250,.15)"/>
               <rect x="89" y="168" width="75" height="4.5" rx="2" fill="rgba(129,140,248,.15)"/>
               <rect x="169" y="168" width="38" height="4.5" rx="2" fill="rgba(34,211,238,.15)"/>
-              <text x="224" y="90" font-family="sans-serif" font-weight="700" font-size="9.5" fill="#60a5fa" opacity=".9">SAP</text>
+              <text id="sap-label" x="224" y="90" font-family="sans-serif" font-weight="700" font-size="9.5" fill="#60a5fa" opacity=".9">SAP</text>
               <!-- Card NF-e flutuante -->
-              <g transform="translate(270, 72)" class="card-flutuante-1">
+              <g transform="translate(270, 72)" class="card-flutuante-1" id="card-nfe">
                 <rect width="82" height="54" rx="7" fill="rgba(15,23,42,.88)" stroke="rgba(34,211,238,.4)" stroke-width="1"/>
                 <text x="8" y="14" font-family="sans-serif" font-size="6.5" fill="#22d3ee" font-weight="600">NF-e mod.55</text>
                 <rect x="8" y="17" width="66" height="1" fill="rgba(34,211,238,.2)"/>
@@ -175,15 +176,15 @@ function badgeClass(criticidade: string) {
                 <text x="11" y="48" font-family="sans-serif" font-size="4.5" fill="#22d3ee">✓ Onda 1 ativa</text>
               </g>
               <!-- Card Apurações flutuante -->
-              <g transform="translate(4, 152)" class="card-flutuante-2">
+              <g transform="translate(4, 152)" class="card-flutuante-2" id="card-apu">
                 <rect width="75" height="58" rx="7" fill="rgba(15,23,42,.88)" stroke="rgba(129,140,248,.4)" stroke-width="1"/>
                 <text x="8" y="13" font-family="sans-serif" font-size="6.5" fill="#818cf8" font-weight="600">Apurações</text>
                 <rect x="8" y="16" width="59" height="1" fill="rgba(129,140,248,.2)"/>
-                <rect x="8"  y="30" width="9"  height="19" rx="1.5" fill="rgba(129,140,248,.25)"/>
-                <rect x="20" y="24" width="9"  height="25" rx="1.5" fill="rgba(129,140,248,.35)"/>
-                <rect x="32" y="19" width="9"  height="30" rx="1.5" fill="rgba(96,165,250,.45)"/>
-                <rect x="44" y="14" width="9"  height="35" rx="1.5" fill="rgba(96,165,250,.55)"/>
-                <rect x="56" y="21" width="9"  height="28" rx="1.5" fill="rgba(34,211,238,.55)" filter="url(#brilho)"/>
+                <rect class="bar-apu" id="bar-apu-1" x="8"  y="30" width="9" height="19" rx="1.5" fill="rgba(129,140,248,.35)"/>
+                <rect class="bar-apu" id="bar-apu-2" x="20" y="24" width="9" height="25" rx="1.5" fill="rgba(129,140,248,.45)"/>
+                <rect class="bar-apu" id="bar-apu-3" x="32" y="19" width="9" height="30" rx="1.5" fill="rgba(96,165,250,.55)"/>
+                <rect class="bar-apu" id="bar-apu-4" x="44" y="14" width="9" height="35" rx="1.5" fill="rgba(96,165,250,.65)"/>
+                <rect class="bar-apu" id="bar-apu-5" x="56" y="21" width="9" height="28" rx="1.5" fill="rgba(34,211,238,.65)" filter="url(#brilho)"/>
                 <text x="8" y="56" font-family="sans-serif" font-size="4.5" fill="#64748b">Jan–Ago 2026</text>
               </g>
               <!-- Partículas -->
@@ -752,36 +753,36 @@ function badgeClass(criticidade: string) {
   /* ── Animações idle dos ícones — bounce + glow ── */
   /* Cada animação: ação rápida nos primeiros ~30%, repouso nos 70% restantes */
   @keyframes quiz-idle {
-    0%, 35%, 100% { transform: translateY(0) scale(1);         filter: drop-shadow(0 0 2px rgba(59,130,246,.15)); }
-    9%             { transform: translateY(-12px) scale(1.28);  filter: drop-shadow(0 0 22px rgba(59,130,246,1)) drop-shadow(0 0 9px rgba(59,130,246,.75)); }
-    18%            { transform: translateY(4px) scale(.88);     filter: drop-shadow(0 0 4px rgba(59,130,246,.2)); }
-    27%            { transform: translateY(-5px) scale(1.08);   filter: drop-shadow(0 0 12px rgba(59,130,246,.6)); }
+    0%, 35%, 100% { transform: translateY(0) scale(1);        filter: drop-shadow(0 0 2px rgba(59,130,246,.1)); }
+    9%             { transform: translateY(-6px) scale(1.14);  filter: drop-shadow(0 0 10px rgba(59,130,246,.55)); }
+    18%            { transform: translateY(2px) scale(.95);    filter: drop-shadow(0 0 3px rgba(59,130,246,.12)); }
+    27%            { transform: translateY(-3px) scale(1.05);  filter: drop-shadow(0 0 7px rgba(59,130,246,.3)); }
   }
   @keyframes pod-idle {
-    0%, 35%, 100% { transform: scale(1);     filter: drop-shadow(0 0 2px rgba(34,197,94,.15)); }
-    9%             { transform: scale(1.42);  filter: drop-shadow(0 0 22px rgba(34,197,94,1)) drop-shadow(0 0 9px rgba(34,197,94,.75)); }
-    18%            { transform: scale(.82);   filter: drop-shadow(0 0 4px rgba(34,197,94,.2)); }
-    27%            { transform: scale(1.14);  filter: drop-shadow(0 0 12px rgba(34,197,94,.6)); }
+    0%, 35%, 100% { transform: scale(1);     filter: drop-shadow(0 0 2px rgba(34,197,94,.1)); }
+    9%             { transform: scale(1.2);   filter: drop-shadow(0 0 10px rgba(34,197,94,.55)); }
+    18%            { transform: scale(.92);   filter: drop-shadow(0 0 3px rgba(34,197,94,.12)); }
+    27%            { transform: scale(1.07);  filter: drop-shadow(0 0 7px rgba(34,197,94,.3)); }
   }
   @keyframes glos-idle {
-    0%, 38%, 100% { transform: rotate(0deg);   filter: drop-shadow(0 0 2px rgba(6,182,212,.15)); }
-    9%             { transform: rotate(-22deg); filter: drop-shadow(0 0 22px rgba(6,182,212,1)) drop-shadow(0 0 9px rgba(6,182,212,.75)); }
-    19%            { transform: rotate(9deg);   filter: drop-shadow(0 0 4px rgba(6,182,212,.2)); }
-    28%            { transform: rotate(-6deg);  filter: drop-shadow(0 0 12px rgba(6,182,212,.5)); }
+    0%, 38%, 100% { transform: rotate(0deg);  filter: drop-shadow(0 0 2px rgba(6,182,212,.1)); }
+    9%             { transform: rotate(-10deg); filter: drop-shadow(0 0 10px rgba(6,182,212,.55)); }
+    19%            { transform: rotate(4deg);  filter: drop-shadow(0 0 3px rgba(6,182,212,.12)); }
+    28%            { transform: rotate(-3deg); filter: drop-shadow(0 0 7px rgba(6,182,212,.28)); }
   }
 
   /* Glow de fundo na linha ao pico da animação */
   @keyframes quiz-row-glow {
     0%, 35%, 100% { background: transparent; border-left-color: transparent; }
-    9%             { background: rgba(59,130,246,.13); border-left-color: rgba(59,130,246,.5); }
+    9%             { background: rgba(59,130,246,.07); border-left-color: rgba(59,130,246,.28); }
   }
   @keyframes pod-row-glow {
     0%, 35%, 100% { background: transparent; border-left-color: transparent; }
-    9%             { background: rgba(34,197,94,.11);  border-left-color: rgba(34,197,94,.5);  }
+    9%             { background: rgba(34,197,94,.06);  border-left-color: rgba(34,197,94,.28);  }
   }
   @keyframes glos-row-glow {
     0%, 38%, 100% { background: transparent; border-left-color: transparent; }
-    9%             { background: rgba(6,182,212,.1);   border-left-color: rgba(6,182,212,.5);  }
+    9%             { background: rgba(6,182,212,.06);  border-left-color: rgba(6,182,212,.28);  }
   }
 
   .hero-links { display: flex; flex-direction: column; gap: 0; }
@@ -847,6 +848,49 @@ function badgeClass(criticidade: string) {
   @keyframes flutua {
     0%, 100% { transform: translateY(0); }
     50%       { transform: translateY(-5px); }
+  }
+
+  /* ── Ilustração interativa ── */
+  /* Cursor piscando */
+  .cursor-ilust { animation: cur-blink .9s step-end infinite; }
+  @keyframes cur-blink { 0%,100%{opacity:.7} 50%{opacity:0} }
+
+  /* SAP glow */
+  #sap-label { animation: sap-pulse 3s ease-in-out infinite; }
+  @keyframes sap-pulse {
+    0%,100% { filter: none; }
+    50%     { filter: drop-shadow(0 0 5px rgba(96,165,250,.9)); }
+  }
+
+  /* Progress bar avançando — uma vez, para em 87% */
+  #prog-fill { animation: prog-avanca 4s ease-out forwards; }
+  @keyframes prog-avanca {
+    0%   { width: 14px; }
+    100% { width: 158px; }
+  }
+
+  /* Barras do card Apurações */
+  .bar-apu {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    cursor: default;
+    transition: filter .2s;
+  }
+  .bar-apu:hover { filter: brightness(1.9) drop-shadow(0 0 4px currentColor); }
+  #bar-apu-1 { animation: bar-idle 3.1s ease-in-out infinite; }
+  #bar-apu-2 { animation: bar-idle 3.8s ease-in-out infinite; animation-delay: -.65s; }
+  #bar-apu-3 { animation: bar-idle 2.9s ease-in-out infinite; animation-delay: -1.3s; }
+  #bar-apu-4 { animation: bar-idle 3.5s ease-in-out infinite; animation-delay: -.3s; }
+  #bar-apu-5 { animation: bar-idle 3.2s ease-in-out infinite; animation-delay: -1.9s; }
+  /* Cada barra com amplitude própria */
+  #bar-apu-1 { --hi: 1.32; --lo: .72; }
+  #bar-apu-2 { --hi: .68;  --lo: 1.28; }
+  #bar-apu-3 { --hi: 1.22; --lo: .8; }
+  #bar-apu-4 { --hi: .78;  --lo: 1.18; }
+  #bar-apu-5 { --hi: 1.2;  --lo: .82; }
+  @keyframes bar-idle {
+    0%,100% { transform: scaleY(1); }
+    50%     { transform: scaleY(var(--hi, 1.2)); }
   }
 
   /* ── STATS ── */
@@ -1048,3 +1092,60 @@ function badgeClass(criticidade: string) {
     border-left: 3px solid var(--azul-500) !important;
   }
 </style>
+
+<script>
+  /* ── Paralaxe da ilustração ── */
+  const ilust = document.querySelector('.ilustracao');
+  const cardNfe = document.getElementById('card-nfe');
+  const cardApu = document.getElementById('card-apu');
+
+  if (ilust && cardNfe && cardApu) {
+    let raf = 0;
+    let txNfe = 270, tyNfe = 72, txApu = 4, tyApu = 152;
+    let targetNfeX = 270, targetNfeY = 72, targetApuX = 4, targetApuY = 152;
+
+    ilust.addEventListener('mousemove', (e) => {
+      const r = ilust.getBoundingClientRect();
+      const cx = (e.clientX - r.left) / r.width - .5;
+      const cy = (e.clientY - r.top)  / r.height - .5;
+      targetNfeX = 270 + cx * 12;
+      targetNfeY = 72  + cy * 8;
+      targetApuX = 4   + cx * -9;
+      targetApuY = 152 + cy * -6;
+    });
+
+    ilust.addEventListener('mouseleave', () => {
+      targetNfeX = 270; targetNfeY = 72;
+      targetApuX = 4;   targetApuY = 152;
+    });
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function tick() {
+      txNfe = lerp(txNfe, targetNfeX, .08);
+      tyNfe = lerp(tyNfe, targetNfeY, .08);
+      txApu = lerp(txApu, targetApuX, .08);
+      tyApu = lerp(tyApu, targetApuY, .08);
+      cardNfe.setAttribute('transform', `translate(${txNfe.toFixed(2)},${tyNfe.toFixed(2)})`);
+      cardApu.setAttribute('transform', `translate(${txApu.toFixed(2)},${tyApu.toFixed(2)})`);
+      raf = requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  /* ── Progress text sync com a barra — para em 87% ── */
+  const progTxt = document.getElementById('prog-txt');
+  if (progTxt) {
+    const DUR = 4000;
+    const start = Date.now();
+    const MIN_PCT = 8, MAX_PCT = 87;
+    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+    function animProg() {
+      const t = Math.min((Date.now() - start) / DUR, 1);
+      const pct = Math.round(MIN_PCT + (MAX_PCT - MIN_PCT) * easeOut(t));
+      progTxt.textContent = `Transição: ${pct}% concluído`;
+      if (t < 1) requestAnimationFrame(animProg);
+    }
+    animProg();
+  }
+</script>
