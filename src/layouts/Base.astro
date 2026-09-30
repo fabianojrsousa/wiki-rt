@@ -6,7 +6,7 @@ const imagemUrl = new URL(imagem, Astro.site).href;
 const descricaoPadrao = 'Referência da Reforma Tributária do Consumo: IBS, CBS, normas, prazos, apuração assistida e APIs, com fonte oficial.';
 const rota = Astro.url.pathname;
 const atual = (p: string) => (rota === p || rota.startsWith(p + '/') ? 'page' : undefined);
-const radarOpacity = rota === '/' ? 0.9 : 0.5;
+const radarOpacity = rota === '/' ? 0.9 : 0.4;
 const tituloCompleto = titulo === 'Radar RT' ? 'Radar RT' : `${titulo} — Radar RT`;
 import '../styles/global.css';
 ---
