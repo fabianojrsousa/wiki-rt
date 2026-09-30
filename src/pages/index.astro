@@ -1159,20 +1159,26 @@ function badgeClass(criticidade: string) {
       const ov = titulo.scrollWidth - titulo.clientWidth;
       if (ov <= 4) return;
       clearTimeout(timer);
+      // overflow:visible deixa o pai (.atualiz-corpo) fazer o clip
+      titulo.style.overflow = 'visible';
       titulo.style.textOverflow = 'clip';
       titulo.style.transition = 'none';
       titulo.style.transform = 'translateX(0)';
       timer = setTimeout(() => {
-        titulo.style.transition = `transform ${(1.2 + ov / 75).toFixed(1)}s linear`;
+        const dur = Math.max(2.5, ov / 28);
+        titulo.style.transition = `transform ${dur.toFixed(1)}s linear`;
         titulo.style.transform = `translateX(-${ov}px)`;
-      }, 350);
+      }, 400);
     });
 
     item.addEventListener('mouseleave', () => {
       clearTimeout(timer);
       titulo.style.transition = 'transform .35s ease';
       titulo.style.transform = 'translateX(0)';
-      setTimeout(() => { titulo.style.textOverflow = ''; }, 360);
+      setTimeout(() => {
+        titulo.style.overflow = '';
+        titulo.style.textOverflow = '';
+      }, 360);
     });
   });
 </script>
