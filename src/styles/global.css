@@ -251,6 +251,47 @@ body {
 
 [data-tema='claro'] .bg-aura { opacity: 0; }
 
+/* ── Modo claro: backgrounds de cards hardcoded ── */
+[data-tema='claro'] .cartao {
+  background: var(--superficie);
+  box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.9);
+}
+[data-tema='claro'] .cartao::after { display: none; }
+[data-tema='claro'] .cartao:hover {
+  background: var(--superficie-2);
+  border-color: rgba(37,99,235,.4);
+  box-shadow: var(--s-glow), var(--s-card);
+}
+
+[data-tema='claro'] .trilho-cartao {
+  background: var(--superficie);
+  box-shadow: var(--s-card);
+}
+
+[data-tema='claro'] .fonte {
+  background: var(--superficie-2);
+  border-color: var(--borda);
+}
+
+[data-tema='claro'] .sidebar-card {
+  background: var(--superficie);
+  box-shadow: var(--s-card);
+}
+
+[data-tema='claro'] .acesso-tile {
+  background: var(--superficie);
+  border-color: var(--borda);
+  box-shadow: var(--s-card);
+}
+[data-tema='claro'] .acesso-tile:hover {
+  background: var(--superficie-2);
+  border-color: rgba(37,99,235,.45);
+  box-shadow: var(--s-glow), var(--s-card);
+}
+
+[data-tema='claro'] .atualiz-item:hover { background: rgba(0,0,0,.04); }
+[data-tema='claro'] .busca-item:hover   { background: rgba(0,0,0,.04); }
+
 /* ── Tipografia ── */
 h1, h2, h3, h4 {
   font-family: var(--display);
