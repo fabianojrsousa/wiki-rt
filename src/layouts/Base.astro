@@ -1,6 +1,9 @@
 ---
-interface Props { titulo: string; descricao?: string; }
-const { titulo, descricao } = Astro.props;
+interface Props { titulo: string; descricao?: string; imagem?: string; }
+const { titulo, descricao, imagem = '/og.png' } = Astro.props;
+const canonica = new URL(Astro.url.pathname, Astro.site).href;
+const imagemUrl = new URL(imagem, Astro.site).href;
+const descricaoPadrao = 'Referência da Reforma Tributária do Consumo: IBS, CBS, normas, prazos, apuração assistida e APIs, com fonte oficial.';
 const rota = Astro.url.pathname;
 const atual = (p: string) => (rota === p || rota.startsWith(p + '/') ? 'page' : undefined);
 const tituloCompleto = titulo === 'Radar RT' ? 'Radar RT' : `${titulo} — Radar RT`;
@@ -14,7 +17,23 @@ import '../styles/global.css';
     <title>{tituloCompleto}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#06091a" />
-    {descricao && <meta name="description" content={descricao} />}
+    <meta name="description" content={descricao ?? descricaoPadrao} />
+    <link rel="canonical" href={canonica} />
+    <!-- Open Graph (WhatsApp, Teams, Slack, LinkedIn): og:image é obrigatório, sem ele o card some -->
+    <meta property="og:site_name" content="Radar RT" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={descricao ?? descricaoPadrao} />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={imagemUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={tituloCompleto} />
+    <meta name="twitter:description" content={descricao ?? descricaoPadrao} />
+    <meta name="twitter:image" content={imagemUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -204,7 +223,7 @@ import '../styles/global.css';
 
     <!-- ── Conteúdo ── -->
     <div class="area-conteudo">
-      <main id="conteudo-principal"><slot /></main>
+      <main id="conteudo-principal" data-pagefind-body><slot /></main>
 
       <footer class="rodape">
         <div class="rodape-info">
@@ -669,30 +688,68 @@ import '../styles/global.css';
         { titulo: 'API CBS — Situação da Solicitação', url: '/apuracao-cbs/situacao',            desc: 'Verificar status de processamento de solicitação assíncrona' },
         { titulo: 'Contabilização IBS e CBS',          url: '/contabilizacao',                   desc: 'Lançamentos contábeis de venda, compra, apuração e mapa mental' },
         { titulo: 'Novas Obrigações 2027',             url: '/obrigacoes-2027',                   desc: 'O que acaba, o que fica e o que é criado nas obrigações acessórias da reforma' },
-        { titulo: 'Quiz — Reforma na Prática',        url: '/quiz',                               desc: '70 casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e mais' },
+        { titulo: 'Quiz — Reforma na Prática',        url: '/quiz',                               desc: '116 casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e mais' },
         { titulo: 'Podcasts sobre a Reforma',          url: '/podcasts',                            desc: 'Episódios selecionados sobre a Reforma Tributária do Consumo' },
       ];
 
-      function renderResultados(q: string) {
+      // ── Busca: Pagefind (índice gerado no build) com fallback na lista fixa ──
+      const esc = (t: string) =>
+        t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+      let pagefind: any = null;
+      let pagefindFalhou = false;
+      async function carregarPagefind() {
+        if (pagefind || pagefindFalhou) return pagefind;
+        try {
+          const caminho = '/pagefind/pagefind.js';
+          pagefind = await import(/* @vite-ignore */ caminho);
+          await pagefind.options({ baseUrl: '/' });
+        } catch {
+          pagefindFalhou = true;
+        }
+        return pagefind;
+      }
+
+      function buscaFixa(query: string) {
+        return PAGINAS.filter(
+          (p) => p.titulo.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query)
+        ).map((p) => ({ url: p.url, titulo: esc(p.titulo), trecho: esc(p.desc) }));
+      }
+
+      async function buscaIndice(query: string) {
+        const pf = await carregarPagefind();
+        if (!pf) return null;
+        const busca = await pf.search(query);
+        const dados = await Promise.all(busca.results.slice(0, 8).map((r: any) => r.data()));
+        return dados.map((d: any) => ({
+          url: d.url.replace(/\.html$/, '').replace(/\/index$/, '/'),
+          titulo: esc(d.meta?.title ?? d.url),
+          trecho: d.excerpt as string, // Pagefind já escapa o HTML e marca o termo com <mark>
+        }));
+      }
+
+      let buscaAtual = 0;
+      async function renderResultados(q: string) {
+        const consulta = ++buscaAtual;
         const query = q.trim().toLowerCase();
         if (!query) {
           areaResult.innerHTML = '<p class="modal-vazio">Digite para buscar…</p>';
           return;
         }
-        const filtrados = PAGINAS.filter(
-          (p) => p.titulo.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query)
-        );
-        if (!filtrados.length) {
-          areaResult.innerHTML = '<p class="modal-vazio">Nenhum resultado para "' + q + '"</p>';
+        const itens = (await buscaIndice(query)) ?? buscaFixa(query);
+        if (consulta !== buscaAtual) return; // resposta antiga: descarta
+        if (!itens.length) {
+          areaResult.innerHTML = '<p class="modal-vazio">Nenhum resultado para "' + esc(q) + '"</p>';
           return;
         }
-        areaResult.innerHTML = filtrados.map((p) =>
-          `<a class="resultado-item" href="${p.url}"><strong>${p.titulo}</strong><small>${p.desc}</small></a>`
+        areaResult.innerHTML = itens.map((p) =>
+          `<a class="resultado-item" href="${p.url}"><strong>${p.titulo}</strong><small>${p.trecho}</small></a>`
         ).join('');
       }
 
       function abrirBusca() {
         modal.classList.add('ativo');
+        carregarPagefind();
         campoBusca.focus();
         campoBusca.value = '';
         renderResultados('');

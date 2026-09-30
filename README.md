@@ -32,12 +32,12 @@ npx wrangler pages deploy dist --project-name wiki-rt --branch main --commit-dir
 
 ## CI/CD via GitHub Actions
 
-Push para `main` dispara `build-deploy.yml` automaticamente. Requer dois secrets no repositório:
+Push para `main` dispara `build-deploy.yml` automaticamente. Requer dois secrets no repositório (Settings → Secrets and variables → Actions):
 
 | Secret | Onde obter |
 | --- | --- |
 | `CLOUDFLARE_API_TOKEN` | `dash.cloudflare.com` → Profile → API Tokens → Edit Cloudflare Pages |
-| `CLOUDFLARE_ACCOUNT_ID` | `b16db228a6f942bb9772741ea885120d` |
+| `CLOUDFLARE_ACCOUNT_ID` | `dash.cloudflare.com` → Workers & Pages → Account ID |
 
 ## Como o conteúdo é organizado
 
@@ -61,9 +61,18 @@ Cinco tipos de página, e só cinco. Todo conteúdo novo cabe em um deles.
 | `/conceitos` | Conceitos da reforma (IBS, CBS, IS…) |
 | `/situacoes` | O que muda por perfil de contribuinte |
 | `/glossario` | Siglas e termos técnicos |
-| `/apuracao-cbs` | Guia de apuração da CBS |
+| `/apuracao-assistida` | Apuração Assistida: IPA, ROC e fluxo entre os sistemas |
+| `/apuracao-cbs` | APIs de apuração da CBS (débitos, créditos, pagamentos, recolhimentos) |
+| `/obrigacoes-2027` | Novas obrigações acessórias: o que acaba, o que fica, o que nasce |
 | `/contabilizacao` | Lançamentos contábeis — venda, compra e apuração |
-| `/apis` | APIs públicas da Reforma Tributária |
+| `/sap` | RT x SAP: impacto nos sistemas SAP |
+| `/quiz` | Quiz com 116 casos práticos |
+| `/podcasts` | Podcasts sobre a reforma |
+
+Busca (`Ctrl+K`) usa o índice do Pagefind gerado em `npm run build`. Em `npm run dev`
+o índice não existe e a busca cai numa lista fixa em `src/layouts/Base.astro`.
+`sitemap-index.xml` e `robots.txt` são gerados no build; a imagem de compartilhamento
+é `public/og.png`.
 
 ## Cinco regras editoriais
 
@@ -93,9 +102,10 @@ completo daquele texto.
 
 ## Coletores
 
-`scripts/coletores/` varre as fontes oficiais via GitHub Actions (coletor-diario.yml).
-Quando encontra ato novo, arquiva o original em `arquivo/`, gera rascunho em
-`.rascunhos/` e abre um pull request para revisão.
+`scripts/coletores/` varre as fontes oficiais. O agendamento automático no GitHub Actions
+foi removido (commit `d9cd1e8`); os scripts continuam no repositório e rodam manualmente
+com `python scripts/coletores/run_all.py`. Quando encontra ato novo, arquiva o original em
+`arquivo/` e gera rascunho em `.rascunhos/` para revisão.
 
 **Nenhum rascunho é publicado sem revisão humana.** Coletor propõe, pessoa aprova.
 

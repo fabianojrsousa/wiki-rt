@@ -716,7 +716,7 @@ pre code { background: none; border: 0; padding: 0; }
 }
 #campo-busca::placeholder { color: var(--tinta-fraca); }
 
-.modal-resultados { max-height: 55vh; overflow-y: auto; }
+.modal-resultados { max-height: 55vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--borda-forte) transparent; }
 .modal-vazio {
   padding: var(--e-8);
   text-align: center;
@@ -742,6 +742,7 @@ pre code { background: none; border: 0; padding: 0; }
 }
 .resultado-item strong { font-weight: 600; display: block; color: var(--tinta); }
 .resultado-item small { color: var(--tinta-fraca); font-size: var(--t-xs); font-family: var(--dado); }
+.resultado-item small mark { background: var(--destaque-claro); color: var(--link-hover); border-radius: var(--r-sm); padding: 0 .15em; }
 
 .modal-rodape {
   padding: var(--e-2) var(--e-5);
