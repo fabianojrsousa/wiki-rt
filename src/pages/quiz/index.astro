@@ -23,6 +23,7 @@ import Base from '../../layouts/Base.astro';
           <div class="qz-hero-stat-sep"></div>
           <div class="qz-hero-stat"><span class="qz-hero-stat-n">3</span><span>níveis</span></div>
         </div>
+        <div id="qz-recorde-area"></div>
       </div>
 
       <div class="qz-filtros">
@@ -35,6 +36,7 @@ import Base from '../../layouts/Base.astro';
           </div>
           <div class="qz-chips" id="chips-tema">
             <button class="qz-chip ativo" data-val="">Todos</button>
+            <button class="qz-chip qz-chip-salvas" data-val="salvas" id="chip-salvas">⭐ Salvas <em id="chip-salvas-n">0</em></button>
             <button class="qz-chip" data-val="doc">Documentos fiscais <em>16</em></button>
             <button class="qz-chip" data-val="apu">Apuração assistida <em>12</em></button>
             <button class="qz-chip" data-val="tra">Transição PIS/Cofins <em>16</em></button>
@@ -515,6 +517,69 @@ import Base from '../../layouts/Base.astro';
     }
     .qz-btn-erros:hover { background:rgba(248,113,113,.18); }
     .qz-btn-erros:disabled { opacity:.35; cursor:default; }
+
+    /* ── Recorde badge (início) ── */
+    .qz-recorde-badge {
+      display:inline-flex; align-items:center; gap:.5rem;
+      margin-top:1rem;
+      padding:6px 16px; border-radius:20px;
+      font-size:.75rem; font-weight:700; letter-spacing:.06em;
+      background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.28);
+      color:var(--ambar-400);
+      animation: qz-hero-entra .5s .2s ease both;
+    }
+    .qz-recorde-badge .qz-rec-icone { font-size:.85rem; }
+
+    /* ── Nota (resultado) ── */
+    .qz-result-nota {
+      font-size:3.5rem; font-weight:900; font-family:var(--dado);
+      line-height:1; margin-bottom:.2rem; letter-spacing:-.04em;
+      filter: drop-shadow(0 0 18px currentColor);
+    }
+    .qz-result-novo-rec {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:4px 14px; border-radius:20px; margin-top:.5rem;
+      font-size:.72rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+      background:rgba(251,191,36,.1); border:1px solid rgba(251,191,36,.35);
+      color:var(--ambar-400);
+      animation: qz-rec-pop .4s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes qz-rec-pop {
+      from { transform:scale(.6); opacity:0; }
+      to   { transform:scale(1); opacity:1; }
+    }
+
+    /* ── Confetti ── */
+    .qz-confetti { position:fixed; inset:0; pointer-events:none; z-index:9999; overflow:hidden; }
+    .qz-confetti-p {
+      position:absolute;
+      animation: qz-confetti-cair linear forwards;
+      border-radius: 2px;
+    }
+    @keyframes qz-confetti-cair {
+      0%   { transform:translateY(0) rotate(0deg) scaleX(1); opacity:1; }
+      80%  { opacity:1; }
+      100% { transform:translateY(105vh) rotate(720deg) scaleX(-1); opacity:0; }
+    }
+
+    /* ── Bookmark (questão) ── */
+    .qz-btn-salvar {
+      margin-left:auto; width:28px; height:28px; border-radius:8px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid rgba(251,191,36,.25); background:transparent;
+      color:rgba(251,191,36,.45); cursor:pointer; transition:all .18s;
+    }
+    .qz-btn-salvar:hover { color:#fbbf24; border-color:rgba(251,191,36,.55); background:rgba(251,191,36,.08); }
+    .qz-btn-salvar.salva { color:#fbbf24; border-color:rgba(251,191,36,.55); background:rgba(251,191,36,.1); }
+    .qz-btn-salvar svg { width:13px; height:13px; }
+
+    /* ── Chip Salvas ── */
+    .qz-chip-salvas.ativo {
+      background:rgba(251,191,36,.12); border-color:rgba(251,191,36,.45);
+      color:var(--ambar-400);
+      box-shadow:0 0 0 1px rgba(251,191,36,.2);
+    }
+    .qz-chip-salvas:hover { border-color:rgba(251,191,36,.4); color:#fbbf24; background:rgba(251,191,36,.06); }
 
     @media(max-width:600px) {
       .qz-page { padding:1.5rem .9rem 4rem; }
@@ -2089,11 +2154,80 @@ import Base from '../../layouts/Base.astro';
       return a;
     }
 
+    /* ── localStorage helpers ── */
+    const QZ_RECORDE_KEY = 'qz-recorde';
+    const QZ_SALVAS_KEY  = 'qz-salvas';
+
+    function lerRecorde() {
+      try { return JSON.parse(localStorage.getItem(QZ_RECORDE_KEY)) || null; } catch { return null; }
+    }
+    function salvarRecorde(pct, acertos, total) {
+      localStorage.setItem(QZ_RECORDE_KEY, JSON.stringify({ pct, acertos, total }));
+    }
+    function lerSalvas() {
+      try { return JSON.parse(localStorage.getItem(QZ_SALVAS_KEY)) || []; } catch { return []; }
+    }
+    function toggleSalva(id) {
+      const salvas = lerSalvas();
+      const idx = salvas.indexOf(id);
+      if (idx >= 0) salvas.splice(idx, 1); else salvas.push(id);
+      localStorage.setItem(QZ_SALVAS_KEY, JSON.stringify(salvas));
+      return salvas.includes(id);
+    }
+
+    function gradeFromPct(pct) {
+      if (pct >= 90) return { nota:'A+', cor:'#34d399' };
+      if (pct >= 80) return { nota:'A',  cor:'#34d399' };
+      if (pct >= 70) return { nota:'B',  cor:'#60a5fa' };
+      if (pct >= 60) return { nota:'C',  cor:'#fbbf24' };
+      if (pct >= 50) return { nota:'D',  cor:'#fb923c' };
+      return { nota:'F', cor:'#f87171' };
+    }
+
+    function atualizarChipSalvas() {
+      const n = lerSalvas().length;
+      const el = document.getElementById('chip-salvas-n');
+      if (el) el.textContent = n;
+    }
+
+    function lancarConfetti() {
+      const container = document.createElement('div');
+      container.className = 'qz-confetti';
+      const cores = ['#60a5fa','#34d399','#fbbf24','#f87171','#818cf8','#22d3ee','#fb923c','#a78bfa'];
+      for (let i = 0; i < 90; i++) {
+        const p = document.createElement('div');
+        p.className = 'qz-confetti-p';
+        const size = 4 + Math.random() * 7;
+        p.style.cssText = [
+          `left:${Math.random()*100}%`,
+          `top:${-5 - Math.random()*15}%`,
+          `width:${size}px`,
+          `height:${size * (Math.random() > .4 ? 1 : 2.5)}px`,
+          `background:${cores[i % cores.length]}`,
+          `border-radius:${Math.random() > .5 ? '50%' : '2px'}`,
+          `animation-duration:${2.2 + Math.random() * 2}s`,
+          `animation-delay:${Math.random() * .9}s`,
+          `transform:rotate(${Math.random()*360}deg)`
+        ].join(';');
+        container.appendChild(p);
+      }
+      document.body.appendChild(container);
+      setTimeout(() => container.remove(), 4500);
+    }
+
     function filtrar() {
       const { tema, tipo, nivel } = estado.filtros;
+      if (tema === 'salvas') {
+        const salvas = lerSalvas();
+        return CASOS.filter(c =>
+          (!tipo  || c.tipo  === tipo) &&
+          (!nivel || c.nivel === nivel) &&
+          salvas.includes(c.id)
+        );
+      }
       return CASOS.filter(c =>
-        (!tema || c.tema === tema) &&
-        (!tipo || c.tipo === tipo) &&
+        (!tema  || c.tema  === tema) &&
+        (!tipo  || c.tipo  === tipo) &&
         (!nivel || c.nivel === nivel)
       );
     }
@@ -2143,6 +2277,7 @@ import Base from '../../layouts/Base.astro';
 
       const afirmacaoHtml = isAfirmacao ? `<blockquote class="qz-afirmacao">"${caso.afirmacao}"</blockquote><p class="qz-pergunta">Qual alternativa apresenta a análise mais adequada?</p>` : '';
 
+      const jaSalva = lerSalvas().includes(caso.id);
       document.getElementById('qz-card-area').innerHTML = `
         <div class="qz-card">
           <div class="qz-card-topo">
@@ -2150,6 +2285,9 @@ import Base from '../../layouts/Base.astro';
             <span class="qz-badge ${tipoClass}">${tipoLabel}</span>
             <span class="qz-badge qz-badge-nivel">${nivelMap[caso.nivel] || caso.nivel}</span>
             <span class="qz-card-id">${caso.id}</span>
+            <button class="qz-btn-salvar${jaSalva ? ' salva' : ''}" id="btn-salvar-questao" data-casoid="${caso.id}" title="${jaSalva ? 'Remover das salvas' : 'Salvar questão'}">
+              <svg viewBox="0 0 24 24" fill="${jaSalva ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
           </div>
           <div class="qz-card-corpo">
             <p class="qz-contexto">${caso.contexto}</p>
@@ -2170,6 +2308,18 @@ import Base from '../../layouts/Base.astro';
         btn.addEventListener('click', () => responder(parseInt(btn.dataset.idx), parseInt(btn.dataset.letra)));
       });
       document.getElementById('btn-next')?.addEventListener('click', avancar);
+
+      // bind bookmark button
+      document.getElementById('btn-salvar-questao')?.addEventListener('click', () => {
+        const btnS = document.getElementById('btn-salvar-questao');
+        const casoid = btnS.dataset.casoid;
+        const agora = toggleSalva(casoid);
+        btnS.classList.toggle('salva', agora);
+        btnS.title = agora ? 'Remover das salvas' : 'Salvar questão';
+        btnS.querySelector('svg').setAttribute('fill', agora ? 'currentColor' : 'none');
+        atualizarChipSalvas();
+        atualizarPreview();
+      });
 
       estado.respondeu = false;
     }
@@ -2231,6 +2381,16 @@ import Base from '../../layouts/Base.astro';
       const pctClass = pct >= 75 ? 'bom' : pct >= 50 ? 'ok' : 'ruim';
       const msgs = { bom:'Excelente domínio!', ok:'Bom progresso.', ruim:'Continue treinando.' };
 
+      const grade = gradeFromPct(pct);
+
+      // recorde
+      const recAtual = lerRecorde();
+      const novoRecorde = !recAtual || pct > recAtual.pct;
+      if (novoRecorde) salvarRecorde(pct, acertos, total);
+      const novoRecHtml = novoRecorde && pct > 0
+        ? `<div class="qz-result-novo-rec">🏆 Novo recorde!</div>`
+        : '';
+
       // stats by theme
       const temaStats = {};
       estado.respostas.forEach(r => {
@@ -2254,9 +2414,11 @@ import Base from '../../layouts/Base.astro';
 
       document.getElementById('qz-resultado-area').innerHTML = `
         <div class="qz-result-hero">
+          <div class="qz-result-nota" style="color:${grade.cor}">${grade.nota}</div>
           <div class="qz-result-score">${acertos}<span> / ${total}</span></div>
           <div class="qz-result-pct ${pctClass}">${pct}%</div>
           <p class="qz-result-msg">${msgs[pctClass]}</p>
+          ${novoRecHtml}
         </div>
         <div class="qz-result-temas">${temasHtml}</div>
         <div class="qz-result-acoes">
@@ -2270,6 +2432,8 @@ import Base from '../../layouts/Base.astro';
       document.getElementById('btn-refazer-erros')?.addEventListener('click', () => {
         if (erros.length > 0) comecar(erros.map(r => r.caso));
       });
+
+      if (pct >= 75) lancarConfetti();
     }
 
     /* ── Keyboard shortcuts ── */
@@ -2311,8 +2475,29 @@ import Base from '../../layouts/Base.astro';
     bindChips('chips-tipo', 'tipo');
     bindChips('chips-nivel', 'nivel');
 
+    // show stored record on start screen
+    (function() {
+      const rec = lerRecorde();
+      const area = document.getElementById('qz-recorde-area');
+      if (rec && area) {
+        area.innerHTML = `<div class="qz-recorde-badge"><span class="qz-rec-icone">🏆</span> Seu recorde: ${rec.pct}% &nbsp;·&nbsp; ${rec.acertos}/${rec.total}</div>`;
+      }
+      atualizarChipSalvas();
+    })();
+
     document.getElementById('btn-comecar')?.addEventListener('click', () => comecar());
-    document.getElementById('btn-sair-quiz')?.addEventListener('click', () => mostrar('qv-inicio'));
+    document.getElementById('btn-sair-quiz')?.addEventListener('click', () => {
+      mostrar('qv-inicio');
+      // refresh recorde display when returning to start
+      const rec = lerRecorde();
+      const area = document.getElementById('qz-recorde-area');
+      if (area) {
+        area.innerHTML = rec
+          ? `<div class="qz-recorde-badge"><span class="qz-rec-icone">🏆</span> Seu recorde: ${rec.pct}% &nbsp;·&nbsp; ${rec.acertos}/${rec.total}</div>`
+          : '';
+      }
+      atualizarChipSalvas();
+    });
   </script>
 
 </Base>
