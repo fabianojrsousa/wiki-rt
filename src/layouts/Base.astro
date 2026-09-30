@@ -256,10 +256,6 @@ import '../styles/global.css';
             Conteúdo informativo baseado em fontes oficiais e devidamente citadas. Não constitui consultoria tributária. Para casos específicos, consulte um profissional habilitado.
           </p>
           <p class="rodape-colab">Colaboradores: Fabiano Sousa &nbsp;·&nbsp; Idelvan Vasconcelos &nbsp;·&nbsp; Felipe Andrade</p>
-          <p class="rodape-visitas" id="rodape-visitas" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            <span id="rodape-visitas-n">—</span> visitas
-          </p>
         </div>
         <a class="rodape-rss" href="/rss.xml" aria-label="Feed RSS">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
@@ -386,17 +382,6 @@ import '../styles/global.css';
         font-size: var(--t-sm);
         color: var(--tinta-fraca, #475569);
       }
-      .rodape-visitas {
-        display: none;
-        align-items: center;
-        gap: .3rem;
-        margin: .3rem 0 0;
-        font-family: var(--dado, monospace);
-        font-size: .62rem;
-        color: var(--tinta-fraca, #475569);
-        opacity: .45;
-      }
-      .rodape-visitas.visivel { display: flex; }
 
       /* ── Tags de detecção ── */
       .marca { position: relative; overflow: visible; }
@@ -803,35 +788,5 @@ import '../styles/global.css';
       });
     </script>
 
-    <script>
-      /* ── Contador de visitas (CounterAPI — silencioso se offline) ── */
-      (function () {
-        const NS  = 'wiki-rt-radar';
-        const KEY = 'visitas';
-        const UP  = `https://api.counterapi.dev/v1/${NS}/${KEY}/up`;
-        const GET = `https://api.counterapi.dev/v1/${NS}/${KEY}/get`;
-
-        function mostrar(n: number) {
-          const el   = document.getElementById('rodape-visitas-n');
-          const wrap = document.getElementById('rodape-visitas');
-          if (el && wrap) {
-            el.textContent = n.toLocaleString('pt-BR');
-            wrap.classList.add('visivel');
-          }
-        }
-
-        if (!sessionStorage.getItem('radar-vst')) {
-          fetch(UP)
-            .then(r => r.json())
-            .then(d => { if (d.value) { mostrar(d.value); sessionStorage.setItem('radar-vst', '1'); } })
-            .catch(() => {});
-        } else {
-          fetch(GET)
-            .then(r => r.json())
-            .then(d => { if (d.value) mostrar(d.value); })
-            .catch(() => {});
-        }
-      })();
-    </script>
   </body>
 </html>
