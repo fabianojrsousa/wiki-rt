@@ -111,7 +111,7 @@ import '../styles/global.css';
             <li><a href="/contabilizacao"     aria-current={atual('/contabilizacao')}     class="nav-destaque">Contabilização</a></li>
             <li class="nav-dropdown-pai">
               <button class="nav-dropdown-btn nav-destaque" aria-expanded="false" aria-haspopup="true">
-                RT x SAP
+                Reforma x SAP
                 <svg class="nav-dropdown-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                      fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                   <path d="m6 9 6 6 6-6"/>
@@ -189,7 +189,7 @@ import '../styles/global.css';
         <li><a href="/apuracao-cbs"       aria-current={atual('/apuracao-cbs')}>API's</a></li>
         <li><a href="/obrigacoes-2027"    aria-current={atual('/obrigacoes-2027')}>Reforma x Obrigações</a></li>
         <li><a href="/contabilizacao"     aria-current={atual('/contabilizacao')}>Contabilização</a></li>
-        <li class="menu-mobile-secao">RT x SAP</li>
+        <li class="menu-mobile-secao">Reforma x SAP</li>
         <li><a href="/sap"       aria-current={atual('/sap')}       class="menu-mobile-sub">Impacto da Reforma no seu sistema SAP</a></li>
         <li><a href="/situacoes" aria-current={atual('/situacoes')} class="menu-mobile-sub">O que muda no SAP</a></li>
         <li><a href="/linha-do-tempo" aria-current={atual('/linha-do-tempo')}>Linha do tempo</a></li>
@@ -266,7 +266,7 @@ import '../styles/global.css';
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
               </svg>
             </span>
-            <span>RT x SAP</span>
+            <span>Reforma x SAP</span>
           </a>
         </li>
         <li>
@@ -435,7 +435,7 @@ import '../styles/global.css';
         .radar-blip, .radar-tag, .marca-nome { animation: none; }
       }
 
-      /* ── Dropdown RT x SAP ── */
+      /* ── Dropdown Reforma x SAP ── */
       .nav-dropdown-pai { position: relative; }
 
       .nav-dropdown-btn {
@@ -549,7 +549,7 @@ import '../styles/global.css';
         background: linear-gradient(135deg, rgba(59,130,246,.38) 0%, rgba(99,102,241,.26) 100%);
       }
 
-      /* ── Mobile: seção RT x SAP ── */
+      /* ── Mobile: seção Reforma x SAP ── */
       .menu-mobile-secao {
         padding: .45rem 1.25rem .2rem;
         font-size: .7rem;
@@ -609,7 +609,7 @@ import '../styles/global.css';
         a.addEventListener('click', fecharMenuMobile);
       });
 
-      // ── Dropdown RT x SAP ──
+      // ── Dropdown Reforma x SAP ──
       const dropBtn  = document.querySelector('.nav-dropdown-btn') as HTMLButtonElement | null;
       const dropMenu = document.querySelector('.nav-dropdown')      as HTMLElement | null;
 
