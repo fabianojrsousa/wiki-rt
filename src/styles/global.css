@@ -839,7 +839,7 @@ pre code { background: none; border: 0; padding: 0; }
   outline: none;
 }
 .resultado-item strong { font-weight: 600; display: block; color: var(--tinta); }
-.resultado-item small { color: var(--tinta-fraca); font-size: var(--t-xs); font-family: var(--dado); }
+.resultado-item small { color: var(--tinta-fraca); font-size: var(--t-xs); font-family: var(--display); }
 .resultado-item small mark { background: var(--destaque-claro); color: var(--link-hover); border-radius: var(--r-sm); padding: 0 .15em; }
 
 .modal-rodape {
