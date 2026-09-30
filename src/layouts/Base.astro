@@ -10,7 +10,7 @@ import '../styles/global.css';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{titulo} — Radar RT</title>
+    <title>{titulo === 'Radar RT' ? 'Radar RT' : `${titulo} — Radar RT`}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#06091a" />
     {descricao && <meta name="description" content={descricao} />}
