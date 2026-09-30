@@ -60,6 +60,30 @@ import '../styles/global.css';
       <div class="bg-orb bg-orb-4"></div>
     </div>
 
+    <!-- ── Grade de radar (fundo global) ── -->
+    <div class="radar-fundo" aria-hidden="true">
+      <svg class="radar-fundo-svg" viewBox="-500 -500 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle r="140" stroke="rgba(96,165,250,.10)" stroke-width="1"/>
+        <circle r="240" stroke="rgba(96,165,250,.07)" stroke-width="1"/>
+        <circle r="340" stroke="rgba(96,165,250,.05)" stroke-width="1"/>
+        <circle r="440" stroke="rgba(96,165,250,.035)" stroke-width="1"/>
+        <line x1="-500" y1="0" x2="500" y2="0" stroke="rgba(96,165,250,.055)" stroke-width="1"/>
+        <line x1="0" y1="-500" x2="0" y2="500" stroke="rgba(96,165,250,.055)" stroke-width="1"/>
+        <line x1="-354" y1="-354" x2="354" y2="354" stroke="rgba(96,165,250,.025)" stroke-width="1" stroke-dasharray="4 8"/>
+        <line x1="354" y1="-354" x2="-354" y2="354" stroke="rgba(96,165,250,.025)" stroke-width="1" stroke-dasharray="4 8"/>
+        <circle class="radar-fundo-blip" style="--bd:0s"     cx="118"  cy="-82"  r="1.5" fill="rgba(96,165,250,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-3.3s"  cx="-185" cy="108"  r="1.2" fill="rgba(34,211,238,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-6.6s"  cx="228"  cy="165"  r="1"   fill="rgba(129,140,248,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-1.6s"  cx="-88"  cy="-218" r="1.2" fill="rgba(96,165,250,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-5s"    cx="335"  cy="-98"  r="1"   fill="rgba(34,211,238,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-8.3s"  cx="-295" cy="-188" r="1.2" fill="rgba(129,140,248,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-2.1s"  cx="80"   cy="30"   r="1.5" fill="rgba(96,165,250,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-4.4s"  cx="155"  cy="70"   r="1.2" fill="rgba(34,211,238,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-7.1s"  cx="-60"  cy="88"   r="1"   fill="rgba(129,140,248,.7)"/>
+        <circle class="radar-fundo-blip" style="--bd:-9.5s"  cx="120"  cy="105"  r="1.2" fill="rgba(96,165,250,.7)"/>
+      </svg>
+    </div>
+
     <!-- ── Cabeçalho fixo ── -->
     <header class="cabecalho" role="banner">
       <div id="progresso-barra" aria-hidden="true"></div>

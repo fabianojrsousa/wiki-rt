@@ -190,6 +190,37 @@ body {
     radial-gradient(ellipse at 80% 10%, rgba(139,92,246,.03) 0%, transparent 45%);
 }
 
+/* ── Grade de radar (fundo global) ── */
+.radar-fundo {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.radar-fundo-svg {
+  width: clamp(700px, 90vw, 1100px);
+  height: clamp(700px, 90vw, 1100px);
+  flex-shrink: 0;
+  margin-top: -6vh;
+  opacity: .9;
+}
+.radar-fundo-blip {
+  animation: radar-fundo-blip 6s ease-in-out infinite;
+  animation-delay: var(--bd, 0s);
+}
+@keyframes radar-fundo-blip {
+  0%, 100% { opacity: .08; }
+  50%       { opacity: .75; }
+}
+[data-tema='claro'] .radar-fundo-svg { opacity: .18; }
+@media (prefers-reduced-motion: reduce) {
+  .radar-fundo-blip { animation: none; opacity: .2; }
+}
+
 /* ── Orbes de fundo animados (aurora/nebulosa) ── */
 .bg-aura {
   position: fixed;
