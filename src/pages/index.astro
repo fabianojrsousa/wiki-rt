@@ -1154,31 +1154,38 @@ function badgeClass(criticidade: string) {
     const titulo = item.querySelector('.atualiz-titulo');
     if (!titulo) return;
     let timer = null;
+    let inner = null;
+
+    function garantirInner() {
+      if (inner) return;
+      // Envolver o texto num span interno — o externo faz o clip, o interno desliza
+      inner = document.createElement('span');
+      inner.style.cssText = 'display:inline-block;white-space:nowrap;will-change:transform';
+      inner.textContent = titulo.textContent.trim();
+      titulo.textContent = '';
+      titulo.style.textOverflow = 'clip';
+      titulo.appendChild(inner);
+    }
 
     item.addEventListener('mouseenter', () => {
-      const ov = titulo.scrollWidth - titulo.clientWidth;
+      garantirInner();
+      const ov = inner.offsetWidth - titulo.clientWidth;
       if (ov <= 4) return;
       clearTimeout(timer);
-      // overflow:visible deixa o pai (.atualiz-corpo) fazer o clip
-      titulo.style.overflow = 'visible';
-      titulo.style.textOverflow = 'clip';
-      titulo.style.transition = 'none';
-      titulo.style.transform = 'translateX(0)';
+      inner.style.transition = 'none';
+      inner.style.transform = 'translateX(0)';
       timer = setTimeout(() => {
         const dur = Math.max(2.5, ov / 28);
-        titulo.style.transition = `transform ${dur.toFixed(1)}s linear`;
-        titulo.style.transform = `translateX(-${ov}px)`;
+        inner.style.transition = `transform ${dur.toFixed(1)}s linear`;
+        inner.style.transform = `translateX(-${ov}px)`;
       }, 400);
     });
 
     item.addEventListener('mouseleave', () => {
       clearTimeout(timer);
-      titulo.style.transition = 'transform .35s ease';
-      titulo.style.transform = 'translateX(0)';
-      setTimeout(() => {
-        titulo.style.overflow = '';
-        titulo.style.textOverflow = '';
-      }, 360);
+      if (!inner) return;
+      inner.style.transition = 'transform .35s ease';
+      inner.style.transform = 'translateX(0)';
     });
   });
 </script>
