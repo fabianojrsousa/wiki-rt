@@ -22,6 +22,11 @@ import Base from '../../layouts/Base.astro';
           <div class="qz-hero-stat"><span class="qz-hero-stat-n">10</span><span>temas</span></div>
           <div class="qz-hero-stat-sep"></div>
           <div class="qz-hero-stat"><span class="qz-hero-stat-n">3</span><span>níveis</span></div>
+          <div class="qz-hero-stat-sep"></div>
+          <button class="qz-hero-salvas" id="chip-salvas" data-val="salvas">
+            <span class="qz-hero-stat-n" id="chip-salvas-n">0</span>
+            <span>⭐ salvas</span>
+          </button>
         </div>
         <div id="qz-recorde-area"></div>
       </div>
@@ -36,7 +41,6 @@ import Base from '../../layouts/Base.astro';
           </div>
           <div class="qz-chips" id="chips-tema">
             <button class="qz-chip ativo" data-val="">Todos</button>
-            <button class="qz-chip qz-chip-salvas" data-val="salvas" id="chip-salvas">⭐ Salvas <em id="chip-salvas-n">0</em></button>
             <button class="qz-chip" data-val="doc">Documentos fiscais <em>16</em></button>
             <button class="qz-chip" data-val="apu">Apuração assistida <em>12</em></button>
             <button class="qz-chip" data-val="tra">Transição PIS/Cofins <em>16</em></button>
@@ -112,6 +116,23 @@ import Base from '../../layouts/Base.astro';
     <!-- ══ View: Fim ══ -->
     <div id="qv-fim" hidden>
       <div id="qz-resultado-area"></div>
+    </div>
+
+    <!-- ══ Modal: Quantas questões? ══ -->
+    <div id="qz-modal-qtd" class="qz-modal-overlay" hidden>
+      <div class="qz-modal">
+        <div class="qz-modal-icone">🎯</div>
+        <h2 class="qz-modal-titulo">Quantas questões?</h2>
+        <p class="qz-modal-sub" id="qz-modal-sub">carregando...</p>
+        <div class="qz-modal-opcoes" id="qz-modal-opcoes"></div>
+        <div class="qz-modal-acoes">
+          <button class="qz-modal-cancel" id="qz-modal-cancel">Cancelar</button>
+          <button class="qz-modal-confirm" id="qz-modal-confirm">
+            Começar
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -580,6 +601,92 @@ import Base from '../../layouts/Base.astro';
       box-shadow:0 0 0 1px rgba(251,191,36,.2);
     }
     .qz-chip-salvas:hover { border-color:rgba(251,191,36,.4); color:#fbbf24; background:rgba(251,191,36,.06); }
+
+    /* ── Salvas dentro do stats card ── */
+    .qz-hero-salvas {
+      display: flex; flex-direction: column; align-items: center; gap: 1px;
+      background: none; border: none; cursor: pointer;
+      padding: 2px 6px; border-radius: 8px;
+      transition: background .18s;
+    }
+    .qz-hero-salvas:hover { background: rgba(251,191,36,.08); }
+    .qz-hero-salvas span:last-child {
+      font-size: .65rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--tinta-fraca);
+      transition: color .18s;
+    }
+    .qz-hero-salvas .qz-hero-stat-n { color: var(--tinta-fraca); transition: color .18s; }
+    .qz-hero-salvas.ativo .qz-hero-stat-n,
+    .qz-hero-salvas.ativo span:last-child { color: #fbbf24; }
+    .qz-hero-salvas.ativo { background: rgba(251,191,36,.1); }
+
+    /* ── Modal de quantidade ── */
+    .qz-modal-overlay {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      animation: qz-overlay-in .18s ease;
+    }
+    .qz-modal-overlay[hidden] { display: none; }
+    @keyframes qz-overlay-in { from{opacity:0} to{opacity:1} }
+
+    .qz-modal {
+      background: rgba(8,15,42,.97);
+      border: 1px solid rgba(96,165,250,.28);
+      border-radius: 22px;
+      padding: 2rem 2rem 1.75rem;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.07) inset;
+      animation: qz-modal-in .25s cubic-bezier(.34,1.56,.64,1);
+      text-align: center;
+    }
+    @keyframes qz-modal-in {
+      from { transform: scale(.9) translateY(16px); opacity:0; }
+      to   { transform: scale(1) translateY(0); opacity:1; }
+    }
+    .qz-modal-icone { font-size: 2rem; margin-bottom: .6rem; }
+    .qz-modal-titulo {
+      font-size: 1.45rem; font-weight: 800; margin: 0 0 .4rem;
+      background: linear-gradient(135deg, #fff 0%, #93c5fd 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .qz-modal-sub {
+      font-size: .78rem; color: var(--tinta-fraca);
+      font-family: var(--dado); margin: 0 0 1.5rem;
+    }
+    .qz-modal-opcoes {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      justify-content: center; margin-bottom: 1.75rem;
+    }
+    .qz-modal-opt {
+      padding: .55rem 1.3rem; border-radius: 12px;
+      font-size: .9rem; font-weight: 600;
+      border: 1px solid var(--borda); background: rgba(255,255,255,.04);
+      color: var(--tinta-media); cursor: pointer; transition: all .15s;
+    }
+    .qz-modal-opt:hover { border-color: rgba(96,165,250,.35); color: var(--tinta); background: rgba(96,165,250,.06); }
+    .qz-modal-opt.ativo {
+      background: rgba(59,130,246,.15); border-color: rgba(59,130,246,.55);
+      color: var(--azul-400); box-shadow: 0 0 0 1px rgba(59,130,246,.2);
+    }
+    .qz-modal-acoes { display: flex; gap: .75rem; justify-content: center; }
+    .qz-modal-cancel {
+      padding: .65rem 1.3rem; border-radius: 11px; font-size: .875rem; font-weight: 600;
+      border: 1px solid var(--borda); background: transparent;
+      color: var(--tinta-fraca); cursor: pointer; transition: all .15s;
+    }
+    .qz-modal-cancel:hover { color: var(--tinta); border-color: var(--borda-forte); }
+    .qz-modal-confirm {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .65rem 1.5rem; border-radius: 11px; font-size: .9rem; font-weight: 700;
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      border: none; color: #fff; cursor: pointer; transition: all .2s;
+      box-shadow: 0 4px 18px rgba(59,130,246,.4);
+    }
+    .qz-modal-confirm:hover { transform: translateY(-1px); box-shadow: 0 6px 26px rgba(59,130,246,.55); }
 
     @media(max-width:600px) {
       .qz-page { padding:1.5rem .9rem 4rem; }
@@ -2471,7 +2578,32 @@ import Base from '../../layouts/Base.astro';
       if (el) el.textContent = `${n} caso${n !== 1 ? 's' : ''} selecionado${n !== 1 ? 's' : ''}`;
     }
 
-    bindChips('chips-tema', 'tema');
+    // Bind tema chips + coordenação com chip Salvas externo
+    document.getElementById('chips-tema')?.querySelectorAll('.qz-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('chips-tema')?.querySelectorAll('.qz-chip').forEach(b => b.classList.remove('ativo'));
+        btn.classList.add('ativo');
+        estado.filtros.tema = btn.dataset.val;
+        document.getElementById('chip-salvas')?.classList.remove('ativo');
+        atualizarPreview();
+      });
+    });
+
+    // Chip Salvas (fora dos cards)
+    document.getElementById('chip-salvas')?.addEventListener('click', () => {
+      const salvasBtn = document.getElementById('chip-salvas');
+      const waAtivo = salvasBtn.classList.contains('ativo');
+      document.getElementById('chips-tema')?.querySelectorAll('.qz-chip').forEach(b => b.classList.remove('ativo'));
+      if (!waAtivo) {
+        salvasBtn.classList.add('ativo');
+        estado.filtros.tema = 'salvas';
+      } else {
+        document.querySelector('#chips-tema .qz-chip[data-val=""]')?.classList.add('ativo');
+        estado.filtros.tema = '';
+      }
+      atualizarPreview();
+    });
+
     bindChips('chips-tipo', 'tipo');
     bindChips('chips-nivel', 'nivel');
 
@@ -2485,10 +2617,61 @@ import Base from '../../layouts/Base.astro';
       atualizarChipSalvas();
     })();
 
-    document.getElementById('btn-comecar')?.addEventListener('click', () => comecar());
+    /* ── Modal: quantas questões ── */
+    let qtdModal = 0;
+
+    function abrirModalQtd() {
+      const disponiveis = filtrar();
+      const total = disponiveis.length;
+      if (total === 0) return;
+
+      const subEl = document.getElementById('qz-modal-sub');
+      if (subEl) subEl.textContent = `${total} questão${total !== 1 ? 'ões' : ''} disponíve${total !== 1 ? 'is' : 'l'} com o filtro atual`;
+
+      const opcoesEl = document.getElementById('qz-modal-opcoes');
+      if (opcoesEl) {
+        const nums = [10, 20, 30, 50].filter(n => n < total);
+        const todas = total;
+        qtdModal = nums.length > 0 ? nums[0] : todas;
+
+        opcoesEl.innerHTML = [
+          ...nums.map(n => `<button class="qz-modal-opt${n === qtdModal ? ' ativo' : ''}" data-qtd="${n}">${n}</button>`),
+          `<button class="qz-modal-opt${nums.length === 0 ? ' ativo' : ''}" data-qtd="${todas}">Todas (${todas})</button>`
+        ].join('');
+
+        opcoesEl.querySelectorAll('.qz-modal-opt').forEach(btn => {
+          btn.addEventListener('click', () => {
+            opcoesEl.querySelectorAll('.qz-modal-opt').forEach(b => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            qtdModal = parseInt(btn.dataset.qtd);
+          });
+        });
+      }
+
+      document.getElementById('qz-modal-qtd').hidden = false;
+    }
+
+    document.getElementById('qz-modal-cancel')?.addEventListener('click', () => {
+      document.getElementById('qz-modal-qtd').hidden = true;
+    });
+
+    document.getElementById('qz-modal-confirm')?.addEventListener('click', () => {
+      document.getElementById('qz-modal-qtd').hidden = true;
+      const selecionados = embaralhar(filtrar()).slice(0, qtdModal);
+      comecar(selecionados);
+    });
+
+    // Fecha o modal com ESC ou clicando fora
+    document.getElementById('qz-modal-qtd')?.addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.hidden = true;
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') document.getElementById('qz-modal-qtd').hidden = true;
+    });
+
+    document.getElementById('btn-comecar')?.addEventListener('click', abrirModalQtd);
     document.getElementById('btn-sair-quiz')?.addEventListener('click', () => {
       mostrar('qv-inicio');
-      // refresh recorde display when returning to start
       const rec = lerRecorde();
       const area = document.getElementById('qz-recorde-area');
       if (area) {
