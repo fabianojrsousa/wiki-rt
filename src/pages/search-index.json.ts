@@ -31,7 +31,7 @@ export const GET: APIRoute = async () => {
     { titulo: 'API CBS — Recolhimentos',       url: '/apuracao-cbs/recolhimentos',          desc: 'Recolhimentos na condição de adquirente', tags: 'adquirente substituição tributária' },
     { titulo: 'API CBS — Situação',            url: '/apuracao-cbs/situacao',               desc: 'Verificar status de processamento de solicitação assíncrona', tags: 'status solicitação processamento' },
     { titulo: 'Contabilização IBS e CBS',      url: '/contabilizacao',                      desc: 'Lançamentos contábeis de venda, compra, apuração e mapa mental', tags: 'lançamentos débito crédito SPED contabilidade' },
-    { titulo: 'Novas Obrigações 2027',         url: '/obrigacoes-2027',                     desc: 'O que acaba, o que fica e o que é criado nas obrigações acessórias', tags: 'SPED EFD DCTF obrigações acessórias extinção' },
+    { titulo: 'Reforma x Obrigações',          url: '/obrigacoes-2027',                     desc: 'O que acaba, o que fica e o que é criado nas obrigações acessórias', tags: 'SPED EFD DCTF obrigações acessórias extinção' },
     { titulo: 'Quiz — Reforma na Prática',     url: '/quiz',                                desc: 'Casos práticos sobre CBS, IBS, split payment, transição PIS/Cofins e mais', tags: 'teste avaliação perguntas' },
     { titulo: 'Podcasts sobre a Reforma',      url: '/podcasts',                            desc: 'Episódios selecionados sobre a Reforma Tributária do Consumo', tags: 'áudio episódios' },
     { titulo: 'Como este site funciona',       url: '/como-este-site-funciona',             desc: 'Metodologia e fontes do Radar RT', tags: 'metodologia sobre' },
