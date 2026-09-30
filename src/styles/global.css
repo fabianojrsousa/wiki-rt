@@ -571,16 +571,6 @@ pre code { background: none; border: 0; padding: 0; }
   100% { top: calc(100% + 2px); opacity: 0; }
 }
 
-/* Star Border — port de React Bits StarBorder (item ativo) */
-@keyframes nav-star-top {
-  0%   { transform: translate(0%, 0%);    opacity: .7; }
-  100% { transform: translate(100%, 0%);  opacity: 0;  }
-}
-@keyframes nav-star-bottom {
-  0%   { transform: translate(0%, 0%);    opacity: .7; }
-  100% { transform: translate(-100%, 0%); opacity: 0;  }
-}
-
 /* Glow suave de respiração no item ativo */
 @keyframes nav-ativo-respiro {
   0%, 100% { filter: drop-shadow(0 0 4px rgba(59,130,246,.5)); }
@@ -590,39 +580,9 @@ pre code { background: none; border: 0; padding: 0; }
   animation: nav-ativo-respiro 3s ease-in-out infinite;
 }
 
-/* Blob topo — especificidade (0,3,2) supera o scan-line de hover (0,2,2) */
-.nav a.nav-destaque[aria-current='page']::before {
-  top: -11px;
-  left: -250%;
-  width: 300%;
-  height: 50%;
-  background: radial-gradient(circle, var(--azul-400), transparent 10%);
-  border-radius: 50%;
-  opacity: .7;
-  transform: none;
-  animation: nav-star-top 3s linear infinite alternate;
-}
-
-/* Blob base */
-.nav-destaque[aria-current='page']::after {
-  content: '';
-  position: absolute;
-  bottom: -11px;
-  right: -250%;
-  width: 300%;
-  height: 50%;
-  background: radial-gradient(circle, var(--azul-400), transparent 10%);
-  border-radius: 50%;
-  opacity: .7;
-  animation: nav-star-bottom 3s linear infinite alternate;
-  pointer-events: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .nav a, .nav a::before,
-  .nav-destaque[aria-current='page'],
-  .nav a.nav-destaque[aria-current='page']::before,
-  .nav-destaque[aria-current='page']::after { animation: none !important; }
+  .nav-destaque[aria-current='page'] { animation: none !important; }
   .nav a:hover { transform: none; }
 }
 
