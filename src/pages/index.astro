@@ -1149,43 +1149,38 @@ function badgeClass(criticidade: string) {
     animProg();
   }
 
-  /* ── Marquee nos títulos de "Próximas atualizações" ── */
-  document.querySelectorAll('.atualiz-item').forEach(item => {
+  /* ── Marquee automático nos títulos de "Próximas atualizações" ── */
+  document.querySelectorAll('.atualiz-item').forEach((item, i) => {
     const titulo = item.querySelector('.atualiz-titulo');
     if (!titulo) return;
-    let timer = null;
-    let inner = null;
 
-    function garantirInner() {
-      if (inner) return;
-      // Envolver o texto num span interno — o externo faz o clip, o interno desliza
-      inner = document.createElement('span');
-      inner.style.cssText = 'display:inline-block;white-space:nowrap;will-change:transform';
-      inner.textContent = titulo.textContent.trim();
-      titulo.textContent = '';
-      titulo.style.textOverflow = 'clip';
-      titulo.appendChild(inner);
+    const inner = document.createElement('span');
+    inner.style.cssText = 'display:inline-block;white-space:nowrap;will-change:transform';
+    inner.textContent = titulo.textContent.trim();
+    titulo.textContent = '';
+    titulo.style.textOverflow = 'clip';
+    titulo.appendChild(inner);
+
+    const ov = inner.offsetWidth - titulo.clientWidth;
+    if (ov <= 4) return; // texto cabe, sem marquee
+
+    const SCROLL_MS  = Math.max(2500, ov / 0.028); // ~28px/s
+    const PAUSA_INI  = 1400; // ms em repouso antes de rolar
+    const PAUSA_FIM  = 900;  // ms parado no fim antes de reiniciar
+
+    function ciclo() {
+      inner.style.transition = 'none';
+      inner.style.transform  = 'translateX(0)';
+
+      setTimeout(() => {
+        inner.style.transition = `transform ${(SCROLL_MS/1000).toFixed(1)}s linear`;
+        inner.style.transform  = `translateX(-${ov}px)`;
+
+        setTimeout(() => setTimeout(ciclo, PAUSA_FIM), SCROLL_MS);
+      }, PAUSA_INI);
     }
 
-    item.addEventListener('mouseenter', () => {
-      garantirInner();
-      const ov = inner.offsetWidth - titulo.clientWidth;
-      if (ov <= 4) return;
-      clearTimeout(timer);
-      inner.style.transition = 'none';
-      inner.style.transform = 'translateX(0)';
-      timer = setTimeout(() => {
-        const dur = Math.max(2.5, ov / 28);
-        inner.style.transition = `transform ${dur.toFixed(1)}s linear`;
-        inner.style.transform = `translateX(-${ov}px)`;
-      }, 400);
-    });
-
-    item.addEventListener('mouseleave', () => {
-      clearTimeout(timer);
-      if (!inner) return;
-      inner.style.transition = 'transform .35s ease';
-      inner.style.transform = 'translateX(0)';
-    });
+    // Escalonar início para não moverem todos juntos
+    setTimeout(ciclo, i * 700);
   });
 </script>
