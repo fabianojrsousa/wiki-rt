@@ -3,6 +3,8 @@ interface Props { titulo: string; descricao?: string; }
 const { titulo, descricao } = Astro.props;
 const rota = Astro.url.pathname;
 const atual = (p: string) => (rota === p || rota.startsWith(p + '/') ? 'page' : undefined);
+const tituloCompleto = titulo === 'Radar RT' ? 'Radar RT' : `${titulo} — Radar RT`;
+const descricaoFallback = 'Referência da Reforma Tributária do Consumo: IBS, CBS, APIs, cronograma e impacto nos sistemas.';
 import '../styles/global.css';
 ---
 <!doctype html>
@@ -10,10 +12,19 @@ import '../styles/global.css';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{titulo === 'Radar RT' ? 'Radar RT' : `${titulo} — Radar RT`}</title>
+    <title>{tituloCompleto}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#06091a" />
-    {descricao && <meta name="description" content={descricao} />}
+    <meta name="description" content={descricao ?? descricaoFallback} />
+    <!-- Open Graph (Teams, WhatsApp, Slack, etc.) -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content={tituloCompleto} />
+    <meta property="og:description" content={descricao ?? descricaoFallback} />
+    <meta property="og:site_name"   content="Radar RT" />
+    <!-- Twitter / X -->
+    <meta name="twitter:card"        content="summary" />
+    <meta name="twitter:title"       content={tituloCompleto} />
+    <meta name="twitter:description" content={descricao ?? descricaoFallback} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
