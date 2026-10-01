@@ -294,6 +294,165 @@ const marcos = slugsRelevantes
     </div>
   </section>
 
+  <!-- SAP Notes -->
+  <section class="secao" id="sap-notes">
+    <h2>SAP Notes — Reforma Tributária</h2>
+    <p style="color:var(--tinta-media);margin-bottom:var(--e-6)">
+      Notas técnicas da SAP que entregam suporte à Reforma no sistema. Acesso completo
+      requer login no <a href="https://me.sap.com" target="_blank" rel="noopener noreferrer" style="color:var(--azul-400)">SAP Support Portal</a>.
+      A nota <strong>3561376</strong> é a mestre — lista todas as entregas e pré-requisitos.
+    </p>
+
+    <!-- Nota mestre em destaque -->
+    <a class="sn-mestre" href="https://me.sap.com/notes/3561376" target="_blank" rel="noopener noreferrer">
+      <div class="sn-mestre-badge">Nota Mestre</div>
+      <div class="sn-mestre-corpo">
+        <span class="sn-mestre-num">3561376</span>
+        <span class="sn-mestre-desc">Estratégia de entrega da solução SAP para a Reforma Tributária Brasileira — catálogo de todas as notas, pré-requisitos e ordem de aplicação.</span>
+      </div>
+      <svg class="sn-ext-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+
+    <!-- Tabela de notas por área -->
+    <div class="sn-grupos">
+
+      <div class="sn-grupo">
+        <div class="sn-grupo-header">
+          <span class="sn-grupo-icone">🏗️</span>
+          <h3>Infraestrutura / Pré-requisitos</h3>
+        </div>
+        <ul class="sn-lista">
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3552901" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3552901</span>
+              <span class="sn-desc">Objetos técnicos base para CBS/IBS: domínios, tabelas, estruturas de dados e modelo fiscal</span>
+              <span class="sn-tag sn-tag-req">Prereq</span>
+            </a>
+          </li>
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3615297" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3615297</span>
+              <span class="sn-desc">Objetos pré-requisito adicionais para suporte à Reforma</span>
+              <span class="sn-tag sn-tag-req">Prereq</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sn-grupo">
+        <div class="sn-grupo-header">
+          <span class="sn-grupo-icone">📄</span>
+          <h3>NF-e / SD (Vendas)</h3>
+        </div>
+        <ul class="sn-lista">
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3552903" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3552903</span>
+              <span class="sn-desc">Habilita CBS, IBS e Imposto Seletivo no Nota Fiscal Writer (J1B*N)</span>
+              <span class="sn-tag sn-tag-sd">SD/NF-e</span>
+            </a>
+          </li>
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3556404" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3556404</span>
+              <span class="sn-desc">CBS e IBS no schema de precificação RVABRA (SD)</span>
+              <span class="sn-tag sn-tag-sd">SD</span>
+            </a>
+          </li>
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3571837" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3571837</span>
+              <span class="sn-desc">CBS e IBS no schema RVXBRA (SD) — equivalente ao 3556404 para variante X</span>
+              <span class="sn-tag sn-tag-sd">SD</span>
+            </a>
+          </li>
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3605421" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3605421</span>
+              <span class="sn-desc">Expansão do campo CSTAT para 4 dígitos no XML da NF-e</span>
+              <span class="sn-tag sn-tag-sd">NF-e</span>
+            </a>
+          </li>
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3616067" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3616067</span>
+              <span class="sn-desc">Remove PIS/Cofins/ISS do preço líquido para adequação ao modelo CBS/IBS</span>
+              <span class="sn-tag sn-tag-sd">SD/FI</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sn-grupo">
+        <div class="sn-grupo-header">
+          <span class="sn-grupo-icone">🛒</span>
+          <h3>MM (Compras / Entrada de NF)</h3>
+        </div>
+        <ul class="sn-lista">
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3569061" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3569061</span>
+              <span class="sn-desc">CBS e IBS no schema de tributos TAXBRA (MM)</span>
+              <span class="sn-tag sn-tag-mm">MM</span>
+            </a>
+          </li>
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3582512" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3582512</span>
+              <span class="sn-desc">CBS e IBS no schema TAXBRJ (MM) — variante RJ</span>
+              <span class="sn-tag sn-tag-mm">MM</span>
+            </a>
+          </li>
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3609184" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3609184</span>
+              <span class="sn-desc">Objetos genéricos para processamento de Nota Fiscal no módulo MM</span>
+              <span class="sn-tag sn-tag-mm">MM</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sn-grupo">
+        <div class="sn-grupo-header">
+          <span class="sn-grupo-icone">🧮</span>
+          <h3>Apuração / Cálculo</h3>
+        </div>
+        <ul class="sn-lista">
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3616500" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3616500</span>
+              <span class="sn-desc">Determinação de alíquota de CBS/IBS via NBS (Nomenclatura Brasileira de Serviços)</span>
+              <span class="sn-tag sn-tag-fi">FI/TX</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sn-grupo sn-grupo-destaque">
+        <div class="sn-grupo-header">
+          <span class="sn-grupo-icone">💳</span>
+          <h3>Split Payment</h3>
+          <span class="sn-grupo-novo">Novo</span>
+        </div>
+        <ul class="sn-lista">
+          <li>
+            <a class="sn-item" href="https://me.sap.com/notes/3804101" target="_blank" rel="noopener noreferrer">
+              <span class="sn-num">3804101</span>
+              <span class="sn-desc">Vinculação entre NF-e e transação de pagamento para split payment — implementa NT 2026.006 da ENCAT. Uma das notas mais esperadas do ciclo da Reforma.</span>
+              <span class="sn-tag sn-tag-novo">Set/2026</span>
+            </a>
+          </li>
+        </ul>
+        <p class="sn-grupo-obs">
+          O split payment não será exigido em jan/2027. A fase obrigatória começa em 2027 com implementação gradual.
+          Esta nota prepara o terreno técnico no SAP.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
   <!-- Links para aprofundamento -->
   <section class="secao">
     <h2>Para aprofundar</h2>
@@ -531,4 +690,156 @@ const marcos = slugsRelevantes
   }
   .check-feito { color: var(--confirmado) !important; }
   .check-feito::before { content: '✓' !important; color: var(--confirmado) !important; font-size: 0.9rem !important; }
+
+  /* ── SAP Notes ── */
+  .sn-mestre {
+    display: flex;
+    align-items: center;
+    gap: var(--e-5);
+    padding: var(--e-5) var(--e-6);
+    background: rgba(59,130,246,.07);
+    border: 1px solid rgba(59,130,246,.28);
+    border-radius: var(--r-xl);
+    margin-bottom: var(--e-8);
+    text-decoration: none;
+    transition: background var(--dur), border-color var(--dur);
+    box-shadow: 0 0 24px rgba(59,130,246,.08), inset 0 1px 0 rgba(255,255,255,.07);
+  }
+  .sn-mestre:hover { background: rgba(59,130,246,.13); border-color: rgba(59,130,246,.45); }
+  .sn-mestre-badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--azul-400);
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
+    border-radius: 4px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .sn-mestre-corpo {
+    display: flex;
+    align-items: baseline;
+    gap: var(--e-4);
+    flex: 1;
+    min-width: 0;
+  }
+  .sn-mestre-num {
+    font-family: var(--dado);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--tinta);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .sn-mestre-desc {
+    font-size: var(--t-sm);
+    color: var(--tinta-media);
+    line-height: 1.5;
+  }
+  .sn-ext-icon {
+    width: 16px; height: 16px;
+    color: var(--tinta-fraca);
+    flex-shrink: 0;
+  }
+
+  .sn-grupos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
+    gap: var(--e-5);
+  }
+  .sn-grupo {
+    background: rgba(8,15,42,.52);
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--r-xl);
+    padding: var(--e-5) var(--e-6);
+    box-shadow: var(--s-card), inset 0 1px 0 rgba(255,255,255,.07);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .sn-grupo-destaque {
+    border-color: rgba(34,211,238,.25);
+    box-shadow: var(--s-card), 0 0 20px rgba(34,211,238,.06), inset 0 1px 0 rgba(255,255,255,.07);
+  }
+  .sn-grupo-header {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    margin-bottom: var(--e-4);
+    padding-bottom: var(--e-4);
+    border-bottom: 1px solid var(--borda);
+  }
+  .sn-grupo-icone { font-size: 1rem; line-height: 1; }
+  .sn-grupo-header h3 {
+    font-family: var(--display);
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--tinta);
+    margin: 0;
+    flex: 1;
+  }
+  .sn-grupo-novo {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #22d3ee;
+    background: rgba(34,211,238,.12);
+    border: 1px solid rgba(34,211,238,.3);
+    border-radius: 4px;
+    padding: 2px 7px;
+  }
+  .sn-grupo-obs {
+    font-size: var(--t-xs);
+    color: var(--tinta-fraca);
+    margin: var(--e-4) 0 0;
+    padding-top: var(--e-4);
+    border-top: 1px solid var(--borda);
+    line-height: 1.6;
+  }
+
+  .sn-lista { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+  .sn-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: var(--e-3);
+    padding: var(--e-3) var(--e-3);
+    border-radius: var(--r-sm);
+    text-decoration: none;
+    transition: background var(--dur);
+  }
+  .sn-item:hover { background: rgba(59,130,246,.08); }
+  .sn-num {
+    font-family: var(--dado);
+    font-size: var(--t-sm);
+    font-weight: 700;
+    color: var(--azul-400);
+    white-space: nowrap;
+    letter-spacing: .02em;
+  }
+  .sn-desc {
+    font-size: var(--t-sm);
+    color: var(--tinta-media);
+    line-height: 1.45;
+  }
+  .sn-item:hover .sn-desc { color: var(--tinta); }
+  .sn-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+    align-self: start;
+    margin-top: 2px;
+  }
+  .sn-tag-req  { background: rgba(148,163,184,.12); color: var(--tinta-fraca);  border: 1px solid rgba(148,163,184,.2); }
+  .sn-tag-sd   { background: rgba(59,130,246,.1);   color: var(--azul-400);     border: 1px solid rgba(59,130,246,.2); }
+  .sn-tag-mm   { background: rgba(168,85,247,.1);   color: #c084fc;             border: 1px solid rgba(168,85,247,.2); }
+  .sn-tag-fi   { background: rgba(52,211,153,.1);   color: var(--confirmado);   border: 1px solid rgba(52,211,153,.2); }
+  .sn-tag-novo { background: rgba(34,211,238,.12);  color: #22d3ee;             border: 1px solid rgba(34,211,238,.25); }
 </style>
