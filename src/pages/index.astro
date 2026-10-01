@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { rotuloData, dia, extenso } from '../lib/datas';
+import noticiasFeed from '../data/noticias-rt.json';
 
 const hoje = new Date('2026-08-29T00:00:00Z');
 const limite = new Date(hoje);
@@ -73,6 +74,20 @@ function badgeClass(criticidade: string) {
   if (criticidade === 'media')   return 'badge-medio';
   return 'badge-info';
 }
+
+const noticiasFonte: Record<string, string> = {
+  'Câmara dos Deputados': 'Câmara',
+  'Senado Federal':       'Senado',
+  'LexML / Imprensa Nacional': 'LexML',
+};
+
+const noticiasRecentes = (noticiasFeed.itens ?? [])
+  .filter((n: any) => n.titulo)
+  .slice(0, 5);
+
+const feedGeradoEm = noticiasFeed.gerado_em
+  ? new Date(noticiasFeed.gerado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  : null;
 ---
 <Base
   titulo="Radar RT"
@@ -501,7 +516,33 @@ function badgeClass(criticidade: string) {
         </a>
       </div>
 
-      <!-- 3. Você pode estar buscando -->
+      <!-- 3. Novidades da legislação (feed automático) -->
+      {noticiasRecentes.length > 0 && (
+        <div class="sidebar-card">
+          <div class="sc-header">
+            <h3 class="sc-titulo">Novidades da legislação</h3>
+            {feedGeradoEm && (
+              <span class="sc-feed-data" title="Última consulta às APIs">↻ {feedGeradoEm}</span>
+            )}
+          </div>
+
+          <ul class="noticias-lista">
+            {noticiasRecentes.map((n: any) => (
+              <li>
+                <a class="noticia-item" href={n.url} target="_blank" rel="noopener noreferrer">
+                  <span class="noticia-fonte">{noticiasFonte[n.fonte] ?? n.fonte}</span>
+                  <span class="noticia-titulo">{n.titulo}</span>
+                  {n.data && (
+                    <span class="noticia-data">{new Date(n.data + 'T00:00:00Z').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <!-- 4. Você pode estar buscando -->
       <div class="sidebar-card">
         <h3 class="sc-titulo" style="margin-bottom: var(--e-3)">Você pode estar buscando</h3>
 

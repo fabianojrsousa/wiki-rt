@@ -1,0 +1,35 @@
+name: Atualizar novidades RT
+
+on:
+  schedule:
+    # Toda segunda-feira às 08:00 BRT (11:00 UTC)
+    - cron: '0 11 * * 1'
+  workflow_dispatch:   # permite rodar manualmente pelo GitHub UI
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # necessário para commitar o JSON atualizado
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Buscar atualizações da Reforma Tributária
+        run: node scripts/fetch-updates.mjs
+
+      - name: Commitar JSON atualizado (se houve mudança)
+        run: |
+          git config user.name  "wiki-rt-bot"
+          git config user.email "fabianojrsousa@gmail.com"
+          git add src/data/noticias-rt.json
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudança no JSON — nada a commitar."
+          else
+            git commit -m "chore: atualizar noticias-rt.json ($(date -u +%Y-%m-%d))"
+            git push
+          fi
